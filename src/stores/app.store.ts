@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { IBART, ICSO, INationalAgency, IPO, IUser } from '../types'
 import { generateFakeBART, generateFakeCSO, generateFakeNA, generateFakePO, generateFakeUsers } from './faker'
 import { fakeBARTs, fakeNAs, fakeCSOs, fakePOs } from './faker'
+import { totalFakeUsers } from '../config/index'
 
 export const appStore = defineStore('app', () => {
     
@@ -40,7 +41,7 @@ class App{
         this.fakeNas = generateFakeNA({count: fakeNAs.length})
         this.fakeBarts = generateFakeBART({count: fakeBARTs.length})
         this.fakePOs = generateFakePO({count: fakePOs.length})
-        this.fakeUsers = generateFakeUsers({count: 20})
+        this.fakeUsers = generateFakeUsers({count: totalFakeUsers})
 
         this.isInitialize  = true
     }
