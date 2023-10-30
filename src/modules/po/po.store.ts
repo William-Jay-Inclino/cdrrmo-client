@@ -2,6 +2,7 @@
 import { defineStore } from 'pinia'
 import { IPO } from '../../types'
 import { computed, ref } from 'vue';
+import { POService } from '.';
 
 export const POStore = defineStore('PO', () => {
     
@@ -17,9 +18,15 @@ export const POStore = defineStore('PO', () => {
     
     const POs = computed( () => _POs.value)
 
+    // methods
+    const getPOs = () => {
+        return POService.getAllPOs()
+    }
+
     return {
-        _POs,
+        POs,
         setPOs,
+        getPOs,
     }
 })
 

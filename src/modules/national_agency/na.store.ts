@@ -2,6 +2,7 @@
 import { defineStore } from 'pinia'
 import { INationalAgency } from '@/types'
 import { computed, ref } from 'vue';
+import { NAService } from '.';
 
 export const NAStore = defineStore('NA', () => {
     
@@ -17,9 +18,15 @@ export const NAStore = defineStore('NA', () => {
     
     const NAs = computed( () => _NAs.value)
 
+    // methods
+    const getNAs = () => {
+        return NAService.getAllNAs()
+    }
+
     return {
         NAs,
         setNAs,
+        getNAs,
     }
 })
 

@@ -1,6 +1,6 @@
 import { fakeData } from "@/config"
 import { IBART, ICSO, IEmergency, INationalAgency, IPO, ITeam, ITeamMember, IUser } from "@/types"
-import { generateFakeCSO, fakeCSOs, generateFakeNA, fakeNAs, generateFakeBART, fakeBARTs, generateFakePO, fakePOs, generateFakeUsers, generateFakeTeams, generateFakeTeamMembers, generateFakeEmergencies, fakeEmergencies } from "@/helpers/faker"
+import { generateFakeCSO, fakeCSOs, generateFakeNA, fakeNAs, generateFakeBART, fakeBARTs, generateFakePO, fakePOs, generateFakeUsers, generateFakeTeams, generateFakeTeamMembers, generateFakeEmergencies, fakeEmergencies, fakeTeams } from "@/helpers/faker"
 
 // root class
 
@@ -26,7 +26,7 @@ class AppService{
         this.barts = generateFakeBART({count: fakeBARTs.length})
         this.pos = generateFakePO({count: fakePOs.length})
         this.users = generateFakeUsers({count: fakeData.userCount})
-        this.teams = generateFakeTeams({count: fakeData.teamCount})
+        this.teams = generateFakeTeams({count: fakeTeams.length})
         this.teamMembers = generateFakeTeamMembers({count: fakeData.teamMemberCount})
         this.emergencies = generateFakeEmergencies({count: fakeEmergencies.length})
     }

@@ -2,6 +2,7 @@
 import { defineStore } from 'pinia'
 import { ICSO } from '../../types'
 import { computed, ref } from 'vue';
+import { CSOService } from '.';
 
 export const CSOStore = defineStore('CSO', () => {
     
@@ -17,9 +18,15 @@ export const CSOStore = defineStore('CSO', () => {
     
     const CSOs = computed( () => _CSOs.value)
 
+    // methods
+    const getCSOs = () => {
+        return CSOService.getAllCSOs()
+    }
+
     return {
         CSOs,
         setCSOs,
+        getCSOs,
     }
 })
 

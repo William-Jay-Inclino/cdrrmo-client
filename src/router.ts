@@ -8,25 +8,50 @@ const routes = [
         component: () => import('@/views/User/User.view.vue')
     },
     {
-      path: '/dispatch',
-      name: routeNames.dispatch,
-      component: () => import('@/views/Dispatch/Dispatch.view.vue')
+        path: '/dispatch',
+        name: routeNames.dispatch,
+        component: () => import('@/views/Dispatch/Dispatch.view.vue')
     },
     {
-      path: '/dispatch/form',
-      name: routeNames.dispatchForm,
-      component: () => import('@/views/Dispatch/DispatchForm.view.vue')
+        path: '/dispatch/form',
+        name: routeNames.dispatchForm,
+        component: () => import('@/views/Dispatch/DispatchForm.view.vue')
     },
     {
-      path: '/teams',
-      name: routeNames.teams,
-      component: () => import('@/views/Team/Team.view.vue')
+        path: '/teams',
+        name: routeNames.teams,
+        component: () => import('@/views/Team/Team.view.vue')
     },
     {
-      path: '/teams/members/:id',
-      name: routeNames.teamMembers,
-      component: () => import('@/views/Team/TeamMembers.view.vue')
-    }
+        path: '/teams/members/:id',
+        name: routeNames.teamMembers,
+        component: () => import('@/views/Team/TeamMembers.view.vue')
+    },
+    {
+        path: '/csos',
+        name: routeNames.csos,
+        component: () => import('@/views/Cso/Cso.view.vue')
+    },
+    {
+        path: '/pos',
+        name: routeNames.pos,
+        component: () => import('@/views/Po/Po.view.vue')
+    },
+    {
+        path: '/barts',
+        name: routeNames.barts,
+        component: () => import('@/views/Bart/Bart.view.vue')
+    },
+    {
+        path: '/national-agencies',
+        name: routeNames.nationalAgencies,
+        component: () => import('@/views/Na/Na.view.vue')
+    },
+    {
+        path: '/emergencies',
+        name: routeNames.emergencies,
+        component: () => import('@/views/Emergency/Emergency.view.vue')
+    },
 //   {
 //     path: '/login',
 //     name: 'Login',

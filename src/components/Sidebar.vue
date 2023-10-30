@@ -50,25 +50,63 @@
 
 <!-- Nav Item - Charts -->
 <li class="nav-item" :class="{'active': routeName === routeNames.dispatch || routeName === routeNames.dispatchForm}">
-    <router-link to="/dispatch" class="nav-link">
+    <router-link :to="{name: routeNames.dispatch}" class="nav-link">
         <i class="fas fa-fw fa-truck"></i>
         <span>Dispatch</span>
     </router-link>
 </li>
 
 <li class="nav-item" :class="{'active': routeName === routeNames.users}">
-    <router-link to="/users" class="nav-link">
-        <i class="fas fa-fw fa-user"></i>
-        <span>Personnel</span>
+    <router-link :to="{name: routeNames.users}" class="nav-link">
+        <i class="fas fa-fw fa-users"></i>
+        <span>Personnels</span>
     </router-link>
 </li>
 
 <li class="nav-item" :class="{'active': routeName === routeNames.teams || routeName === routeNames.teamMembers}">
-    <router-link to="/teams" class="nav-link">
+    <router-link :to="{name: routeNames.teams}" class="nav-link">
         <i class="fas fa-fw fa-users"></i>
-        <span>Team</span>
+        <span>Teams</span>
     </router-link>
 </li>
+
+<li class="nav-item" :class="{'active': routeName === routeNames.emergencies}">
+    <router-link :to="{name: routeNames.emergencies}" class="nav-link">
+        <i class="fas fa-fw fa-exclamation-triangle"></i>
+        <span>Emergencies</span>
+    </router-link>
+</li>
+
+<li class="nav-item" :class="{'active': routeName === routeNames.nationalAgencies}">
+    <router-link :to="{name: routeNames.nationalAgencies}" class="nav-link">
+        <i class="fas fa-fw fa-users"></i>
+        <span>National Agencies</span>
+    </router-link>
+</li>
+
+<li class="nav-item" :class="{'active': routeName === routeNames.csos}">
+    <router-link :to="{name: routeNames.csos}" class="nav-link">
+        <i class="fas fa-fw fa-users"></i>
+        <span>CSO</span>
+    </router-link>
+</li>
+
+<li class="nav-item" :class="{'active': routeName === routeNames.pos}">
+    <router-link :to="{name: routeNames.pos}" class="nav-link">
+        <i class="fas fa-fw fa-users"></i>
+        <span>PO</span>
+    </router-link>
+</li>
+
+<li class="nav-item" :class="{'active': routeName === routeNames.barts}">
+    <router-link :to="{name: routeNames.barts}" class="nav-link">
+        <i class="fas fa-fw fa-users"></i>
+        <span>BART</span>
+    </router-link>
+</li>
+
+
+
 
 <!-- Sidebar Toggler (Sidebar) -->
 <!-- <div class="text-center d-none d-md-inline">
@@ -89,7 +127,7 @@
 <script setup lang="ts">
     import { computed } from 'vue';
     import { useRoute } from 'vue-router';
-    import { routeNames } from '@/config/index'
+    import { routeNames } from '@/config'
 
     const route = useRoute();
     const routeName = computed( () => route.name) 

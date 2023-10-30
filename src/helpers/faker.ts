@@ -8,7 +8,7 @@ export const fakePOs = ['Frat1', 'Frat2', 'Frat3', 'Frat4', 'Frat5']
 export const fakeBARTs = ['Brgy Sanjuan', 'Brgy Liloan', 'Brgy Margen', 'Brgy Curva', 'Brgy Ipil']
 export const fakeNAs = ['BFP', 'PNP', 'AFP', 'NA1', 'NA2']
 export const fakeEmergencies = ['Natural Disaster', 'Medical', 'Fire', 'Environmental', 'Road', 'Security', 'Search and Rescue', 'Infrastructure', 'Public Health Incidents', 'Social and Community']
-
+export const fakeTeams = ['Team 1', 'Team 2', 'Team 3', 'Team 4']
 
 export const generateFakeUsers = (p: {count: number}) :IUser[] => {
     console.log('generateFakeUsers()')
@@ -75,7 +75,7 @@ export const generateFakeCSO = (p: {count: number}) :ICSO[] => {
 
         const cso = {} as ICSO 
         cso.cso_id = faker.string.uuid()
-        cso.org_name = getRandomValueIn(fakeCSOs)
+        cso.org_name = getUniqueValue({inArray: fakeCSOs, refArray: fakeData, nameKey: 'org_name'})
         cso.description = faker.lorem.paragraph()
 
         fakeData.push(cso)
@@ -95,7 +95,7 @@ export const generateFakeBART = (p: {count: number}) :IBART[] => {
 
         const bart = {} as IBART 
         bart.bart_id = faker.string.uuid()
-        bart.bart_name = getRandomValueIn(fakeBARTs)
+        bart.bart_name = getUniqueValue({inArray: fakeBARTs, refArray: fakeData, nameKey: 'bart_name'})
         bart.description = faker.lorem.paragraph()
 
         fakeData.push(bart)
@@ -133,7 +133,7 @@ export const generateFakeNA = (p: {count: number}) :INationalAgency[] => {
 
         const fakeNA = {} as INationalAgency 
         fakeNA.na_id = faker.string.uuid()
-        fakeNA.na_name = getRandomValueIn(fakeNAs)
+        fakeNA.na_name = getUniqueValue({inArray: fakeNAs, refArray: fakeData, nameKey: 'na_name'})
         fakeNA.description = faker.lorem.paragraph()
 
         fakeData.push(fakeNA)
@@ -153,7 +153,7 @@ export const generateFakePO = (p: {count: number}) :IPO[] => {
 
         const po = {} as IPO 
         po.po_id = faker.string.uuid()
-        po.po_name = getRandomValueIn(fakePOs)
+        po.po_name = getUniqueValue({inArray: fakePOs, refArray: fakeData, nameKey: 'po_name'})
         po.description = faker.lorem.paragraph()
 
         fakeData.push(po)
@@ -182,7 +182,7 @@ export const generateFakeTeams = (p: {count: number}) :ITeam[] => {
             continue 
         }
         team.team_leader_id = user.user_id
-        team.team_name = 'Team ' + faker.animal.type()
+        team.team_name = getUniqueValue({inArray: fakeTeams, refArray: fakeData, nameKey: 'team_name'})
         team.status = TeamStatusEnum.Active
 
         fakeData.push(team)
@@ -206,14 +206,14 @@ export const generateFakeTeamMembers = (p: {count: number}) :ITeamMember[] => {
             const teamMember = {} as ITeamMember 
             teamMember.team_member_id = faker.string.uuid()
             teamMember.team_id = team.team_id
-            const memberId = getUniqueValue({inArray: appService.users, refArray: fakeData})
+            const userId = getUniqueUserId({inArray: appService.users, refArray: fakeData})
             
-            if(!memberId){
+            if(!userId){
                 console.error('Team member not assigned. Teams are all occupied by each user')
                 continue
             }
 
-            teamMember.member_id = memberId
+            teamMember.member_id = userId
     
             fakeData.push(teamMember)
     
@@ -232,7 +232,22 @@ const getRandomValueIn = (array: any[]) => {
 
 }
 
-const getUniqueValue = (p: {inArray: IUser[], refArray: ITeamMember[]}) :string | undefined => {
+const getUniqueValue = (p: {inArray: string[], refArray: any[], nameKey: string}) :string => {
+
+    for(let i of p.inArray){
+
+        // @ts-ignore
+        const isExist = p.refArray.find(j => j[p.nameKey] === i)
+
+        if(!isExist) return i
+
+    }
+
+    return ''
+
+}
+
+const getUniqueUserId = (p: {inArray: IUser[], refArray: ITeamMember[]}) :string | undefined => {
 
     for(let i of p.inArray){
         

@@ -3,18 +3,15 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Dispatch Module</h1>
+            <h1 class="h3 mb-0 text-gray-800">National Agencies</h1>
         </div>
 
         <div class="row justify-content-center">
             <div class="col-8">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">List of Dispatched Teams</h6>
-
-                        <router-link :to="{name: 'dispatchForm.route'}">
-                            <button class="btn btn-primary" type="submit">Dispatch a team</button>
-                        </router-link>
+                        <h6 class="m-0 font-weight-bold text-primary">List of National Agencies</h6>
+                        <button class="btn btn-primary" type="submit">Add National Agency</button>
                     </div>
 
                     <!-- Card Body -->
@@ -23,10 +20,15 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Dispatch</th>
+                                        <th>Agency Name</th>
+                                        <th>Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr v-for="na of $na.NAs">
+                                        <td> {{ na.na_name }} </td>
+                                        <td> {{ na.description }} </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -40,9 +42,12 @@
 
 
 <script setup lang="ts">
-  
+    import { NAStore } from '@/modules/national_agency'
+
+    const $na = NAStore()
+    const na = $na.getNAs()
+    $na.setNAs(na)
 
 
 
 </script>
-

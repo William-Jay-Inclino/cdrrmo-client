@@ -98,7 +98,7 @@
             isActive: false,
         },
         {
-            text: 'Dispatch Team',
+            text: 'Dispatch a Team',
             route: 'dispatchForm.route',
             isActive: true,
         }

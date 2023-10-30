@@ -2,6 +2,7 @@
 import { defineStore } from 'pinia'
 import { IBART } from '@/types'
 import { computed, ref } from 'vue';
+import { BARTService } from '.';
 
 export const BARTStore = defineStore('BART', () => {
     
@@ -17,9 +18,15 @@ export const BARTStore = defineStore('BART', () => {
     
     const BARTs = computed( () => _BARTs.value)
 
+    // methods
+    const getBARTs = () => {
+        return BARTService.getAllBARTs()
+    }
+
     return {
         BARTs,
         setBARTs,
+        getBARTs,
     }
 })
 
