@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { teamService } from './team.service';
 import { ITeam } from '../../types';
 import { computed, ref } from 'vue';
-import { appService } from '../';
+import { appService } from '../app';
 import { CONST_TeamStatusText } from '../../helpers/constants';
 
 export const teamStore = defineStore('team', () => {

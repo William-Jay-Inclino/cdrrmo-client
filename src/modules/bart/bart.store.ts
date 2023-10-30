@@ -1,6 +1,6 @@
 
 import { defineStore } from 'pinia'
-import { IBART } from '../../types'
+import { IBART } from '@/types'
 import { computed, ref } from 'vue';
 
 export const BARTStore = defineStore('BART', () => {

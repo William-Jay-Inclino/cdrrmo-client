@@ -1,6 +1,6 @@
 
 import { defineStore } from 'pinia'
-import { IBART, INationalAgency } from '../../types'
+import { INationalAgency } from '@/types'
 import { computed, ref } from 'vue';
 
 export const NAStore = defineStore('NA', () => {

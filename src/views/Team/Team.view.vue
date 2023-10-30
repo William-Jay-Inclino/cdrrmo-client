@@ -6,19 +6,12 @@
             <h1 class="h3 mb-0 text-gray-800">Team Module</h1>
         </div>
 
-        <div class="row mb-3">
-            <div class="col-10">
-                <div class="float-end">
-                    <button class="btn btn-primary" type="submit">Add Team</button>
-                </div>
-            </div>
-        </div>
-
         <div class="row justify-content-center">
             <div class="col-8">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">List of Teams</h6>
+                        <button class="btn btn-primary" type="submit">Add Team</button>
                     </div>
 
                     <!-- Card Body -->
@@ -39,7 +32,7 @@
                                         <td> {{ team.team_name }} </td>
                                         <td> {{ team.statusText }} </td>
                                         <td>
-                                            <router-link :to="{name: 'members.route', params: {'id': team.team_id}}">
+                                            <router-link :to="{name: 'teamMembers.route', params: {'id': team.team_id}}">
                                                 <button type="button" class="btn btn-primary btn-sm">Members</button>
                                             </router-link>
                                         </td>
@@ -57,7 +50,7 @@
 
 
 <script setup lang="ts">
-    import { teamStore } from '../modules'
+    import { teamStore } from '@/modules/team'
 
     const $team = teamStore()
     const teams = $team.getTeams()

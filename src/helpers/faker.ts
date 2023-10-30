@@ -1,12 +1,14 @@
-import { DispatchStatusEnum, GenderEnum, IBART, ICSO, INationalAgency, IPO, ITeam, ITeamMember, IUser, LGUEnum, TeamStatusEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '../types'
+import { DispatchStatusEnum, GenderEnum, IBART, ICSO, IEmergency, INationalAgency, IPO, ITeam, ITeamMember, IUser, LGUEnum, TeamStatusEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '../types'
 import { faker } from '@faker-js/faker'
-import { CONST_bloodTypes } from '../helpers/constants'
-import { appService } from '../modules'
+import { CONST_bloodTypes } from '@/helpers/constants'
+import { appService } from '@/modules/app'
 
 export const fakeCSOs = ['Rescue Rider', 'Kabalikat', 'CSO sample 1', 'CSO sample 2', 'CSO sample 3']
 export const fakePOs = ['Frat1', 'Frat2', 'Frat3', 'Frat4', 'Frat5']
 export const fakeBARTs = ['Brgy Sanjuan', 'Brgy Liloan', 'Brgy Margen', 'Brgy Curva', 'Brgy Ipil']
 export const fakeNAs = ['BFP', 'PNP', 'AFP', 'NA1', 'NA2']
+export const fakeEmergencies = ['Natural Disaster', 'Medical', 'Fire', 'Environmental', 'Road', 'Security', 'Search and Rescue', 'Infrastructure', 'Public Health Incidents', 'Social and Community']
+
 
 export const generateFakeUsers = (p: {count: number}) :IUser[] => {
     console.log('generateFakeUsers()')
@@ -102,6 +104,24 @@ export const generateFakeBART = (p: {count: number}) :IBART[] => {
 
     return fakeData
 
+}
+
+export const generateFakeEmergencies = (p: {count: number}) => {
+    console.log('generateFakeEmergencies()')
+
+    const fakeData: IEmergency[] = []
+
+    while(p.count--){
+
+        const emergency = {} as IEmergency 
+        emergency.emergency_id = faker.string.uuid()
+        emergency.nature = getRandomValueIn(fakeEmergencies)
+
+        fakeData.push(emergency)
+
+    }
+
+    return fakeData
 }
 
 export const generateFakeNA = (p: {count: number}) :INationalAgency[] => {
@@ -232,3 +252,61 @@ const getRandomEnum = (array: any[]) => {
     const randomIndex = Math.floor(Math.random() * arrayValues.length);
     return arrayValues[randomIndex];
 }
+
+
+/*
+    Emergencies: 
+
+    1. Natural Disaster
+    - Earthquakes - Sudden shaking of the ground, often resulting in structural damage and casualties.
+    - Floods - Overflow of water onto normally dry land, causing damage to property and posing a risk to life.
+    - Hurricanes, Typhoons, Cyclones - Powerful tropical storms with strong winds and heavy rainfall.
+    - Wildfires - Uncontrolled fires that spread rapidly through vegetation and forests.
+    - Tornadoes - Violently rotating columns of air with the potential to cause significant 
+    - Droughts - Extended periods of water scarcity, affecting agriculture and water supply.
+
+    2. Medical:
+    - Medical Emergencies: These include incidents like heart attacks, strokes, or severe injuries that require immediate medical attention.
+    - Illness Outbreaks: Incidents related to the spread of contagious diseases within a community or facility.
+
+    3. Fire:
+    - Structural Fires: Incidents involving fires in buildings or structures.
+    - Wildfires: Uncontrolled fires in forested or grassland areas.
+    - Vehicle Fires: Fires in cars, trucks, or other vehicles.
+    - Hazardous Material Fires: Fires involving hazardous substances.
+
+    4. Environmental: 
+    - Chemical Spills: Accidental or deliberate release of hazardous chemicals.
+    - Oil Spills: Incidents involving the release of oil into water bodies.
+    - Air Quality Issues: Poor air quality due to pollution or industrial incidents.
+    - Wildlife Incidents: Incidents involving wild animals in urban areas.
+    - Pollution Incidents: Incidents related to environmental pollution or contamination.
+
+    5. Road: 
+    - Vehicle Accidents: Car accidents, collisions, and crashes on roadways.
+    - Road Closures: Incidents that lead to the closure of roads or highways.
+    - Traffic Congestion: Situations where traffic flow is severely disrupted.
+
+    6. Security:
+    - Burglaries and Theft: Incidents involving theft or break-ins.
+    - Assaults and Violence: Physical altercations or violent incidents.
+    - Suspicious Packages: Incidents related to unattended or suspicious items.
+
+    7. Search and Rescue:
+    - Missing Persons: Incidents involving individuals who are lost or unaccounted for.
+    - Outdoor Rescues: Incidents requiring rescue operations in wilderness areas.
+    - Water Rescues: Incidents involving individuals in distress in bodies of water.
+
+    8. Infrastructure:
+    - Utility Outages: Incidents that lead to power, water, or communication service disruptions.
+    - Structural Failures: Incidents related to the collapse or failure of buildings or infrastructure.
+
+    9. Public Health Incidents:
+    - Foodborne Illness: Incidents related to contaminated or unsafe food.
+    - Public Health Alerts: Incidents that require public health advisories or warnings.
+
+    10. Social and Community: 
+    - Public Gatherings: Incidents related to large gatherings, such as festivals or protests.
+    - Community Disputes: Incidents involving neighborhood disputes or conflicts.
+
+*/

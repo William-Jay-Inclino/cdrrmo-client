@@ -17,6 +17,7 @@ export const appStore = defineStore('app', () => {
     const users = computed( () => appService.users)
     const teams = computed( () => appService.teams)
     const teamMembers = computed( () => appService.teamMembers)
+    const emergencies = computed( () => appService.emergencies)
     
     //methods 
     const init = () => {
@@ -32,6 +33,7 @@ export const appStore = defineStore('app', () => {
       users,
       teams,
       teamMembers,
+      emergencies,
     }
 })
 

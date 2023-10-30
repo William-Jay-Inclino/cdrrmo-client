@@ -6,20 +6,12 @@
             <h1 class="h3 mb-0 text-gray-800">Personnel Module</h1>
         </div>
 
-
-        <div class="row mb-3">
-            <div class="col-10">
-                <div class="float-end">
-                    <button class="btn btn-primary" type="submit">Add Personnel</button>
-                </div>
-            </div>
-        </div>
-
         <div class="row justify-content-center">
-            <div class="col-8">
+            <div class="col-11">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">List of Personnels</h6>
+                        <button class="btn btn-primary"> Add Personnel </button>
                     </div>
 
                     <!-- Card Body -->
@@ -69,12 +61,10 @@
 
 <script setup lang="ts">
     
-    import { userStore } from '../modules/user'
+    import { userStore } from '@/modules/user'
 
     const $userStore = userStore()
-    // get users from api
     const users = $userStore.getUsers()
-    // set users to store 
     $userStore.setUsers(users)
 
 

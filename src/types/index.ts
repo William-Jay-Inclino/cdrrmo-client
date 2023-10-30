@@ -96,11 +96,11 @@ interface INationalAgency{
 }
 
 interface IDispatch{
-    dispatch_id: string
+    dispatch_id: string 
     // date_time: Date
     caller_name: string
     dispatcher_id: string // user_id 
-    caller_number: string 
+    caller_number: string
     location: string 
     emergency_id: string 
     description: string 

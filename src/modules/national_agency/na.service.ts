@@ -1,6 +1,6 @@
-import { appService } from ".."
-import { useFakeData } from "../../config"
-import { INationalAgency } from "../../types"
+import { appService } from "@/modules/app"
+import { useFakeData } from "@/config"
+import { INationalAgency } from "@/types"
 
 class NationalAgency{
 

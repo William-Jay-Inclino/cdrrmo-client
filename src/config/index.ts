@@ -10,3 +10,10 @@ export const fakeData = {
     teamMemberCount: 5,
 } 
 
+export const routeNames = {
+    users: 'users.route',
+    dispatch: 'dispatch.route',
+    dispatchForm: 'dispatchForm.route',
+    teams: 'teams.route',
+    teamMembers: 'teamMembers.route'
+}

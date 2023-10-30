@@ -1,4 +1,4 @@
-import { TeamStatusEnum, UserTypeEnum } from '../types/index'
+import { TeamStatusEnum, UserTypeEnum } from '@/types/index'
 
 
 export const CONST_bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];

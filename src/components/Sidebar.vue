@@ -49,21 +49,21 @@
 </li> -->
 
 <!-- Nav Item - Charts -->
-<li class="nav-item active">
+<li class="nav-item" :class="{'active': routeName === routeNames.dispatch || routeName === routeNames.dispatchForm}">
     <router-link to="/dispatch" class="nav-link">
         <i class="fas fa-fw fa-truck"></i>
         <span>Dispatch</span>
     </router-link>
 </li>
 
-<li class="nav-item active">
+<li class="nav-item" :class="{'active': routeName === routeNames.users}">
     <router-link to="/users" class="nav-link">
         <i class="fas fa-fw fa-user"></i>
         <span>Personnel</span>
     </router-link>
 </li>
 
-<li class="nav-item active">
+<li class="nav-item" :class="{'active': routeName === routeNames.teams || routeName === routeNames.teamMembers}">
     <router-link to="/teams" class="nav-link">
         <i class="fas fa-fw fa-users"></i>
         <span>Team</span>
@@ -84,3 +84,14 @@
 
 </ul>
 </template>
+
+
+<script setup lang="ts">
+    import { computed } from 'vue';
+    import { useRoute } from 'vue-router';
+    import { routeNames } from '@/config/index'
+
+    const route = useRoute();
+    const routeName = computed( () => route.name) 
+
+</script>

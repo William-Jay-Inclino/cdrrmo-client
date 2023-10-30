@@ -1,6 +1,6 @@
-import { appService } from ".."
-import { useFakeData } from "../../config"
-import { ICSO } from "../../types"
+import { appService } from "@/modules/app"
+import { useFakeData } from "@/config"
+import { ICSO } from "@/types"
 
 class CSO{
 

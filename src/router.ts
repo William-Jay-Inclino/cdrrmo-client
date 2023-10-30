@@ -1,25 +1,31 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { routeNames } from '@/config'
 
 const routes = [
     {
         path: '/users',
-        name: 'user.route',
-        component: () => import('./views/User.view.vue')
+        name: routeNames.users,
+        component: () => import('@/views/User/User.view.vue')
     },
     {
       path: '/dispatch',
-      name: 'dispatch.route',
-      component: () => import('./views/Dispatch.view.vue')
+      name: routeNames.dispatch,
+      component: () => import('@/views/Dispatch/Dispatch.view.vue')
+    },
+    {
+      path: '/dispatch/form',
+      name: routeNames.dispatchForm,
+      component: () => import('@/views/Dispatch/DispatchForm.view.vue')
     },
     {
       path: '/teams',
-      name: 'teams.route',
-      component: () => import('./views/Team.view.vue')
+      name: routeNames.teams,
+      component: () => import('@/views/Team/Team.view.vue')
     },
     {
       path: '/teams/members/:id',
-      name: 'members.route',
-      component: () => import('./views/TeamMembers.view.vue')
+      name: routeNames.teamMembers,
+      component: () => import('@/views/Team/TeamMembers.view.vue')
     }
 //   {
 //     path: '/login',

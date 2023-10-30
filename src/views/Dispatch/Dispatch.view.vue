@@ -6,20 +6,15 @@
             <h1 class="h3 mb-0 text-gray-800">Dispatch Module</h1>
         </div>
 
-
-        <div class="row mb-3">
-            <div class="col-10">
-                <div class="float-end">
-                    <button class="btn btn-primary" type="submit">Dispatch</button>
-                </div>
-            </div>
-        </div>
-
         <div class="row justify-content-center">
             <div class="col-8">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">List of Dispatched</h6>
+
+                        <router-link :to="{name: 'dispatchForm.route'}">
+                            <button class="btn btn-primary" type="submit">Dispatch</button>
+                        </router-link>
                     </div>
 
                     <!-- Card Body -->

@@ -1,6 +1,6 @@
-import { CONST_UserSubTypeText } from "../../helpers/constants"
-import { IUser, UserTypeEnum } from "../../types"
-import { appService } from "../"
+import { CONST_UserSubTypeText } from "@/helpers/constants"
+import { IUser, UserTypeEnum } from "@/types"
+import { appService } from "@/modules/app"
 
 
 

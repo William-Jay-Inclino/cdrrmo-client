@@ -104,8 +104,8 @@
 
 
 <script setup lang="ts">
-    import { teamMemberStore } from '../modules'
-    import Breadcrumbs from '../components/Breadcrumbs.vue'
+    import { teamMemberStore } from '@/modules/team_members'
+    import Breadcrumbs from '@/components/Breadcrumbs.vue'
     import { ref } from 'vue';
     import { useRoute } from 'vue-router';
     const route = useRoute();
@@ -120,18 +120,15 @@
 
     const breadcrumbItems = ref([
         {
-            text: 'Team',
-            link: '/teams',
+            text: 'Team List',
+            route: 'teams.route',
             isActive: false,
         },
         {
             text: 'Members',
-            link: '/teams/members',
+            route: 'teamMembers.route',
             isActive: true,
         }
     ])
-
-    console.log('team', $teamMember.team)
-    console.log('teamMembers', $teamMember.teamMembers)
 
 </script>
