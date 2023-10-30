@@ -1,10 +1,9 @@
 
 import { defineStore } from 'pinia'
-import { ICSO } from '../types'
-import { faker } from '@faker-js/faker';
+import { ICSO } from '../../types'
 import { computed, ref } from 'vue';
-import { useFakeData } from '../config';
-import { app } from './app.store';
+import { useFakeData } from '../../config';
+import { app } from '../app.store';
 
 export const CSOStore = defineStore('CSO', () => {
     

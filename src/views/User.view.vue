@@ -68,14 +68,12 @@
 
 
 <script setup lang="ts">
-    import { app } from '../stores/app.store'
-    import { userStore, userService } from '../stores/user.store'
-
-    console.log('app', app)
+    
+    import { userStore } from '../modules/user'
 
     const $userStore = userStore()
     // get users from api
-    const users = userService.getAllUsers() 
+    const users = $userStore.getUsers()
     // set users to store 
     $userStore.setUsers(users)
 
@@ -83,6 +81,4 @@
 
 </script>
 
-
-
-../stores/user.store
+../modules/user

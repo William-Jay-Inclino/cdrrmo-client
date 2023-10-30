@@ -5,6 +5,16 @@ const routes = [
         path: '/users',
         name: 'user.route',
         component: () => import('./views/User.view.vue')
+    },
+    {
+      path: '/dispatch',
+      name: 'dispatch.route',
+      component: () => import('./views/Dispatch.view.vue')
+    },
+    {
+      path: '/teams',
+      name: 'teams.route',
+      component: () => import('./views/Team.view.vue')
     }
 //   {
 //     path: '/login',

@@ -47,9 +47,14 @@
 	import LogoutModal from './components/LogoutModal.vue'
 	import ScrollToTop from './components/ScrollToTop.vue'
 
+	import { appStore } from './modules'
+
+	const $app = appStore()
+	$app.init()
+	
 </script>
 
 
 <style>
 
-</style>
+</style>./modules/app.store

@@ -50,9 +50,24 @@
 
 <!-- Nav Item - Charts -->
 <li class="nav-item active">
-    <a class="nav-link" href="charts.html">
+    <router-link to="/dispatch" class="nav-link">
+        <i class="fas fa-fw fa-truck"></i>
+        <span>Dispatch</span>
+    </router-link>
+</li>
+
+<li class="nav-item active">
+    <router-link to="/users" class="nav-link">
         <i class="fas fa-fw fa-user"></i>
-        <span>Personnel</span></a>
+        <span>Personnel</span>
+    </router-link>
+</li>
+
+<li class="nav-item active">
+    <router-link to="/teams" class="nav-link">
+        <i class="fas fa-fw fa-user"></i>
+        <span>Team</span>
+    </router-link>
 </li>
 
 <!-- Sidebar Toggler (Sidebar) -->
