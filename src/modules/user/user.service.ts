@@ -1,16 +1,15 @@
 import { CONST_UserSubTypeText } from "../../helpers/constants"
 import { IUser, UserTypeEnum } from "../../types"
-import { appStore } from "../"
+import { appService } from "../"
 
 
-const $app = appStore()
 
 class UserService{
 
     getAllUsers() :IUser[]{
         console.log('getAllUsers()')
         
-        return $app.users
+        return appService.users
     }
 
     getAge(birthDate: Date) :number{
@@ -26,7 +25,7 @@ class UserService{
     getSubType(userType: UserTypeEnum, subTypeId: string) :string {
 
         if(userType === UserTypeEnum.ACDV_BART){
-            const bart = $app.BARTs.find(i => i.bart_id === subTypeId)
+            const bart = appService.barts.find(i => i.bart_id === subTypeId)
             if(!bart){
                 console.error('bart not found')
                 return ''
@@ -35,7 +34,7 @@ class UserService{
         }
     
         if(userType === UserTypeEnum.ACDV_CSO){
-            const cso = $app.CSOs.find(i => i.cso_id === subTypeId)
+            const cso = appService.csos.find(i => i.cso_id === subTypeId)
             if(!cso){
                 console.error('cso not found')
                 return ''
@@ -44,7 +43,7 @@ class UserService{
         }
     
         if(userType === UserTypeEnum.ACDV_PO){
-            const po = $app.POs.find(i => i.po_id === subTypeId)
+            const po = appService.pos.find(i => i.po_id === subTypeId)
             if(!po){
                 console.error('po not found')
                 return ''
@@ -53,7 +52,7 @@ class UserService{
         }
     
         if(userType === UserTypeEnum.National_Agency){
-            const na = $app.NAs.find(i => i.na_id === subTypeId)
+            const na = appService.nas.find(i => i.na_id === subTypeId)
             if(!na){
                 console.error('na not found')
                 return ''

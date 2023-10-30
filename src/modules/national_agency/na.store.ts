@@ -2,8 +2,6 @@
 import { defineStore } from 'pinia'
 import { IBART, INationalAgency } from '../../types'
 import { computed, ref } from 'vue';
-import { useFakeData } from '../../config';
-import { app } from '../app.store';
 
 export const NAStore = defineStore('NA', () => {
     
@@ -26,23 +24,7 @@ export const NAStore = defineStore('NA', () => {
 })
 
 
-class NationalAgency{
 
-    getAllNAs() :INationalAgency[]{
-        console.log('getAllNAs()')
-        
-        if(useFakeData){
-            return app.fakeNas
-        }
-
-        // get from api TBA 
-        return []
-
-    }
-
-}
-
-export const NAService = new NationalAgency()
 
 
 // methods

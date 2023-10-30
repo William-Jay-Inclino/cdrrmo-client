@@ -1,4 +1,4 @@
-import { DispatchStatusEnum, GenderEnum, IBART, ICSO, INationalAgency, IPO, ITeam, ITeamMember, IUser, LGUEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '../types'
+import { DispatchStatusEnum, GenderEnum, IBART, ICSO, INationalAgency, IPO, ITeam, ITeamMember, IUser, LGUEnum, TeamStatusEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '../types'
 import { faker } from '@faker-js/faker'
 import { CONST_bloodTypes } from '../helpers/constants'
 import { appService } from '../modules'
@@ -59,8 +59,6 @@ export const generateFakeUsers = (p: {count: number}) :IUser[] => {
 
         fakeUsers.push(user)
     }
-
-    console.log('fakeUsers', fakeUsers)
 
     return fakeUsers
 
@@ -154,12 +152,18 @@ export const generateFakeTeams = (p: {count: number}) :ITeam[] => {
     const fakeData: ITeam[] = []
 
     while(--p.count){
-        console.log('__p.count', p.count)
 
         const team = {} as ITeam 
         team.team_id = faker.string.uuid()
-        team.team_leader_id = getRandomValueIn(appService.users)
-        team.team_name = faker.animal.type()
+        const user = getRandomValueIn(appService.users) as IUser
+
+        if(!user){
+            console.error('team leader id not assigned')
+            continue 
+        }
+        team.team_leader_id = user.user_id
+        team.team_name = 'Team ' + faker.animal.type()
+        team.status = TeamStatusEnum.Active
 
         fakeData.push(team)
 
@@ -170,17 +174,14 @@ export const generateFakeTeams = (p: {count: number}) :ITeam[] => {
 }
 
 export const generateFakeTeamMembers = (p: {count: number}) :ITeamMember[] => {
-    console.log('generateFakeTeamMembers()', p)
    
     const fakeData: ITeamMember[] = []
 
     for(let team of appService.teams){
-        console.log('team', team)
 
         let count = p.count + 1
 
         while(--count){
-            console.log('p.count', p.count)
 
             const teamMember = {} as ITeamMember 
             teamMember.team_member_id = faker.string.uuid()
@@ -191,6 +192,8 @@ export const generateFakeTeamMembers = (p: {count: number}) :ITeamMember[] => {
                 console.error('Team member not assigned. Teams are all occupied by each user')
                 continue
             }
+
+            teamMember.member_id = memberId
     
             fakeData.push(teamMember)
     

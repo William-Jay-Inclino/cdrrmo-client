@@ -65,7 +65,7 @@
 
 <li class="nav-item active">
     <router-link to="/teams" class="nav-link">
-        <i class="fas fa-fw fa-user"></i>
+        <i class="fas fa-fw fa-users"></i>
         <span>Team</span>
     </router-link>
 </li>

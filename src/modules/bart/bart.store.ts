@@ -2,8 +2,6 @@
 import { defineStore } from 'pinia'
 import { IBART } from '../../types'
 import { computed, ref } from 'vue';
-import { useFakeData } from '../../config';
-import { app } from '../app.store';
 
 export const BARTStore = defineStore('BART', () => {
     
@@ -26,23 +24,6 @@ export const BARTStore = defineStore('BART', () => {
 })
 
 
-class BART{
-
-    getAllBARTs() :IBART[]{
-        console.log('getAllBARTs()')
-        
-        if(useFakeData){
-            return app.fakeBarts
-        }
-
-        // get from api TBA 
-        return []
-
-    }
-
-}
-
-export const BARTService = new BART()
 
 
 // methods

@@ -1,4 +1,4 @@
-import { UserTypeEnum } from '../types/index'
+import { TeamStatusEnum, UserTypeEnum } from '../types/index'
 
 
 export const CONST_bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
@@ -23,4 +23,9 @@ export const CONST_UserSubTypeText = {
     [UserTypeEnum.ACDV_PO]: 'PO',
     [UserTypeEnum.ACDV_INDIVIDUAL]: 'INDIVIDUAL',
     [UserTypeEnum.National_Agency]: '',
+}
+
+export const CONST_TeamStatusText = {
+    [TeamStatusEnum.Active]: 'Active',
+    [TeamStatusEnum.Dispatched]: 'Dispatched',
 }

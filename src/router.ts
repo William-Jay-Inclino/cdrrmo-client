@@ -15,6 +15,11 @@ const routes = [
       path: '/teams',
       name: 'teams.route',
       component: () => import('./views/Team.view.vue')
+    },
+    {
+      path: '/teams/members/:id',
+      name: 'members.route',
+      component: () => import('./views/TeamMembers.view.vue')
     }
 //   {
 //     path: '/login',

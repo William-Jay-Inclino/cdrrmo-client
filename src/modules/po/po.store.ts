@@ -2,8 +2,6 @@
 import { defineStore } from 'pinia'
 import { IPO } from '../../types'
 import { computed, ref } from 'vue';
-import { useFakeData } from '../../config';
-import { app } from '../app.store';
 
 export const POStore = defineStore('PO', () => {
     
@@ -26,23 +24,7 @@ export const POStore = defineStore('PO', () => {
 })
 
 
-class PO{
 
-    getAllPOs() :IPO[]{
-        console.log('getAllPOs()')
-        
-        if(useFakeData){
-            return app.fakePOs
-        }
-
-        // get from api TBA 
-        return []
-
-    }
-
-}
-
-export const POService = new PO()
 
 
 // methods
