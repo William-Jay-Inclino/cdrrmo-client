@@ -41,6 +41,7 @@ interface ITrainingSkill{
 interface IPersonnelSkills{
     training_id: string 
     personnel_id: string // user_id
+    certificates?: string[] // file src 
 }
 
 interface ITeam{
@@ -99,22 +100,32 @@ interface IDispatch{
     dispatch_id: string 
     // date_time: Date
     caller_name: string // ok
-    dispatcher_id: string // user_id 
+    dispatcher_id: string // user_id// ok
     caller_number: string // ok
     location: string // ok
     emergency_id: string // ok
-    description: string
+    description: string // ok
     medical_description: string 
     num_people_involved: number // ok
-    hazard: string 
+    hazard: string // ok
     team_id: string // ok
     time_dispatch: Date // ok
     time_proceeding: Date | null // ok
     time_arrival: Date | null // ok
     time_proceeding_hospital: Date | null // ok
     time_arrival_hospital: Date | null // ok
-    remarks: string
-    status: DispatchStatusEnum
+    remarks: string // ok
+    status: DispatchStatusEnum // ok
+
+    // set programmatically
+    statusObj?: {
+        text: string,
+        color: string,
+    },
+    emergency?: IEmergency
+    team?: ITeam
+    teamLeader?: IUser 
+    dispatcher?: IUser
 }
 
 enum GenderEnum{
@@ -133,9 +144,9 @@ enum TeamStatusEnum{
 }
 
 enum DispatchStatusEnum{
-    Deck = 1,
-    Queue = 2,
-    Dispatched = 3,
+    Queue = 1,
+    Dispatched = 2,
+    Deck = 3,
 }
 
 enum UserLevelEnum{
@@ -156,19 +167,19 @@ enum UserTypeEnum{
     National_Agency = 30,
 }
 
-enum LGUEnum{
-    Regular = '1',
-    Casual = '2',
-    Job_Order = '3',
-}
+// enum LGUEnum{
+//     Regular = '1',
+//     Casual = '2',
+//     Job_Order = '3',
+// }
 
 // Accredited Community Disaster & Emergency Volunteer
-enum ACDVEnum{ 
-    CSO = 1, // Civic Social Organization
-    PO = 2, // People's Organization
-    BART = 3, // Barangay Auxiliary Response Team
-    Individual = 4,
-}
+// enum ACDVEnum{ 
+//     CSO = 1, // Civic Social Organization
+//     PO = 2, // People's Organization
+//     BART = 3, // Barangay Auxiliary Response Team
+//     Individual = 4,
+// }
 
 
 export type{
@@ -192,6 +203,6 @@ export{
     DispatchStatusEnum,
     UserLevelEnum,
     UserTypeEnum,
-    LGUEnum,
-    ACDVEnum
+    // LGUEnum,
+    // ACDVEnum
 }

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { routeNames } from '@/config'
+import { routeNames } from '@/helpers/constants'
 
 const routes = [
     {
@@ -51,6 +51,11 @@ const routes = [
         path: '/emergencies',
         name: routeNames.emergencies,
         component: () => import('@/views/Emergency/Emergency.view.vue')
+    },
+    {
+        path: '/training-skills',
+        name: routeNames.trainingSkills,
+        component: () => import('@/views/TrainingSkill/TrainingSkill.vue')
     },
 //   {
 //     path: '/login',

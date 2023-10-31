@@ -1,4 +1,4 @@
-import { DispatchStatusEnum, GenderEnum, IBART, ICSO, IEmergency, INationalAgency, IPO, ITeam, ITeamMember, IUser, LGUEnum, TeamStatusEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '../types/types'
+import { DispatchStatusEnum, GenderEnum, IBART, ICSO, IEmergency, INationalAgency, IPO, IPersonnelSkills, ITeam, ITeamMember, ITrainingSkill, IUser, TeamStatusEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '../types/types'
 import { faker } from '@faker-js/faker'
 import { CONST_bloodTypes } from '@/helpers/constants'
 import { appService } from '@/modules/app'
@@ -9,6 +9,7 @@ export const fakeBARTs = ['Brgy Sanjuan', 'Brgy Liloan', 'Brgy Margen', 'Brgy Cu
 export const fakeNAs = ['BFP', 'PNP', 'AFP', 'NA1', 'NA2']
 export const fakeEmergencies = ['Natural Disaster', 'Medical', 'Fire', 'Environmental', 'Road', 'Security', 'Search and Rescue', 'Infrastructure', 'Public Health Incidents', 'Social and Community']
 export const fakeTeams = ['Team 1', 'Team 2', 'Team 3', 'Team 4']
+export const fakeSkills = ['Open Water Scuba Diver', 'Advance Scuba Diver', 'Rescue Diver', 'Rope Rescue Technnician', 'WASAR Technician', 'Standard First Aid', 'Basic Life Support', 'Advance Life Support', 'Pre Hospital Life Support', 'Water Craft Operator', 'Radio Operator', 'Vehicle Extrication']
 
 export const generateFakeUsers = (p: {count: number}) :IUser[] => {
     console.log('generateFakeUsers()')
@@ -50,19 +51,64 @@ export const generateFakeUsers = (p: {count: number}) :IUser[] => {
             user.sub_type_id = x.na_id
         }
         else if(user.type === UserTypeEnum.LGU_Casual){
-            user.sub_type_id = LGUEnum.Casual
+            user.sub_type_id = UserTypeEnum.LGU_Casual.toString()
         }
         else if(user.type === UserTypeEnum.LGU_Job_Order){
-            user.sub_type_id = LGUEnum.Job_Order
+            user.sub_type_id = UserTypeEnum.LGU_Job_Order.toString()
         }
         else if(user.type === UserTypeEnum.LGU_Regular){
-            user.sub_type_id = LGUEnum.Regular
+            user.sub_type_id = UserTypeEnum.LGU_Regular.toString()
         }
 
         fakeUsers.push(user)
     }
 
     return fakeUsers
+
+}
+
+export const generateFakeSkills = (p: {count: number}) :ITrainingSkill[] => {
+    console.log('generateFakeSkills()')
+
+    const fakeData: ITrainingSkill[] = []
+
+    while(p.count--){
+
+        const skill = {} as ITrainingSkill
+        skill.training_id = faker.string.uuid()
+        skill.description = getRandomValueIn(fakeSkills)
+
+        fakeData.push(skill)
+
+    }
+
+    return fakeData
+
+}
+
+export const generateFakePersonnelSkills = (p: {users: IUser[], trainingSkills: ITrainingSkill[], countSkill: number}) :IPersonnelSkills[] => {
+    console.log('generateFakePersonnelSkills()')
+
+    const fakeData: IPersonnelSkills[] = []
+    
+
+    for(let user of p.users){
+        let totalSkills = p.countSkill
+        
+        const personnelSkill = {} as IPersonnelSkills
+        personnelSkill.personnel_id = user.user_id 
+
+        while(totalSkills--){
+
+            const trainingSkill = getRandomValueIn(p.trainingSkills) as ITrainingSkill
+            personnelSkill.training_id = trainingSkill.training_id
+
+            fakeData.push(personnelSkill)
+        }
+
+    }
+
+    return fakeData
 
 }
 

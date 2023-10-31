@@ -1,9 +1,8 @@
 
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { DispatchStatusEnum, GenderEnum, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '@/types/types'
-import { getEnumKey } from '@/helpers/helpers';
-import { CONST_UserSubTypeText, CONST_UserTypeText } from '@/helpers/constants';
+import { IUser, UserTypeEnum } from '@/types/types'
+import { CONST_DispatchStatus, CONST_GenderText, CONST_UserStatusText, CONST_UserSubTypeText, CONST_UserTypeText, CONST_UserlvlText } from '@/helpers/constants';
 import { userService } from './user.service'
 
 export const userStore = defineStore('user', () => {
@@ -24,10 +23,10 @@ export const userStore = defineStore('user', () => {
 
         return _users.value.map(i => {
             i.age = userService.getAge(i.birth_date)
-            i.genderText = getEnumKey({enumType: GenderEnum, enumVal: i.gender})
-            i.statustext = getEnumKey({enumType: UserStatusEnum, enumVal: i.status})
-            i.dispatchStatusText = getEnumKey({enumType: DispatchStatusEnum, enumVal: i.dispatch_status})
-            i.userLevelText = getEnumKey({enumType: UserLevelEnum, enumVal: i.user_level})
+            i.genderText = CONST_GenderText[i.gender]
+            i.statustext = CONST_UserStatusText[i.status]
+            i.dispatchStatusText = CONST_DispatchStatus[i.dispatch_status].text
+            i.userLevelText = CONST_UserlvlText[i.user_level]
 
             i.typeText = CONST_UserTypeText[i.type]
             

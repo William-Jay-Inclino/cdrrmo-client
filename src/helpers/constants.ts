@@ -1,7 +1,57 @@
-import { TeamStatusEnum, UserTypeEnum } from '@/types/types'
+import { DispatchStatusEnum, GenderEnum, TeamStatusEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '@/types/types'
 
+export const routeNames = {
+    users: 'users.route',
+    dispatch: 'dispatch.route',
+    dispatchForm: 'dispatchForm.route',
+    teams: 'teams.route',
+    teamMembers: 'teamMembers.route',
+    barts: 'barts.route',
+    csos: 'csos.route',
+    nationalAgencies: 'nas.route',
+    pos: 'pos.route',
+    emergencies: 'emergencies.route',
+    trainingSkills: 'trainingSkills.route',
+}
 
 export const CONST_bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+
+export const CONST_GenderText = {
+    [GenderEnum.Male]: 'Male',
+    [GenderEnum.Female]: 'Female',
+}
+
+export const CONST_UserStatusText = {
+    [UserStatusEnum.Active]: 'Active',
+    [UserStatusEnum.Inactive]: 'Inactive',
+}
+
+export const CONST_TeamStatusText = {
+    [TeamStatusEnum.Active]: 'Active',
+    [TeamStatusEnum.Dispatched]: 'Dispatched',
+}
+
+export const CONST_DispatchStatus = {
+    [DispatchStatusEnum.Queue]: {
+        text: 'Queue',
+        color: 'primary', 
+    },
+    [DispatchStatusEnum.Dispatched]: {
+        text: 'Dispatched',
+        color: 'info', 
+    },
+    [DispatchStatusEnum.Deck]: {
+        text: 'Deck',
+        color: 'success', 
+    },
+}
+
+export const CONST_UserlvlText = {
+    [UserLevelEnum.Admin]: 'Admin',
+    [UserLevelEnum.Dispatcher]: 'Dispatcher',
+    [UserLevelEnum.Field_Operator]: 'Field Operator',
+    [UserLevelEnum.Team_Leader]: 'Team Leader',
+}
 
 export const CONST_UserTypeText = {
     [UserTypeEnum.LGU_Regular]: 'LGU',
@@ -25,7 +75,5 @@ export const CONST_UserSubTypeText = {
     [UserTypeEnum.National_Agency]: '',
 }
 
-export const CONST_TeamStatusText = {
-    [TeamStatusEnum.Active]: 'Active',
-    [TeamStatusEnum.Dispatched]: 'Dispatched',
-}
+
+

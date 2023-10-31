@@ -8,17 +8,7 @@ export const useFakeData = true
 export const fakeData = {
     userCount: 20,
     teamMemberCount: 5,
+    personnelSkillsCount: 3,
 } 
 
-export const routeNames = {
-    users: 'users.route',
-    dispatch: 'dispatch.route',
-    dispatchForm: 'dispatchForm.route',
-    teams: 'teams.route',
-    teamMembers: 'teamMembers.route',
-    barts: 'barts.route',
-    csos: 'csos.route',
-    nationalAgencies: 'nas.route',
-    pos: 'pos.route',
-    emergencies: 'emergencies.route',
-}
+

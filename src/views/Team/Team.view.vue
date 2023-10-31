@@ -50,12 +50,12 @@
 
 
 <script setup lang="ts">
-    import { teamStore } from '@/modules/team'
+    import { teamService, teamStore } from '@/modules/team'
+
+    const teams = teamService.getAllTeams()
 
     const $team = teamStore()
-    const teams = $team.getTeams()
     $team.setTeams(teams)
-
 
     /* 
 

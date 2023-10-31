@@ -65,7 +65,7 @@
 
 <li class="nav-item" :class="{'active': routeName === routeNames.teams || routeName === routeNames.teamMembers}">
     <router-link :to="{name: routeNames.teams}" class="nav-link">
-        <i class="fas fa-fw fa-users"></i>
+        <i class="fas fa-fw fa-sitemap"></i>
         <span>Teams</span>
     </router-link>
 </li>
@@ -76,6 +76,21 @@
         <span>Emergencies</span>
     </router-link>
 </li>
+
+<li class="nav-item" :class="{'active': routeName === routeNames.trainingSkills}">
+    <router-link :to="{name: routeNames.trainingSkills}" class="nav-link">
+        <i class="fas fa-fw fa-medal"></i>
+        <span>Training Skills</span>
+    </router-link>
+</li>
+
+<!-- Divider -->
+<hr class="sidebar-divider">
+
+<!-- Heading -->
+<div class="sidebar-heading">
+    User types
+</div>
 
 <li class="nav-item" :class="{'active': routeName === routeNames.nationalAgencies}">
     <router-link :to="{name: routeNames.nationalAgencies}" class="nav-link">
@@ -127,7 +142,7 @@
 <script setup lang="ts">
     import { computed } from 'vue';
     import { useRoute } from 'vue-router';
-    import { routeNames } from '@/config'
+    import { routeNames } from '@/helpers/constants'
 
     const route = useRoute();
     const routeName = computed( () => route.name) 

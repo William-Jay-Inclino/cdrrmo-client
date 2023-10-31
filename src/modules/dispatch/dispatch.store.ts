@@ -6,15 +6,18 @@ import { appService } from '../app';
 import { emergencyService } from '../emergency';
 import { teamService } from '../team';
 import { dispatchService } from '.';
+import { CONST_DispatchStatus } from '@/helpers/constants';
+import { userService } from '../user';
 
 const authUser = appService.getAuthUser() 
 const emergencies = emergencyService.getAllEmergencies()
 const teams = teamService.getAllTeams()
+const users = userService.getAllUsers()
 
 const _formDataInitial: IDispatch = {
     dispatch_id: '',
     caller_name: '',
-    dispatcher_id: authUser.user_id,
+    dispatcher_id: authUser!.user_id,
     caller_number: '',
     location: '',
     emergency_id: emergencies[0].emergency_id,
@@ -41,7 +44,16 @@ export const dispatchStore = defineStore('dispatch', () => {
 
     // getters 
     
-    const dispatchedTeams = computed( () => _dispatchedTeams.value)
+    const dispatchedTeams = computed( () => {
+        return _dispatchedTeams.value.map(i => {
+            i.statusObj = CONST_DispatchStatus[i.status]
+            i.emergency = emergencies.find(j => j.emergency_id === i.emergency_id)
+            i.team = teams.find(j => j.team_id === i.team_id)
+            i.teamLeader = users.find(j => j.user_id === i.team?.team_leader_id)
+            i.dispatcher = users.find(j => j.user_id === i.dispatcher_id)
+            return i
+        })
+    })
 
     // methods 
 
