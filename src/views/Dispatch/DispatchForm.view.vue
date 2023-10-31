@@ -13,15 +13,30 @@
         </div>
 
         <div class="row justify-content-center">
-            <div class="col-6">
+            <div class="col-4">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Dispatch a Team!</h6>
                     </div>
 
-                    <!-- Card Body -->
                     <div class="card-body">
                         <form @submit.prevent="onSubmitForm">
+                            <div class="form-group">
+                                <label>Nature of Emergency</label>
+                                <select class="form-control" v-model="$dispatch.formData.emergency_id">
+                                    <option v-for="emergency in $dispatch.emergencies" :value="emergency.emergency_id" :key="emergency.emergency_id">
+                                        {{ emergency.nature }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Team</label>
+                                <select v-model="$dispatch.formData.team_id" class="form-control">
+                                    <option v-for="team in $dispatch.teams" :value="team.team_id" :key="team.team_id">
+                                        {{ team.team_name }}
+                                    </option>
+                                </select>
+                            </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Caller Name</label>
                                 <input v-model="$dispatch.formData.caller_name" type="text" class="form-control">
@@ -50,27 +65,17 @@
                                 <label>Hazard</label>
                                 <textarea v-model="$dispatch.formData.hazard" class="form-control" rows="3"></textarea>
                             </div>
-                            <div class="form-group">
-                                <label>Nature of Emergency</label>
-                                <select class="form-control" v-model="$dispatch.formData.emergency_id">
-                                    <option v-for="emergency in $dispatch.emergencies" :value="emergency.emergency_id" :key="emergency.emergency_id">
-                                        {{ emergency.nature }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Team</label>
-                                <select class="form-control">
-                                    <option v-for="team in $dispatch.teams" :value="team.team_id" :key="team.team_id">
-                                        {{ team.team_name }}
-                                    </option>
-                                </select>
-                            </div>
+
                             <button type="submit" class="btn btn-primary float-end">Submit</button>
                         </form>
                     </div>
                 </div>
             </div>
+
+            <div class="col-4">
+                <TeamInfo :team-id="$dispatch.formData.team_id"/>
+            </div>
+            
         </div>
   </div>
 
@@ -81,6 +86,8 @@
     import { ref } from 'vue';
     import Breadcrumbs from '@/components/Breadcrumbs.vue'
     import { dispatchStore } from '@/modules/dispatch';
+    import TeamInfo from '@/components/TeamInfo.vue'
+
 
     const $dispatch = dispatchStore()
 

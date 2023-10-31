@@ -97,15 +97,14 @@ export const generateFakePersonnelSkills = (p: {users: IUser[], trainingSkills: 
         
         const personnelSkill = {} as IPersonnelSkills
         personnelSkill.personnel_id = user.user_id 
-
+        
         while(totalSkills--){
-
             const trainingSkill = getRandomValueIn(p.trainingSkills) as ITrainingSkill
             personnelSkill.training_id = trainingSkill.training_id
+            fakeData.push({...personnelSkill})
 
-            fakeData.push(personnelSkill)
         }
-
+        
     }
 
     return fakeData

@@ -1,6 +1,7 @@
 import { CONST_UserSubTypeText } from "@/helpers/constants"
 import { IUser, UserTypeEnum } from "@/types/types"
 import { appService } from "@/modules/app"
+import { useFakeData } from "@/config"
 
 
 
@@ -10,6 +11,19 @@ class UserService{
         console.log('getAllUsers()')
         
         return appService.users
+    }
+
+    async getUserById(user_id: string): Promise<IUser | null>{
+        console.log('getUserById()', user_id)
+        
+        if(useFakeData){
+            const user = appService.users.find(i => i.user_id === user_id)
+            if(user){
+                return user
+            }
+        }
+
+        return null
     }
 
     getAge(birthDate: Date) :number{
