@@ -1,6 +1,6 @@
 
 import { defineStore } from 'pinia'
-import { IPO } from '../../types'
+import { IPO } from '../../types/types'
 import { computed, ref } from 'vue';
 import { POService } from '.';
 

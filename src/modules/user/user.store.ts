@@ -1,7 +1,7 @@
 
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { DispatchStatusEnum, GenderEnum, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '@/types'
+import { DispatchStatusEnum, GenderEnum, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '@/types/types'
 import { getEnumKey } from '@/helpers/helpers';
 import { CONST_UserSubTypeText, CONST_UserTypeText } from '@/helpers/constants';
 import { userService } from './user.service'

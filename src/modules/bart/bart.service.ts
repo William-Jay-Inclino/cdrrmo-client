@@ -1,6 +1,6 @@
 import { appService } from "@/modules/app"
 import { useFakeData } from "@/config"
-import { IBART } from "@/types"
+import { IBART } from "@/types/types"
 
 class BART{
 

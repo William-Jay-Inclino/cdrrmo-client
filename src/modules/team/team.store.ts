@@ -1,7 +1,6 @@
 
 import { defineStore } from 'pinia'
-import { teamService } from './team.service';
-import { ITeam } from '../../types';
+import { ITeam } from '../../types/types';
 import { computed, ref } from 'vue';
 import { appService } from '../app';
 import { CONST_TeamStatusText } from '../../helpers/constants';
@@ -30,16 +29,10 @@ export const teamStore = defineStore('team', () => {
             return i
         })
     })
-
-    // methods
-    const getTeams = () => {
-        return teamService.getAllTeams()
-    }
   
     return {
         teams,
         setTeams,
-        getTeams,
     }
 })
 

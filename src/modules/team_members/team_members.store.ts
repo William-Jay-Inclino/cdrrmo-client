@@ -1,7 +1,7 @@
 
 import { defineStore } from 'pinia'
 import { teamMemberService } from './team_members.service';
-import { ITeamMember } from '../../types';
+import { ITeamMember } from '../../types/types';
 import { computed, ref } from 'vue';
 import { teamService } from '../team';
 import { userService } from '../user';

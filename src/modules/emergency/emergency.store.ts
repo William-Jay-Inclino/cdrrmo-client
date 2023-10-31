@@ -1,8 +1,7 @@
 
 import { defineStore } from 'pinia'
-import { IEmergency } from '@/types'
+import { IEmergency } from '@/types/types'
 import { computed, ref } from 'vue';
-import { emergencyService } from '.';
 
 export const emergencyStore = defineStore('emergency', () => {
     
@@ -18,15 +17,9 @@ export const emergencyStore = defineStore('emergency', () => {
     
     const emergencies = computed( () => _emergencies.value)
 
-    // methods
-    const getEmergencies = () => {
-        return emergencyService.getAllEmergencies()
-    }
-
     return {
         emergencies,
         setEmergencies,
-        getEmergencies,
     }
 })
 

@@ -98,22 +98,23 @@ interface INationalAgency{
 interface IDispatch{
     dispatch_id: string 
     // date_time: Date
-    caller_name: string
+    caller_name: string // ok
     dispatcher_id: string // user_id 
-    caller_number: string
-    location: string 
-    emergency_id: string 
-    description: string 
+    caller_number: string // ok
+    location: string // ok
+    emergency_id: string // ok
+    description: string
     medical_description: string 
-    num_people_involved: number 
+    num_people_involved: number // ok
     hazard: string 
-    team_id: string 
-    time_dispatch: Date
-    time_proceeding: Date 
-    time_arrival: Date 
-    time_proceeding_hospital: Date 
-    time_arrival_hospital: Date
+    team_id: string // ok
+    time_dispatch: Date // ok
+    time_proceeding: Date | null // ok
+    time_arrival: Date | null // ok
+    time_proceeding_hospital: Date | null // ok
+    time_arrival_hospital: Date | null // ok
     remarks: string
+    status: DispatchStatusEnum
 }
 
 enum GenderEnum{

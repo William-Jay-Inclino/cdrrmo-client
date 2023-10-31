@@ -1,6 +1,6 @@
 
 import { defineStore } from 'pinia'
-import { INationalAgency } from '@/types'
+import { INationalAgency } from '@/types/types'
 import { computed, ref } from 'vue';
 import { NAService } from '.';
 

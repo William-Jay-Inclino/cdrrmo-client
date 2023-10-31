@@ -21,39 +21,39 @@
 
                     <!-- Card Body -->
                     <div class="card-body">
-                        <form>
+                        <form @submit.prevent="onSubmitForm">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Caller Name</label>
-                                <input type="text" class="form-control">
+                                <input v-model="$dispatch.formData.caller_name" type="text" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Caller Number</label>
-                                <input type="text" class="form-control">
+                                <input v-model="$dispatch.formData.caller_number" type="text" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>Location</label>
-                                <input type="text" class="form-control">
+                                <input v-model="$dispatch.formData.location" type="text" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>Description</label>
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea v-model="$dispatch.formData.description" class="form-control" rows="3"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>Medical Description</label>
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea v-model="$dispatch.formData.medical_description" class="form-control" rows="3"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>Number of people involved</label>
-                                <input type="number" class="form-control">
+                                <input v-model="$dispatch.formData.num_people_involved" type="number" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>Hazard</label>
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea v-model="$dispatch.formData.hazard" class="form-control" rows="3"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>Nature of Emergency</label>
-                                <select class="form-control">
-                                    <option v-for="emergency in $emergency.emergencies">
+                                <select class="form-control" v-model="$dispatch.formData.emergency_id">
+                                    <option v-for="emergency in $dispatch.emergencies" :value="emergency.emergency_id" :key="emergency.emergency_id">
                                         {{ emergency.nature }}
                                     </option>
                                 </select>
@@ -61,7 +61,7 @@
                             <div class="form-group">
                                 <label>Team</label>
                                 <select class="form-control">
-                                    <option v-for="team in $team.teams">
+                                    <option v-for="team in $dispatch.teams" :value="team.team_id" :key="team.team_id">
                                         {{ team.team_name }}
                                     </option>
                                 </select>
@@ -79,17 +79,10 @@
 
 <script setup lang="ts">
     import { ref } from 'vue';
-    import { emergencyStore } from '@/modules/emergency'
     import Breadcrumbs from '@/components/Breadcrumbs.vue'
-    import { teamStore } from '@/modules/team';
+    import { dispatchStore } from '@/modules/dispatch';
 
-    const $emergency = emergencyStore()
-    const emergencies = $emergency.getEmergencies()
-    $emergency.setEmergencies(emergencies)
-
-    const $team = teamStore()
-    const teams = $team.getTeams()
-    $team.setTeams(teams)
+    const $dispatch = dispatchStore()
 
     const breadcrumbItems = ref([
         {
@@ -103,6 +96,17 @@
             isActive: true,
         }
     ])
+
+    const onSubmitForm = () => {
+        console.log('onSubmitForm()')
+
+        const dispatchData = {...$dispatch.formData}
+
+        // validations here
+
+        $dispatch.saveDispatch(dispatchData)
+    }
+
 
 </script>
 

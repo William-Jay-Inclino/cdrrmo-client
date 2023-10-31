@@ -1,5 +1,5 @@
 import { fakeData } from "@/config"
-import { IEmergency } from "@/types"
+import { IEmergency } from "@/types/types"
 import { appService } from "../app"
 
 class EmergencyService{

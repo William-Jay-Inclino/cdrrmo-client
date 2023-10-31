@@ -1,6 +1,6 @@
 import { appService } from "@/modules/app"
 import { useFakeData } from "@/config"
-import { IPO } from "@/types"
+import { IPO } from "@/types/types"
 
 class PO{
 

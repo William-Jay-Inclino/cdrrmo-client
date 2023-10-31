@@ -1,4 +1,4 @@
-import { DispatchStatusEnum, GenderEnum, IBART, ICSO, IEmergency, INationalAgency, IPO, ITeam, ITeamMember, IUser, LGUEnum, TeamStatusEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '../types'
+import { DispatchStatusEnum, GenderEnum, IBART, ICSO, IEmergency, INationalAgency, IPO, ITeam, ITeamMember, IUser, LGUEnum, TeamStatusEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '../types/types'
 import { faker } from '@faker-js/faker'
 import { CONST_bloodTypes } from '@/helpers/constants'
 import { appService } from '@/modules/app'

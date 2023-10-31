@@ -1,6 +1,6 @@
 
 import { defineStore } from 'pinia'
-import { ICSO } from '../../types'
+import { ICSO } from '../../types/types'
 import { computed, ref } from 'vue';
 import { CSOService } from '.';
 

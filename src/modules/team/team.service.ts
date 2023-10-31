@@ -1,5 +1,5 @@
 import { appService } from "@/modules/app"
-import { ITeam } from "@/types"
+import { ITeam } from "@/types/types"
 
 class Team{
 
