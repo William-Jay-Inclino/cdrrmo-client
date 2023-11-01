@@ -30,7 +30,7 @@ export const userStore = defineStore('user', () => {
 
             i.typeText = CONST_UserTypeText[i.type]
             
-            // National Agency and LGU has no sub-subType
+            // National Agency and LGU has no sub-subType. Only ACDV
 
             const isACDV = (i.type === UserTypeEnum.ACDV_BART || i.type === UserTypeEnum.ACDV_CSO || i.type === UserTypeEnum.ACDV_INDIVIDUAL || i.type === UserTypeEnum.ACDV_PO) 
 

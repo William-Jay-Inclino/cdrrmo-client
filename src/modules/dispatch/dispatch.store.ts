@@ -73,7 +73,13 @@ export const dispatchStore = defineStore('dispatch', () => {
 
         _dispatchedTeams.value.push(createdDispatch)
 
+        resetFormData()
+
         return createdDispatch
+    }
+
+    const resetFormData = () => {
+        formData.value = {..._formDataInitial}
     }
 
     return {
@@ -82,6 +88,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         emergencies,
         teams,
         saveDispatch,
+        resetFormData,
     }
 })
 

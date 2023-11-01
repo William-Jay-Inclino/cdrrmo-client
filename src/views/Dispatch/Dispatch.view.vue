@@ -27,9 +27,15 @@
                                 {{ dispatchedTeam.time_dispatch }}
                         </h6>
 
-                        <router-link :to="{name: 'dispatchForm.route'}">
-                            <button class="btn btn-light" type="submit">Update</button>
-                        </router-link>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Update
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Status</a>
+                                <a class="dropdown-item" href="#">Form</a>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Card Body -->

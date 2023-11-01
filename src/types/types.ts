@@ -42,6 +42,9 @@ interface IPersonnelSkills{
     training_id: string 
     personnel_id: string // user_id
     certificates?: string[] // file src 
+    
+    // props that are set programmatically
+    trainingSkill: ITrainingSkill
 }
 
 interface ITeam{
@@ -62,6 +65,7 @@ interface ITeamMember{
 
     // props that are set programmatically
     member: IUser,
+    skills?: IPersonnelSkills[]
 }
 
 interface IEmergency{
@@ -99,23 +103,23 @@ interface INationalAgency{
 interface IDispatch{
     dispatch_id: string 
     // date_time: Date
-    caller_name: string // ok
-    dispatcher_id: string // user_id// ok
-    caller_number: string // ok
-    location: string // ok
-    emergency_id: string // ok
-    description: string // ok
+    caller_name: string 
+    dispatcher_id: string // user_id
+    caller_number: string 
+    location: string 
+    emergency_id: string
+    description: string
     medical_description: string 
-    num_people_involved: number // ok
-    hazard: string // ok
-    team_id: string // ok
-    time_dispatch: Date // ok
-    time_proceeding: Date | null // ok
-    time_arrival: Date | null // ok
-    time_proceeding_hospital: Date | null // ok
-    time_arrival_hospital: Date | null // ok
-    remarks: string // ok
-    status: DispatchStatusEnum // ok
+    num_people_involved: number 
+    hazard: string 
+    team_id: string
+    time_dispatch: Date 
+    time_proceeding: Date | null
+    time_arrival: Date | null
+    time_proceeding_hospital: Date | null 
+    time_arrival_hospital: Date | null 
+    remarks: string 
+    status: DispatchStatusEnum 
 
     // set programmatically
     statusObj?: {

@@ -16,7 +16,7 @@ class TrainingSkillService{
 
     }
 
-    async getTrainingSkillById(training_id: string): Promise<ITrainingSkill | null>{
+    getTrainingSkillById(training_id: string): ITrainingSkill | null{
 
         if(useFakeData){
             const skill = appService.trainingSkills.find(i => i.training_id === training_id)
@@ -29,15 +29,23 @@ class TrainingSkillService{
 
     }
 
-    async getPersonnelSkillsBy(p: {personnel_id: string}): Promise<IPersonnelSkills[] | null> {
-        console.log('IPersonnelSkills', p)
+    getPersonnelSkillsBy(p: {personnel_id: string}): IPersonnelSkills[] | null {
 
         if(useFakeData){
-            console.log('personnelSkills', appService.personnelSkills)
             const personnelSkills = appService.personnelSkills.filter(i => i.personnel_id === p.personnel_id)
-            console.log('personnelSkills', personnelSkills)
+            
             if(personnelSkills){
-                return personnelSkills
+                return personnelSkills.map( (i) => {
+                    
+                    const trainingSkill = this.getTrainingSkillById(i.training_id)
+
+                    if(trainingSkill){
+                        i.trainingSkill = trainingSkill
+                    }
+
+                    return i
+
+                })
             }
         }
 
