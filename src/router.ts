@@ -8,6 +8,11 @@ const routes = [
         component: () => import('@/views/User/User.view.vue')
     },
     {
+        path: '/users/form',
+        name: routeNames.userForm,
+        component: () => import('@/views/User/UserForm.view.vue')
+    },
+    {
         path: '/dispatch',
         name: routeNames.dispatch,
         component: () => import('@/views/Dispatch/Dispatch.view.vue')

@@ -2,6 +2,7 @@ import { DispatchStatusEnum, GenderEnum, TeamStatusEnum, UserLevelEnum, UserStat
 
 export const routeNames = {
     users: 'users.route',
+    userForm: 'userForm.route',
     dispatch: 'dispatch.route',
     dispatchForm: 'dispatchForm.route',
     teams: 'teams.route',
@@ -14,21 +15,38 @@ export const routeNames = {
     trainingSkills: 'trainingSkills.route',
 }
 
-export const CONST_bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
-
 export const CONST_GenderText = {
     [GenderEnum.Male]: 'Male',
     [GenderEnum.Female]: 'Female',
 }
 
-export const CONST_UserStatusText = {
-    [UserStatusEnum.Active]: 'Active',
-    [UserStatusEnum.Inactive]: 'Inactive',
+export const CONST_Gender = {
+    [GenderEnum.Male]:{
+        text: 'Male',
+        color: '#0000FF', //blue
+        icon: 'fa-mars'
+    },
+    [GenderEnum.Female]:{
+        text: 'Female',
+        color: '#FF00FF', // pink
+        icon: 'fa-venus'
+    }
 }
 
 export const CONST_TeamStatusText = {
     [TeamStatusEnum.Active]: 'Active',
     [TeamStatusEnum.Dispatched]: 'Dispatched',
+}
+
+export const CONST_UserStatus = {
+    [UserStatusEnum.Active]: {
+        text: 'Active',
+        color: 'success'
+    },
+    [UserStatusEnum.Inactive]: {
+        text: 'Inactive',
+        color: 'danger'
+    },
 }
 
 export const CONST_DispatchStatus = {

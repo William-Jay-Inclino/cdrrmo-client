@@ -1,6 +1,5 @@
 import { DispatchStatusEnum, GenderEnum, IBART, ICSO, IEmergency, INationalAgency, IPO, IPersonnelSkills, ITeam, ITeamMember, ITrainingSkill, IUser, TeamStatusEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '../types/types'
 import { faker } from '@faker-js/faker'
-import { CONST_bloodTypes } from '@/helpers/constants'
 import { appService } from '@/modules/app'
 
 export const fakeCSOs = ['Rescue Rider', 'Kabalikat', 'CSO sample 1', 'CSO sample 2', 'CSO sample 3']
@@ -10,6 +9,7 @@ export const fakeNAs = ['BFP', 'PNP', 'AFP', 'NA1', 'NA2']
 export const fakeEmergencies = ['Natural Disaster', 'Medical', 'Fire', 'Environmental', 'Road', 'Security', 'Search and Rescue', 'Infrastructure', 'Public Health Incidents', 'Social and Community']
 export const fakeTeams = ['Team 1', 'Team 2', 'Team 3', 'Team 4']
 export const fakeSkills = ['Open Water Scuba Diver', 'Advance Scuba Diver', 'Rescue Diver', 'Rope Rescue Technnician', 'WASAR Technician', 'Standard First Aid', 'Basic Life Support', 'Advance Life Support', 'Pre Hospital Life Support', 'Water Craft Operator', 'Radio Operator', 'Vehicle Extrication']
+export const fakeBloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
 export const generateFakeUsers = (p: {count: number}) :IUser[] => {
     console.log('generateFakeUsers()')
@@ -21,9 +21,9 @@ export const generateFakeUsers = (p: {count: number}) :IUser[] => {
         user.user_id = faker.string.uuid()
         user.address = faker.location.city()
         user.birth_date = faker.date.birthdate()
-        user.blood_type = getRandomEnum(CONST_bloodTypes)
+        user.blood_type = getRandomValueIn(fakeBloodTypes)
         user.contact_no = faker.phone.number('+63 (9##)-###-####')
-        user.dispatch_status = getRandomEnum(Object.values(DispatchStatusEnum))
+        user.dispatch_status = DispatchStatusEnum.Queue
         user.first_name = faker.person.firstName()
         user.last_name = faker.person.lastName()
         user.gender = getRandomEnum(Object.values(GenderEnum))

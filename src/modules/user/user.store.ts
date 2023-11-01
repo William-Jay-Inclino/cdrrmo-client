@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { IUser, UserTypeEnum } from '@/types/types'
-import { CONST_DispatchStatus, CONST_GenderText, CONST_UserStatusText, CONST_UserSubTypeText, CONST_UserTypeText, CONST_UserlvlText } from '@/helpers/constants';
+import { CONST_DispatchStatus, CONST_Gender, CONST_GenderText, CONST_UserStatus, CONST_UserSubTypeText, CONST_UserTypeText, CONST_UserlvlText } from '@/helpers/constants';
 import { userService } from './user.service'
 
 export const userStore = defineStore('user', () => {
@@ -23,13 +23,12 @@ export const userStore = defineStore('user', () => {
 
         return _users.value.map(i => {
             i.age = userService.getAge(i.birth_date)
-            i.genderText = CONST_GenderText[i.gender]
-            i.statustext = CONST_UserStatusText[i.status]
-            i.dispatchStatusText = CONST_DispatchStatus[i.dispatch_status].text
             i.userLevelText = CONST_UserlvlText[i.user_level]
 
             i.typeText = CONST_UserTypeText[i.type]
-            
+            i.statusObj = CONST_UserStatus[i.status]
+            i.dispatchStatusObj = CONST_DispatchStatus[i.dispatch_status]
+            i.genderObj = CONST_Gender[i.gender]
             // National Agency and LGU has no sub-subType. Only ACDV
 
             const isACDV = (i.type === UserTypeEnum.ACDV_BART || i.type === UserTypeEnum.ACDV_CSO || i.type === UserTypeEnum.ACDV_INDIVIDUAL || i.type === UserTypeEnum.ACDV_PO) 

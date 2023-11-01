@@ -2,15 +2,15 @@
 interface IUser {
     // start: values from db
     user_id: string
-    last_name: string
-    first_name: string
-    gender: GenderEnum
-    address: string
-    birth_date: Date
-    contact_no: string
-    blood_type: string
-    status: UserStatusEnum
-    dispatch_status: DispatchStatusEnum
+    last_name: string // ok
+    first_name: string // ok
+    gender: GenderEnum // ok
+    address: string // ok
+    birth_date: Date // ok
+    contact_no: string // ok
+    blood_type: string // ok
+    status: UserStatusEnum // ok
+    dispatch_status: DispatchStatusEnum // ok
     user_name: string
     password: string
     user_level: UserLevelEnum
@@ -24,13 +24,25 @@ interface IUser {
 
     // set programmatically 
     age?: number
-    genderText?: string 
-    statustext?: string 
-    dispatchStatusText?: string 
     userLevelText?: string 
     typeText?: string
     subTypeText?: string
     subSubTypeText?: string
+    personnelSkills?: IPersonnelSkills[]
+
+    statusObj?: {
+        text: string,
+        color: string,
+    },
+    dispatchStatusObj?: {
+        text: string,
+        color: string,
+    },
+    genderObj?: {
+        text: string,
+        color: string,
+        icon: string,
+    },
 }
 
 interface ITrainingSkill{
@@ -170,21 +182,6 @@ enum UserTypeEnum{
     ACDV_INDIVIDUAL = 24, 
     National_Agency = 30,
 }
-
-// enum LGUEnum{
-//     Regular = '1',
-//     Casual = '2',
-//     Job_Order = '3',
-// }
-
-// Accredited Community Disaster & Emergency Volunteer
-// enum ACDVEnum{ 
-//     CSO = 1, // Civic Social Organization
-//     PO = 2, // People's Organization
-//     BART = 3, // Barangay Auxiliary Response Team
-//     Individual = 4,
-// }
-
 
 export type{
     IUser,
