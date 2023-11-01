@@ -15,25 +15,26 @@
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-bg-secondary">
                         <h6 class="m-0 font-weight-bold">
                             <span>Status: </span>  
-                            <span :class="{[`text-bg-${dispatchedTeam.statusObj?.color}`]: true}" class="badge rounded-pill"> 
+                            <span :class="{[`text-bg-${dispatchedTeam.statusObj?.color}`]: true}" class="badge rounded-pill text-white"> 
                                 {{ dispatchedTeam.statusObj?.text }} 
                             </span> 
                             <span class="text-white mr-2 ml-3" style="display: inline-block; transform: scale(1, 2);"> 
                                 |
                             </span> 
                             <span>
-                                Time of Dispatch:
+                                Created on:
                             </span> 
                                 {{ dispatchedTeam.time_dispatch }}
                         </h6>
 
                         <div class="dropdown">
                             <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Update
+                                Actions
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Status</a>
-                                <a class="dropdown-item" href="#">Form</a>
+                                <a class="dropdown-item" href="javascript:void(0)" @click="onShowDispatchStatusModal(dispatchedTeam)" data-toggle="modal" :data-target="`#${dispatchStatusModalId}`">Update Status</a>
+                                <a class="dropdown-item" href="#">Update Details</a>
+                                <a class="dropdown-item" href="#">Archive</a>
                             </div>
                         </div>
                     </div>
@@ -44,7 +45,12 @@
                             <table class="table table-hover table-bordered">
                                 <thead>
                                     <tr>
-                                        <th width="25%" colspan="2" style="text-align: center;">Team Dispatched</th>
+                                        <th width="25%" colspan="2" style="text-align: center;">
+                                            Team Dispatched
+                                            <button @click="onShowTeamInfoModal(dispatchedTeam)" data-toggle="modal" :data-target="`#${teamInfoModalId}`" class="btn btn-light btn-sm">
+                                                <i class="fas fa-fw fa-info-circle text-info"></i>
+                                            </button>
+                                        </th>
                                         <th width="18.75%">Nature of Emergency</th>
                                         <th width="18.75%">Dispatcher</th>
                                         <th width="18.75%">Location</th>
@@ -72,10 +78,6 @@
                             </table>
                             <table class="table table-hover table-bordered">
                                 <thead>
-                                    <!-- <tr>
-                                        <th class="text-bg-secondary" width="25%" colspan="2" style="text-align: center">Caller</th>
-                                        <th class="text-bg-secondary" colspan="4" style="text-align: center">Time</th>
-                                    </tr> -->
                                     <tr>
                                         <th>Caller Name</th>
                                         <th>Caller Number</th>
@@ -131,6 +133,9 @@
                 </div>
             </div>
         </div>
+
+        <DispatchStatusModal v-show="showDispatchStatusModal" :id="dispatchStatusModalId" :dispatched-team="selectedDispatchedTeam" @update-status="onUpdateStatus"/>
+        <TeamInfoModal :id="teamInfoModalId" v-if="selectedDispatchedTeam" :team-id="selectedDispatchedTeam.team_id" />
   </div>
 
 </template>
@@ -139,8 +144,41 @@
 <script setup lang="ts">
   
 import { dispatchStore } from '@/modules/dispatch';
+import DispatchStatusModal from '@/components/DispatchStatusModal.vue';
+import TeamInfoModal from '@/components/TeamInfoModal.vue';
+
+import { ref } from 'vue';
+import { DispatchStatusEnum, IDispatch } from '@/types/types';
 
 const $dispatch = dispatchStore()
+
+const showDispatchStatusModal = ref(false)
+const dispatchStatusModalId = ref('dispatchStatusModal')
+
+const showTeamInfoModal = ref(false)
+const teamInfoModalId = ref('teamInfoModalId')
+
+const selectedDispatchedTeam = ref<IDispatch>()
+
+
+const onShowDispatchStatusModal = (dispatchedTeam: IDispatch) => {
+
+    console.log('onShowDispatchStatusModal()', dispatchedTeam)
+    showDispatchStatusModal.value = true 
+    selectedDispatchedTeam.value = dispatchedTeam
+}
+
+const onShowTeamInfoModal = (dispatchedTeam: IDispatch) => {
+    console.log('onShowDispatchStatusModal()', dispatchedTeam)
+    showTeamInfoModal.value = true 
+    selectedDispatchedTeam.value = dispatchedTeam
+
+}
+
+const onUpdateStatus = (data: {status: DispatchStatusEnum | undefined}) => {
+    if(!data.status || !selectedDispatchedTeam.value) return 
+    $dispatch.updateDispatchStatus({id: selectedDispatchedTeam.value.dispatch_id, status: data.status})
+}
 
 </script>
 

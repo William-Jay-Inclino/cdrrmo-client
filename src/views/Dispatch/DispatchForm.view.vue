@@ -105,7 +105,7 @@
     import TeamInfo from '@/components/TeamInfo.vue'
     import TeamMembers from '@/components/TeamMembers.vue'
     import { useRouter } from 'vue-router';
-import { routeNames } from '@/helpers/constants';
+    import { routeNames } from '@/helpers/constants';
     const router = useRouter()
 
     const $dispatch = dispatchStore()

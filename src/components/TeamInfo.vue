@@ -27,7 +27,7 @@
                             <td>
                                 {{ skill.trainingSkill.description }}
                                 <button class="btn btn-light btn-sm float-end">
-                                    <i class="fas fa-fw fa-eye"></i>
+                                    <i class="fas fa-fw fa-eye text-info"></i>
                                 </button>
                             </td>
                         </tr>
@@ -62,10 +62,6 @@
     import { userService } from '@/modules/user';
     import { IPersonnelSkills, ITeam, ITeamMember, UserTypeEnum } from '@/types/types';
     import { computed, onMounted, ref, watch } from 'vue';
-
-
-    
-    const dHeight = ref()
 
     const props = defineProps<{
         teamId: string
@@ -122,8 +118,6 @@
     
     onMounted( async() => {
         onUpdateTeamId(teamId.value)
-        const dispatchForm = document.getElementById('dispatchForm') as HTMLDivElement
-        dHeight.value = dispatchForm.clientHeight
     })
 
     const onUpdateTeamId = async(teamId: string) => {

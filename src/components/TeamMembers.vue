@@ -18,13 +18,13 @@
                     <tbody>
                         <tr v-for="member, i in members">
                             <td class="align-middle"> {{ i + 1 }}. </td>
-                            <td class="align-middle"> {{ member.member.first_name }} </td>
+                            <td class="align-middle"> {{ member.member.first_name + ' ' + member.member.last_name }} </td>
                             <td>
                                 <ul class="list-group list-group-flush">
                                     <li v-for="skill in member.skills" class="list-group-item">
                                         {{ skill.trainingSkill.description }}
                                         <button class="btn btn-light btn-sm float-end">
-                                            <i class="fas fa-fw fa-eye"></i>
+                                            <i class="fas fa-fw fa-eye text-info"></i>
                                         </button>
                                     </li>
                                 </ul>

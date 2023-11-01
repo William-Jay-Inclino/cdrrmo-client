@@ -1,4 +1,4 @@
-import { IDispatch } from "@/types/types"
+import { DispatchStatusEnum, IDispatch } from "@/types/types"
 import { faker } from '@faker-js/faker'
 class DispatchService{
 
@@ -32,6 +32,12 @@ class DispatchService{
     async deleteDispatch(dispatch_id: number): Promise<boolean>{
         console.log('deleteDispatch()', dispatch_id)
         return true
+    }
+
+    async updateStatus(dispatch_id: string, status: DispatchStatusEnum): Promise<IDispatch | null> {
+        console.log('updateStatus')
+        const dispatch = {} as IDispatch
+        return dispatch
     }
 
 }

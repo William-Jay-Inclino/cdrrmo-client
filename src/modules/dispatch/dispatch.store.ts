@@ -71,11 +71,32 @@ export const dispatchStore = defineStore('dispatch', () => {
         const createdDispatch = await dispatchService.createDispatch(payload)
         console.log('createdDispatch', createdDispatch)
 
-        _dispatchedTeams.value.push(createdDispatch)
+        _dispatchedTeams.value.unshift(createdDispatch)
 
         resetFormData()
 
         return createdDispatch
+    }
+
+    const updateDispatchStatus = (payload: {id: string, status: DispatchStatusEnum}): IDispatch | null => {
+        console.log('updateDispatchStatus()', payload)
+        const dispatchedTeam = _dispatchedTeams.value.find(i => i.dispatch_id === payload.id)
+
+        if(!dispatchedTeam){
+            console.error('dispatchedTeam not found', dispatchedTeam)
+            return null
+        }
+
+        if(payload.status === DispatchStatusEnum.Dispatched){
+            dispatchedTeam.time_proceeding = new Date() 
+        }
+        else if(payload.status === DispatchStatusEnum.Deck){
+            dispatchedTeam.time_arrival = new Date() 
+        }
+
+        dispatchedTeam.status = payload.status
+
+        return dispatchedTeam
     }
 
     const resetFormData = () => {
@@ -89,6 +110,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         teams,
         saveDispatch,
         resetFormData,
+        updateDispatchStatus,
     }
 })
 
