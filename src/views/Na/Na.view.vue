@@ -26,7 +26,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="na of $na.NAs">
-                                        <td> {{ na.na_name }} </td>
+                                        <td> {{ na.name }} </td>
                                         <td> {{ na.description }} </td>
                                     </tr>
                                 </tbody>

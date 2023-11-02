@@ -26,7 +26,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="po of $po.POs">
-                                        <td> {{ po.po_name }} </td>
+                                        <td> {{ po.name }} </td>
                                         <td> {{ po.description }} </td>
                                     </tr>
                                 </tbody>

@@ -1,6 +1,7 @@
 import { DispatchStatusEnum, GenderEnum, IBART, ICSO, IEmergency, INationalAgency, IPO, IPersonnelSkills, ITeam, ITeamMember, ITrainingSkill, IUser, TeamStatusEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '../types/types'
 import { faker } from '@faker-js/faker'
 import { appService } from '@/modules/app'
+import { CONST_bloodTypes } from '@/helpers/constants'
 
 export const fakeCSOs = ['Rescue Rider', 'Kabalikat', 'CSO sample 1', 'CSO sample 2', 'CSO sample 3']
 export const fakePOs = ['Frat1', 'Frat2', 'Frat3', 'Frat4', 'Frat5']
@@ -9,7 +10,7 @@ export const fakeNAs = ['BFP', 'PNP', 'AFP', 'NA1', 'NA2']
 export const fakeEmergencies = ['Natural Disaster', 'Medical', 'Fire', 'Environmental', 'Road', 'Security', 'Search and Rescue', 'Infrastructure', 'Public Health Incidents', 'Social and Community']
 export const fakeTeams = ['Team 1', 'Team 2', 'Team 3', 'Team 4']
 export const fakeSkills = ['Open Water Scuba Diver', 'Advance Scuba Diver', 'Rescue Diver', 'Rope Rescue Technnician', 'WASAR Technician', 'Standard First Aid', 'Basic Life Support', 'Advance Life Support', 'Pre Hospital Life Support', 'Water Craft Operator', 'Radio Operator', 'Vehicle Extrication']
-export const fakeBloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+
 
 export const generateFakeUsers = (p: {count: number}) :IUser[] => {
     console.log('generateFakeUsers()')
@@ -21,7 +22,7 @@ export const generateFakeUsers = (p: {count: number}) :IUser[] => {
         user.user_id = faker.string.uuid()
         user.address = faker.location.city()
         user.birth_date = faker.date.birthdate()
-        user.blood_type = getRandomValueIn(fakeBloodTypes)
+        user.blood_type = getRandomValueIn(CONST_bloodTypes)
         user.contact_no = faker.phone.number('+63 (9##)-###-####')
         user.dispatch_status = DispatchStatusEnum.Queue
         user.first_name = faker.person.firstName()
@@ -36,19 +37,19 @@ export const generateFakeUsers = (p: {count: number}) :IUser[] => {
 
         if(user.type === UserTypeEnum.ACDV_BART){
             const x = getRandomValueIn(appService.barts) as IBART
-            user.sub_type_id = x.bart_id
+            user.sub_type_id = x.id
         }
         else if(user.type === UserTypeEnum.ACDV_CSO){
             const x = getRandomValueIn(appService.csos) as ICSO
-            user.sub_type_id = x.cso_id
+            user.sub_type_id = x.id
         }
         else if(user.type === UserTypeEnum.ACDV_PO){
             const x = getRandomValueIn(appService.pos) as IPO
-            user.sub_type_id = x.po_id
+            user.sub_type_id = x.id
         }
         else if(user.type === UserTypeEnum.National_Agency){
             const x = getRandomValueIn(appService.nas) as INationalAgency
-            user.sub_type_id = x.na_id
+            user.sub_type_id = x.id
         }
         else if(user.type === UserTypeEnum.LGU_Casual){
             user.sub_type_id = UserTypeEnum.LGU_Casual.toString()
@@ -119,8 +120,8 @@ export const generateFakeCSO = (p: {count: number}) :ICSO[] => {
     while(p.count--){
 
         const cso = {} as ICSO 
-        cso.cso_id = faker.string.uuid()
-        cso.org_name = getUniqueValue({inArray: fakeCSOs, refArray: fakeData, nameKey: 'org_name'})
+        cso.id = faker.string.uuid()
+        cso.name = getUniqueValue({inArray: fakeCSOs, refArray: fakeData, nameKey: 'name'})
         cso.description = faker.lorem.paragraph()
 
         fakeData.push(cso)
@@ -139,8 +140,8 @@ export const generateFakeBART = (p: {count: number}) :IBART[] => {
     while(p.count--){
 
         const bart = {} as IBART 
-        bart.bart_id = faker.string.uuid()
-        bart.bart_name = getUniqueValue({inArray: fakeBARTs, refArray: fakeData, nameKey: 'bart_name'})
+        bart.id = faker.string.uuid()
+        bart.name = getUniqueValue({inArray: fakeBARTs, refArray: fakeData, nameKey: 'name'})
         bart.description = faker.lorem.paragraph()
 
         fakeData.push(bart)
@@ -177,8 +178,8 @@ export const generateFakeNA = (p: {count: number}) :INationalAgency[] => {
     while(p.count--){
 
         const fakeNA = {} as INationalAgency 
-        fakeNA.na_id = faker.string.uuid()
-        fakeNA.na_name = getUniqueValue({inArray: fakeNAs, refArray: fakeData, nameKey: 'na_name'})
+        fakeNA.id = faker.string.uuid()
+        fakeNA.name = getUniqueValue({inArray: fakeNAs, refArray: fakeData, nameKey: 'name'})
         fakeNA.description = faker.lorem.paragraph()
 
         fakeData.push(fakeNA)
@@ -197,8 +198,8 @@ export const generateFakePO = (p: {count: number}) :IPO[] => {
     while(p.count--){
 
         const po = {} as IPO 
-        po.po_id = faker.string.uuid()
-        po.po_name = getUniqueValue({inArray: fakePOs, refArray: fakeData, nameKey: 'po_name'})
+        po.id = faker.string.uuid()
+        po.name = getUniqueValue({inArray: fakePOs, refArray: fakeData, nameKey: 'name'})
         po.description = faker.lorem.paragraph()
 
         fakeData.push(po)

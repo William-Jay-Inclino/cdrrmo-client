@@ -26,7 +26,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="bart of $bart.BARTs">
-                                        <td> {{ bart.bart_name }} </td>
+                                        <td> {{ bart.name }} </td>
                                         <td> {{ bart.description }} </td>
                                     </tr>
                                 </tbody>

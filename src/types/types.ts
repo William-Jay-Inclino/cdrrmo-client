@@ -1,16 +1,15 @@
 
 interface IUser {
-    // start: values from db
     user_id: string
-    last_name: string // ok
-    first_name: string // ok
-    gender: GenderEnum // ok
-    address: string // ok
-    birth_date: Date // ok
-    contact_no: string // ok
-    blood_type: string // ok
-    status: UserStatusEnum // ok
-    dispatch_status: DispatchStatusEnum // ok
+    last_name: string 
+    first_name: string
+    gender: GenderEnum 
+    address: string 
+    birth_date: Date 
+    contact_no: string 
+    blood_type: string 
+    status: UserStatusEnum 
+    dispatch_status: DispatchStatusEnum 
     user_name: string
     password: string
     user_level: UserLevelEnum
@@ -43,6 +42,8 @@ interface IUser {
         color: string,
         icon: string,
     },
+    
+    distinctType?: DistinctUserTypeEnum,
 }
 
 interface ITrainingSkill{
@@ -87,28 +88,28 @@ interface IEmergency{
 
 // Civic Social Organization
 interface ICSO{
-    cso_id: string
-    org_name: string
+    id: string
+    name: string
     description: string
 }
 
 // People's Organization
 interface IPO{
-    po_id: string
-    po_name: string
+    id: string
+    name: string
     description: string
 }
 
 // Barangay Auxiliary Response Team
 interface IBART{
-    bart_id: string
-    bart_name: string
+    id: string
+    name: string
     description: string
 }
 
 interface INationalAgency{
-    na_id: string
-    na_name: string
+    id: string
+    name: string
     description: string
 }
 
@@ -144,9 +145,10 @@ interface IDispatch{
     dispatcher?: IUser
 }
 
-enum GenderEnum{
+enum GenderEnum {
     Male = 1,
     Female = 2,
+    filter
 }
 
 enum UserStatusEnum{
@@ -168,8 +170,8 @@ enum DispatchStatusEnum{
 enum UserLevelEnum{
     Admin = 1,
     Dispatcher = 2,
-    Field_Operator = 3,
-    Team_Leader = 4,
+    Team_Leader = 3,
+    Field_Operator = 4,
 }   
 
 enum UserTypeEnum{
@@ -181,6 +183,12 @@ enum UserTypeEnum{
     ACDV_BART = 23, 
     ACDV_INDIVIDUAL = 24, 
     National_Agency = 30,
+}
+
+enum DistinctUserTypeEnum{
+    LGU = 1,
+    ACDV = 2,
+    National_Agency = 3,
 }
 
 export type{
@@ -204,6 +212,7 @@ export{
     DispatchStatusEnum,
     UserLevelEnum,
     UserTypeEnum,
+    DistinctUserTypeEnum,
     // LGUEnum,
     // ACDVEnum
 }

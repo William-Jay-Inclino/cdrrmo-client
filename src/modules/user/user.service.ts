@@ -39,39 +39,39 @@ class UserService{
     getSubType(userType: UserTypeEnum, subTypeId: string) :string {
 
         if(userType === UserTypeEnum.ACDV_BART){
-            const bart = appService.barts.find(i => i.bart_id === subTypeId)
+            const bart = appService.barts.find(i => i.id === subTypeId)
             if(!bart){
                 console.error('bart not found')
                 return ''
             }
-            return bart.bart_name
+            return bart.name
         }
     
         if(userType === UserTypeEnum.ACDV_CSO){
-            const cso = appService.csos.find(i => i.cso_id === subTypeId)
+            const cso = appService.csos.find(i => i.id === subTypeId)
             if(!cso){
                 console.error('cso not found')
                 return ''
             }
-            return cso.org_name
+            return cso.name
         }
     
         if(userType === UserTypeEnum.ACDV_PO){
-            const po = appService.pos.find(i => i.po_id === subTypeId)
+            const po = appService.pos.find(i => i.id === subTypeId)
             if(!po){
                 console.error('po not found')
                 return ''
             }
-            return po.po_name
+            return po.name
         }
     
         if(userType === UserTypeEnum.National_Agency){
-            const na = appService.nas.find(i => i.na_id === subTypeId)
+            const na = appService.nas.find(i => i.id === subTypeId)
             if(!na){
                 console.error('na not found')
                 return ''
             }
-            return na.na_name
+            return na.name
         }
     
         return CONST_UserSubTypeText[userType]

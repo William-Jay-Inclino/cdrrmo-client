@@ -26,7 +26,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="cso of $cso.CSOs">
-                                        <td> {{ cso.org_name }} </td>
+                                        <td> {{ cso.name }} </td>
                                         <td> {{ cso.description }} </td>
                                     </tr>
                                 </tbody>
