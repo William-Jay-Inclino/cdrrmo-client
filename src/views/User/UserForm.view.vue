@@ -68,7 +68,7 @@
 
     const router = useRouter()
 
-    const currentStep = ref(1)
+    const currentStep = ref(2)
     
     const breadcrumbItems = ref([
         {
@@ -100,6 +100,7 @@
     }
 
     const onUpdateStep = (step: number) => {
+        console.log('onUpdateStep()', step)
         currentStep.value = step
     }
 

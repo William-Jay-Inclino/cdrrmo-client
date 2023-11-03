@@ -6,7 +6,7 @@
         <progress id="progress" :value="progressVal" max="100"></progress>
 
         <div class="step-item" v-for="step in steps">
-            <button @click="updateProgress(step.id)" :class="getStepClass(step.id)" class="step-button text-center" type="button" data-bs-toggle="collapse"
+            <button @click="onClickStepBtn(step.id)" :class="step.stepClass" type="button" data-bs-toggle="collapse"
                 :data-bs-target="`#${step.dataBsTarget}`" :aria-expanded="step.id === currentStep" :aria-controls="step.dataBsTarget">
                 <i class="fas fa-fw" :class="{[step.icon]: true}"></i>
             </button>
@@ -63,24 +63,37 @@ const props = defineProps<{
 
 const progressVal = ref(0)
 
-const steps = ref([
+interface IStep{
+    id: number,
+    text: string,
+    icon: string,
+    dataBsTarget: string,
+    stepClass: string,
+}
+
+const stepClassInitial = 'step-button text-center '
+
+const steps = ref<IStep[]>([
     {
         id: 1,
         text: 'Info',
         icon: 'fa-info',
         dataBsTarget: 'collapseOne',
+        stepClass: stepClassInitial,
     },
     {
         id: 2,
         text: 'Skills',
         icon: 'fa-medal',
         dataBsTarget: 'collapseTwo',
+        stepClass: stepClassInitial,
     },
     {
         id: 3,
         text: 'Finish',
         icon: 'fa-check-circle',
         dataBsTarget: 'collapseThree',
+        stepClass: stepClassInitial,
     }
 ])
 
@@ -91,74 +104,75 @@ const currentStep = computed( () => props.currentStep)
 
 watch(currentStep, (val: number) => {
     console.log('val', val)
-    updateProgress(val)
+    onClickStepBtn(val)
 })
 
 onMounted( () => {
-    updateProgress(currentStep.value)
+    onClickStepBtn(currentStep.value)
 
 })
 
-const updateProgress = (step: number) => {
-    console.log('updateProgress()', step)
-    
-    console.log('currentStep.value', currentStep.value)
+const onClickStepBtn = (stepId: number) => {
 
-    if(step === 1){
+    console.log('onClickStepBtn()', stepId)
+
+    const current = steps.value.find(i => i.id === stepId)
+
+    if(!current){
+        console.error('Undefined step', current)
+        return 
+    }
+
+    current.stepClass = stepClassInitial + 'collapsed'
+
+    if(current.id === 1){
+        steps.value[1].stepClass = stepClassInitial
+        steps.value[2].stepClass = stepClassInitial
         progressVal.value = 0
     }
-    else if(step === 2){
+
+    if(current.id === 2){
+        steps.value[0].stepClass = stepClassInitial + 'done'
+        steps.value[2].stepClass = stepClassInitial
         progressVal.value = 50
     }
-    else{
+
+    if(current.id === 3){
+        steps.value[0].stepClass = stepClassInitial + 'done'
+        steps.value[1].stepClass = stepClassInitial + 'done'
         progressVal.value = 100
     }
 
-    emit('update-step', step)
+    emit('update-step', current.id)
+
 }
 
+// const getStepClass = (thisStep: IStep) => {
 
-// const updateStep = () => {
-//     const stepButtons = document.querySelectorAll('.step-button');
-//     const progress = document.querySelector('#progress') as HTMLDivElement;
+//     console.log('getStepClass()', thisStep)
+
+//     // previous = done: true | collapsed: false
+//     // current = done: false | collapsed: true
+//     // next = done: false | collapsed: false
     
-//     Array.from(stepButtons).forEach((button,index) => {
-//         button.addEventListener('click', () => {
-//             progress.setAttribute('value', (index * 100 /(stepButtons.length - 1)).toString() );//there are 3 buttons. 2 spaces.
-    
-//             stepButtons.forEach((item, secindex)=>{
-//                 if(index > secindex){
-//                     item.classList.add('done');
-//                 }
-//                 if(index < secindex){
-//                     item.classList.remove('done');
-//                 }
-//             })
-//         })
-//     })
+//     // if(thisStep.id === 1){
+
+//     // }
+
+//     if(thisStep.isCurrent){
+//         console.log('=== 1', {'done': false, 'collapsed': true})
+//         return {'done': false, 'collapsed': true}
+//     }
+
+//     if(!thisStep.isCurrent && thisStep.id < currentStep.value){
+//         console.log('=== 2', {'done': true, 'collapsed': false})
+//         return {'done': true, 'collapsed': false}
+//     }
+
+//     console.log('=== 3', {'done': false, 'collapsed': false})
+//     return {'done': false, 'collapsed': false}
+
 // }
-
-const getStepClass = (thisStep: number) => {
-    if(thisStep === 1){
-        return {'done': true}
-    }
-
-    if(thisStep > currentStep.value){
-        return {'done': false}
-    }
-
-    if(currentStep.value < thisStep){
-        return {
-            'collapsed': false,
-        }
-    }else{
-        return {
-            'collapsed': true,
-        }
-    }
-
-
-}
 
 </script>
 
