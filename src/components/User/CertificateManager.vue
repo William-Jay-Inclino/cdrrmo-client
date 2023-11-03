@@ -1,15 +1,15 @@
 <template>
 
     <div v-show="show">
-        <div class="row" v-for="certificate in skill.certificates">
+        <div class="row" v-for="certificate in certificates">
             <div class="col">
                 <div class="input-group">
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="inputGroupFile04">
+                        <input :value="certificate.src" type="file" class="custom-file-input" id="inputGroupFile04">
                         <label class="custom-file-label" for="inputGroupFile04">Choose file </label>
                     </div>
                     <div class="input-group-append">
-                        <button class="btn btn-outline-danger" type="button">
+                        <button @click="onClickDelCert(certificate.id)" class="btn btn-outline-danger" type="button">
                             <i class="fas fa-fw fa-trash"></i>
                         </button>
                     </div>
@@ -30,20 +30,25 @@
 
 <script setup lang="ts">
 
-import { ICompSkill } from '@/modules/training_skill';
+import { ICompCertificate } from '@/modules/training_skill';
 import { faker } from '@faker-js/faker';
 
-const emit = defineEmits(['add-cert'])
+const emit = defineEmits(['add-cert', 'del-cert'])
 
 const props = defineProps<{
-    skill: ICompSkill,
+    id: string,
+    certificates: ICompCertificate[],
     show: boolean,
 }>()
 
-
 const onClickAddCert = () => {
     console.log('onClickAddCert()')
-    emit('add-cert', {skill: props.skill, certificate: {id: faker.string.uuid(), src: ''} })
+    emit('add-cert', {id: props.id, certificate: {id: faker.string.uuid(), src: ''} })
+}
+
+const onClickDelCert = (id: string) => {
+    console.log('onClickDelCert()')
+    emit('del-cert', {id: props.id, certificateId: id })
 }
 
 

@@ -36,10 +36,12 @@ export const CONST_Gender = {
 
 export const CONST_UserStatus = {
     [UserStatusEnum.Active]: {
+        id: UserStatusEnum.Active,
         text: 'Active',
         color: 'success'
     },
     [UserStatusEnum.Inactive]: {
+        id: UserStatusEnum.Inactive,
         text: 'Inactive',
         color: 'danger'
     },

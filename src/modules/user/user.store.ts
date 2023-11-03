@@ -1,7 +1,7 @@
 
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
-import { DispatchStatusEnum, DistinctUserTypeEnum, GenderEnum, IBART, ICSO, INationalAgency, IPO, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '@/types/types'
+import { computed, ref, watch } from 'vue'
+import { DispatchStatusEnum, DistinctUserTypeEnum, GenderEnum, IBART, ICSO, INationalAgency, IPO, IPersonnelSkill, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '@/types/types'
 import { CONST_DispatchStatus, CONST_DistinctUserTypes, CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_UserSubTypeText, CONST_UserTypeText, CONST_UserlvlText, CONST_bloodTypes } from '@/helpers/constants';
 import { userService } from './user.service'
 import { ISingleSelect } from '@/types/forms';
@@ -27,9 +27,10 @@ const _formDataInitial: IUser = {
     password: '',
     user_level: UserLevelEnum.Field_Operator,
     type: UserTypeEnum.LGU_Casual,
-    sub_type_id: '',
+    sub_type_id: UserTypeEnum.LGU_Casual.toString(),
 
     distinctType: DistinctUserTypeEnum.LGU,
+    personnelSkills: [],
 }
 
 const _nationalAgencies = NAService.getAllNAs()
@@ -145,12 +146,153 @@ export const userStore = defineStore('user', () => {
 
     }) 
 
+
+    
+    const formDataType = computed( (): UserTypeEnum => formData.value.type)
+    const formDataDistinctType = computed( (): DistinctUserTypeEnum | undefined => formData.value.distinctType)
+
+    watch(formDataDistinctType, (val) => {
+        if(!val) return 
+
+        if(val === DistinctUserTypeEnum.LGU){
+            formData.value.type = UserTypeEnum.LGU_Regular
+        }
+        else if(val === DistinctUserTypeEnum.ACDV){
+            formData.value.type = UserTypeEnum.ACDV_CSO
+        }
+        else if(val === DistinctUserTypeEnum.National_Agency){
+            formData.value.type = UserTypeEnum.National_Agency
+        }
+    })
+
+    // update sub_type_id if LGU since it's not updated automatically in form
+    watch(formDataType, (val) => {
+        if(!val) return 
+
+        formData.value.sub_type_id = '' // reset
+
+        if(formData.value.distinctType !== DistinctUserTypeEnum.LGU) return 
+
+        console.log('watching formDataType...')
+
+        if(val === UserTypeEnum.LGU_Casual){
+            formData.value.sub_type_id = UserTypeEnum.LGU_Casual.toString()
+        }
+        else if(val === UserTypeEnum.LGU_Job_Order){
+            formData.value.sub_type_id = UserTypeEnum.LGU_Job_Order.toString()
+        }
+        else if(val === UserTypeEnum.LGU_Regular){
+            formData.value.sub_type_id = UserTypeEnum.LGU_Regular.toString()
+        }
+    })
+
     // methods
     const getUsers = () => {
         return userService.getAllUsers()
     }
 
+    const addSkillInFormData = (skill: IPersonnelSkill) => {
+        console.log('addSkillInFormData()', skill)
+        if(!formData.value.personnelSkills){
+            formData.value.personnelSkills = []
+        }
+        formData.value.personnelSkills.push(skill)
+    }
 
+    const removeSkillInFormData = (training_id: string) => {
+
+        if(!formData.value.personnelSkills) return 
+
+        console.log('removeSkillInFormData()', training_id)
+
+        const indx = formData.value.personnelSkills?.findIndex(i => i.training_id === training_id)
+
+        if(indx === -1){
+            console.error('training_id not found in formData.personnelSkills')
+            return 
+        }
+
+        formData.value.personnelSkills.splice(indx, 1)
+    }
+
+    const addCertificateInSkill = (trainingId: string, src: string) => {
+        if(!formData.value.personnelSkills) return 
+
+        console.log('addCertificateInSkill()', trainingId, src)
+        const skill = formData.value.personnelSkills.find(i => i.training_id === trainingId)
+
+        if(!skill){
+            console.error('skill not found in personelSkills')
+            return 
+        }
+
+        if(!skill.certificates){
+            skill.certificates = []
+        }
+
+        const isExist = skill.certificates.find(i => i === src)
+
+        if(isExist){
+            console.error('certificate already exist')
+            return 
+        }
+
+        skill.certificates.push(src)
+
+    }
+
+    const delCertificateInSkill = (trainingId: string, src: string) => {
+        if(!formData.value.personnelSkills) return 
+
+        console.log('delCertificateInSkill()', trainingId, src)
+        const skill = formData.value.personnelSkills.find(i => i.training_id === trainingId)
+
+        if(!skill){
+            console.error('skill not found in personelSkills')
+            return 
+        }
+
+        if(!skill.certificates){
+            console.error('skill.certificates is undefined')
+            return 
+        }
+
+        const indx = skill.certificates.findIndex(i => i === src)
+
+        if(indx === -1){
+            console.error('certificate not found in skill.certificates')
+            return 
+        }
+
+        skill.certificates.splice(indx, 1)
+
+    }
+
+    const saveUser = async(payload: IUser): Promise<IUser | null> => {
+        console.log('saveUser()', payload)
+
+        payload.birth_date = new Date(payload.birth_date)
+
+        if(payload.user_id.trim() !== ''){
+            console.log('update')
+            const updatedUser = await userService.updateUser(payload.user_id, payload)
+            console.log('updatedUser ', updatedUser)
+            return updatedUser
+        }
+
+        const createdUser = await userService.createUser(payload)
+        console.log('createdUser', createdUser)
+
+        _users.value.unshift(createdUser)
+
+        resetFormData()
+
+        return createdUser
+    }
+
+    const resetFormData = () => {
+        formData.value = {..._formDataInitial}
+    }
   
     return {
         users,
@@ -165,6 +307,11 @@ export const userStore = defineStore('user', () => {
 
         setUsers,
         getUsers,
+        addSkillInFormData,
+        removeSkillInFormData,
+        addCertificateInSkill,
+        delCertificateInSkill,
+        saveUser,
     }
 })
 

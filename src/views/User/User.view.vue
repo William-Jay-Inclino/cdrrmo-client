@@ -80,7 +80,7 @@
                                                     <div class="dropdown-divider"></div>
                                                     <a class="dropdown-item" href="#">
                                                         <i class="fas fa-fw fa-eye text-info"></i>
-                                                        <span class="ml-2">View Skill</span>
+                                                        <span class="ml-2">View Skills</span>
                                                     </a>
                                                     <div class="dropdown-divider"></div>
                                                     <a class="dropdown-item" href="#">
@@ -89,15 +89,6 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <!-- <button class="btn btn-light btn-sm">
-                                                <i class="fas fa-fw fa-pencil-alt text-primary"></i>
-                                            </button>
-                                            <button class="btn btn-light btn-sm">
-                                                <i class="fas fa-fw fa-eye text-info"></i>
-                                            </button>
-                                            <button class="btn btn-light btn-sm">
-                                                <i class="fas fa-fw fa-archive text-danger"></i>
-                                            </button> -->
                                         </td>
                                     </tr>
                                 </tbody>

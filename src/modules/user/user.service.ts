@@ -2,6 +2,7 @@ import { CONST_UserSubTypeText } from "@/helpers/constants"
 import { IUser, UserTypeEnum } from "@/types/types"
 import { appService } from "@/modules/app"
 import { useFakeData } from "@/config"
+import { faker } from "@faker-js/faker"
 
 
 
@@ -24,6 +25,18 @@ class UserService{
         }
 
         return null
+    }
+
+    async createUser(payload: IUser): Promise<IUser> {
+        console.log('createUser()', payload)
+        payload.user_id = faker.string.uuid()
+        
+        return payload
+    }
+
+    async updateUser(id: string, payload: IUser): Promise<IUser | null> {
+        console.log('updateUser()', payload)
+        return payload
     }
 
     getAge(birthDate: Date) :number{

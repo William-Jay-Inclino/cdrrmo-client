@@ -47,7 +47,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Location</label>
-                                <input v-model="$dispatch.formData.location" type="text" class="form-control">
+                                <textarea v-model="$dispatch.formData.location" class="form-control" rows="3"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>Description</label>

@@ -1,6 +1,6 @@
 <template>
     
-    <div class="table-responsive">
+    <div class="table-responsive" style="overflow-x: hidden;">
 
         <table class="table">
             <thead>
@@ -12,7 +12,7 @@
             </thead>
             <tbody>
                 <tr v-for="skill in skills">
-                    <td>
+                    <td class="align-middle">
                         <button
                           @click="onClickSelectSkill(skill)"
                           class="btn btn-sm"
@@ -21,9 +21,9 @@
                           class="fas fa-fw fa-check"></i>
                           </button>
                     </td>
-                    <td> {{ skill.description }} </td>
+                    <td class="align-middle"> {{ skill.description }} </td>
                     <td class="text-center">
-                        <CertificateManager :skill="skill" :show="skill.selected" @add-cert="addCertificate"/>
+                        <CertificateManager :id="skill.training_id" :certificates="skill.certificates" :show="skill.selected" @add-cert="addCertificate" @del-cert="deleteCertificate"/>
                     </td>
                 </tr>
             </tbody>
@@ -39,10 +39,11 @@
 import { trainingSkillService, ICompSkill, ICompCertificate } from '@/modules/training_skill';
 import { ref } from 'vue';
 import CertificateManager from '@/components/User/CertificateManager.vue'
-
-
+import { userStore } from '@/modules/user';
 
 const skills = ref<ICompSkill[]>([])
+
+const $user = userStore()
 
 init()
 
@@ -68,20 +69,60 @@ const onClickSelectSkill = (skill: ICompSkill) => {
 
     console.log('onClickSelectSkill()', skill)
 
-    skill.selected = !skill.selected 
+    if(!$user.formData.personnelSkills){
+        $user.formData.personnelSkills = []
+    }
+
+    
+    if(skill.selected){
+        skill.selected = false
+        $user.removeSkillInFormData(skill.training_id)
+    }else{
+        skill.selected = true
+
+        const certificates = skill.certificates.map(i => i.src)
+
+        $user.addSkillInFormData({
+            training_id: skill.training_id,
+            personnel_id: $user.formData.user_id,
+            certificates: certificates,
+        })
+    }
 
 }
 
 
-const addCertificate = (data: {skill: ICompSkill, certificate: ICompCertificate}) => {
+const addCertificate = (data: {id: string, certificate: ICompCertificate}) => {
     console.log('addCertificate()', data)
 
-    const skill = skills.value.find(i => i.training_id = data.skill.training_id)
+    const skill = skills.value.find(i => i.training_id === data.id)
 
     if(skill){
         skill.certificates.push(data.certificate)
+        $user.addCertificateInSkill(skill.training_id, data.certificate.src)
     }
 
+}
+
+const deleteCertificate = (data: {id: string, certificateId: string}) => {
+    console.log('deleteCertificate()', data)
+
+    const skill = skills.value.find(i => i.training_id === data.id)
+
+    if(!skill){
+        console.error('skill is undefined')
+        return 
+    }
+
+    const certIndx = skill.certificates.findIndex(i => i.id === data.certificateId)
+
+    if(certIndx === -1){
+        console.error('Certificate not found in skill')
+        return 
+    }
+
+    $user.delCertificateInSkill(skill.training_id, skill.certificates[certIndx].src)
+    skill.certificates.splice(certIndx, 1)
 }
 
 

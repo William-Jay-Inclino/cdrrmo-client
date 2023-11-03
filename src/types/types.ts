@@ -27,7 +27,7 @@ interface IUser {
     typeText?: string
     subTypeText?: string
     subSubTypeText?: string
-    personnelSkills?: IPersonnelSkills[]
+    personnelSkills?: IPersonnelSkill[]
 
     statusObj?: {
         text: string,
@@ -51,13 +51,13 @@ interface ITrainingSkill{
     description: string
 }
 
-interface IPersonnelSkills{
+interface IPersonnelSkill{
     training_id: string 
     personnel_id: string // user_id
     certificates?: string[] // file src 
     
     // props that are set programmatically
-    trainingSkill: ITrainingSkill
+    trainingSkill?: ITrainingSkill
 }
 
 interface ITeam{
@@ -78,7 +78,7 @@ interface ITeamMember{
 
     // props that are set programmatically
     member: IUser,
-    skills?: IPersonnelSkills[]
+    skills?: IPersonnelSkill[]
 }
 
 interface IEmergency{
@@ -148,7 +148,6 @@ interface IDispatch{
 enum GenderEnum {
     Male = 1,
     Female = 2,
-    filter
 }
 
 enum UserStatusEnum{
@@ -194,7 +193,7 @@ enum DistinctUserTypeEnum{
 export type{
     IUser,
     ITrainingSkill,
-    IPersonnelSkills, 
+    IPersonnelSkill, 
     ITeam,
     ITeamMember,
     IEmergency,
