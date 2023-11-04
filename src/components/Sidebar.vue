@@ -22,26 +22,10 @@
 <!-- Divider -->
 <hr class="sidebar-divider">
 
-<!-- Nav Item - Pages Collapse Menu -->
-<!-- <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-        aria-expanded="true" aria-controls="collapsePages">
-        <i class="fas fa-fw fa-folder"></i>
-        <span>Pages</span>
-    </a>
-    <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
-        </div>
-    </div>
-</li> -->
+<!-- Heading -->
+<div class="sidebar-heading">
+    Operations
+</div>
 
 <!-- Nav Item - Charts -->
 <li class="nav-item" :class="{'active': routeName === routeNames.dispatch || routeName === routeNames.dispatchForm}">
@@ -51,17 +35,26 @@
     </router-link>
 </li>
 
-<li class="nav-item" :class="{'active': routeName === routeNames.users}">
-    <router-link :to="{name: routeNames.users}" class="nav-link">
-        <i class="fas fa-fw fa-users"></i>
-        <span>Personnels</span>
-    </router-link>
-</li>
-
 <li class="nav-item" :class="{'active': routeName === routeNames.teams || routeName === routeNames.teamMembers}">
     <router-link :to="{name: routeNames.teams}" class="nav-link">
         <i class="fas fa-fw fa-sitemap"></i>
         <span>Teams</span>
+    </router-link>
+</li>
+
+
+<!-- Divider -->
+<hr class="sidebar-divider">
+
+<!-- Heading -->
+<div class="sidebar-heading">
+    Resource Management
+</div>
+
+<li class="nav-item" :class="{'active': routeName === routeNames.users}">
+    <router-link :to="{name: routeNames.users}" class="nav-link">
+        <i class="fas fa-fw fa-users"></i>
+        <span>Personnels</span>
     </router-link>
 </li>
 
@@ -84,19 +77,19 @@
 
 <!-- Heading -->
 <div class="sidebar-heading">
-    User types
+    Organizations
 </div>
 
 <li class="nav-item" :class="{'active': routeName === routeNames.nationalAgencies}">
     <router-link :to="{name: routeNames.nationalAgencies}" class="nav-link">
-        <i class="fas fa-fw fa-users"></i>
+        <i class="fas fa-fw fa-building"></i>
         <span>National Agencies</span>
     </router-link>
 </li>
 
 <li class="nav-item" :class="{'active': routeName === routeNames.csos}">
     <router-link :to="{name: routeNames.csos}" class="nav-link">
-        <i class="fas fa-fw fa-users"></i>
+        <i class="fas fa-fw fa-hands-helping"></i>
         <span>CSO</span>
     </router-link>
 </li>
@@ -110,7 +103,7 @@
 
 <li class="nav-item" :class="{'active': routeName === routeNames.barts}">
     <router-link :to="{name: routeNames.barts}" class="nav-link">
-        <i class="fas fa-fw fa-users"></i>
+        <i class="fas fa-fw fa-home"></i>
         <span>BART</span>
     </router-link>
 </li>
