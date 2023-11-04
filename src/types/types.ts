@@ -1,16 +1,15 @@
 
 interface IUser {
-    // start: values from db
     user_id: string
-    last_name: string
+    last_name: string 
     first_name: string
-    gender: GenderEnum
-    address: string
-    birth_date: Date
-    contact_no: string
-    blood_type: string
-    status: UserStatusEnum
-    dispatch_status: DispatchStatusEnum
+    gender: GenderEnum 
+    address: string 
+    birth_date: Date 
+    contact_no: string 
+    blood_type: string 
+    status: UserStatusEnum 
+    dispatch_status: DispatchStatusEnum 
     user_name: string
     password: string
     user_level: UserLevelEnum
@@ -24,13 +23,27 @@ interface IUser {
 
     // set programmatically 
     age?: number
-    genderText?: string 
-    statustext?: string 
-    dispatchStatusText?: string 
     userLevelText?: string 
     typeText?: string
     subTypeText?: string
     subSubTypeText?: string
+    personnelSkills?: IPersonnelSkill[]
+
+    statusObj?: {
+        text: string,
+        color: string,
+    },
+    dispatchStatusObj?: {
+        text: string,
+        color: string,
+    },
+    genderObj?: {
+        text: string,
+        color: string,
+        icon: string,
+    },
+    
+    distinctType?: DistinctUserTypeEnum,
 }
 
 interface ITrainingSkill{
@@ -38,9 +51,13 @@ interface ITrainingSkill{
     description: string
 }
 
-interface IPersonnelSkills{
+interface IPersonnelSkill{
     training_id: string 
     personnel_id: string // user_id
+    certificates?: string[] // file src 
+    
+    // props that are set programmatically
+    trainingSkill?: ITrainingSkill
 }
 
 interface ITeam{
@@ -48,12 +65,20 @@ interface ITeam{
     team_leader_id: string // user_id
     team_name: string
     status:  TeamStatusEnum
+
+    // props that are set programmatically
+    team_leader?: IUser
+    statusText?: string
 }
 
 interface ITeamMember{
     team_member_id: string 
     team_id: string 
     member_id: string // user_id
+
+    // props that are set programmatically
+    member: IUser,
+    skills?: IPersonnelSkill[]
 }
 
 interface IEmergency{
@@ -63,53 +88,64 @@ interface IEmergency{
 
 // Civic Social Organization
 interface ICSO{
-    cso_id: string
-    org_name: string
+    id: string
+    name: string
     description: string
 }
 
 // People's Organization
 interface IPO{
-    po_id: string
-    po_name: string
+    id: string
+    name: string
     description: string
 }
 
 // Barangay Auxiliary Response Team
 interface IBART{
-    bart_id: string
-    bart_name: string
+    id: string
+    name: string
     description: string
 }
 
 interface INationalAgency{
-    na_id: string
-    na_name: string
+    id: string
+    name: string
     description: string
 }
 
 interface IDispatch{
-    dispatch_id: string
+    dispatch_id: string 
     // date_time: Date
-    caller_name: string
-    dispatcher_id: string // user_id 
+    caller_name: string 
+    dispatcher_id: string // user_id
     caller_number: string 
     location: string 
-    emergency_id: string 
-    description: string 
+    emergency_id: string
+    description: string
     medical_description: string 
     num_people_involved: number 
     hazard: string 
-    team_id: string 
-    time_dispatch: Date
-    time_proceeding: Date 
-    time_arrival: Date 
-    time_proceeding_hospital: Date 
-    time_arrival_hospital: Date
-    remarks: string
+    team_id: string
+    time_dispatch: Date 
+    time_proceeding: Date | null
+    time_arrival: Date | null
+    time_proceeding_hospital: Date | null 
+    time_arrival_hospital: Date | null 
+    remarks: string 
+    status: DispatchStatusEnum 
+
+    // set programmatically
+    statusObj?: {
+        text: string,
+        color: string,
+    },
+    emergency?: IEmergency
+    team?: ITeam
+    teamLeader?: IUser 
+    dispatcher?: IUser
 }
 
-enum GenderEnum{
+enum GenderEnum {
     Male = 1,
     Female = 2,
 }
@@ -125,16 +161,16 @@ enum TeamStatusEnum{
 }
 
 enum DispatchStatusEnum{
-    Deck = 1,
-    Queue = 2,
-    Dispatched = 3,
+    Queue = 1,
+    Dispatched = 2,
+    Deck = 3,
 }
 
 enum UserLevelEnum{
     Admin = 1,
     Dispatcher = 2,
-    Field_Operator = 3,
-    Team_Leader = 4,
+    Team_Leader = 3,
+    Field_Operator = 4,
 }   
 
 enum UserTypeEnum{
@@ -148,25 +184,16 @@ enum UserTypeEnum{
     National_Agency = 30,
 }
 
-enum LGUEnum{
-    Regular = '1',
-    Casual = '2',
-    Job_Order = '3',
+enum DistinctUserTypeEnum{
+    LGU = 1,
+    ACDV = 2,
+    National_Agency = 3,
 }
-
-// Accredited Community Disaster & Emergency Volunteer
-enum ACDVEnum{ 
-    CSO = 1, // Civic Social Organization
-    PO = 2, // People's Organization
-    BART = 3, // Barangay Auxiliary Response Team
-    Individual = 4,
-}
-
 
 export type{
     IUser,
     ITrainingSkill,
-    IPersonnelSkills, 
+    IPersonnelSkill, 
     ITeam,
     ITeamMember,
     IEmergency,
@@ -184,6 +211,7 @@ export{
     DispatchStatusEnum,
     UserLevelEnum,
     UserTypeEnum,
-    LGUEnum,
-    ACDVEnum
+    DistinctUserTypeEnum,
+    // LGUEnum,
+    // ACDVEnum
 }

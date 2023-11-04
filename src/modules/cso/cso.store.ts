@@ -1,10 +1,8 @@
 
 import { defineStore } from 'pinia'
-import { ICSO } from '../types'
-import { faker } from '@faker-js/faker';
+import { ICSO } from '../../types/types'
 import { computed, ref } from 'vue';
-import { useFakeData } from '../config';
-import { app } from './app.store';
+import { CSOService } from '.';
 
 export const CSOStore = defineStore('CSO', () => {
     
@@ -20,30 +18,19 @@ export const CSOStore = defineStore('CSO', () => {
     
     const CSOs = computed( () => _CSOs.value)
 
+    // methods
+    const getCSOs = () => {
+        return CSOService.getAllCSOs()
+    }
+
     return {
         CSOs,
         setCSOs,
+        getCSOs,
     }
 })
 
 
-class CSO{
-
-    getAllCSOs() :ICSO[]{
-        console.log('getAllCSOs()')
-        
-        if(useFakeData){
-            return app.fakeCSOs
-        }
-
-        // get from api TBA 
-        return []
-
-    }
-
-}
-
-export const CSOService = new CSO()
 
 
 // methods
