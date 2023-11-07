@@ -69,6 +69,10 @@ interface ITeam{
     // props that are set programmatically
     team_leader?: IUser
     statusText?: string
+    statusObj?: {
+        text: string,
+        color: string,
+    },
 }
 
 interface ITeamMember{

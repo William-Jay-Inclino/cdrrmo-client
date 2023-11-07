@@ -47,6 +47,19 @@ export const CONST_UserStatus = {
     },
 }
 
+export const CONST_TeamStatus = {
+    [TeamStatusEnum.Active]: {
+        id: TeamStatusEnum.Active,
+        text: 'Active',
+        color: 'success'
+    },
+    [TeamStatusEnum.Dispatched]: {
+        id: TeamStatusEnum.Dispatched,
+        text: 'Dispatched',
+        color: 'primary'
+    },
+}
+
 export const CONST_DispatchStatus = {
     [DispatchStatusEnum.Queue]: {
         text: 'Queue',
