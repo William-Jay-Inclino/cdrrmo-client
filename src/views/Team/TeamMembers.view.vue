@@ -12,11 +12,13 @@
             </div>
         </div>
 
-        <div class="row mb-3">
-            <div class="col-10">
-                <div class="float-end">
-                    <!-- <button class="btn btn-primary" type="submit">Add Team</button> -->
-                </div>
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+                <TeamInfo :team-id="teamId"/>
+            </div>
+            <div class="col-6">
+                <TeamMembers :team-id="teamId"/>
             </div>
         </div>
 
@@ -30,6 +32,9 @@
     import Breadcrumbs from '@/components/Breadcrumbs.vue'
     import { ref } from 'vue';
     import { useRoute } from 'vue-router';
+    import TeamInfo from '@/components/TeamInfo.vue'
+    import TeamMembers from '@/components/TeamMembers.vue'
+
     const route = useRoute();
 
     const $teamMember = teamMemberStore()

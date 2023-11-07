@@ -56,8 +56,8 @@
                                                     </a>
                                                     <div class="dropdown-divider"></div>
                                                     <router-link class="dropdown-item" :to="{name: 'teamMembers.route', params: {'id': team.team_id}}">
-                                                        <i class="fas fa-fw fa-eye text-info"></i>
-                                                        <span class="ml-2">View Members</span>
+                                                        <i class="fas fa-fw fa-users text-info"></i>
+                                                        <span class="ml-2">Manage Team</span>
                                                     </router-link>
                                                     <div class="dropdown-divider"></div>
                                                     <a class="dropdown-item" href="#">
