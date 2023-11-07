@@ -18,7 +18,7 @@
                 <TeamInfo :team-id="teamId"/>
             </div>
             <div class="col-6">
-                <TeamMembers :team-id="teamId"/>
+                <TeamMembers :team-id="teamId" :can-manage="true"/>
             </div>
         </div>
 

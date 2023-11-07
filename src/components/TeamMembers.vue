@@ -12,7 +12,7 @@
                         <tr>
                             <th> Name </th>
                             <th class="pl-4"> Skills </th>
-                            <th class="text-center">
+                            <th v-if="canManage" class="text-center">
                                 <i class="fas fa-fw fa-cogs"></i>
                             </th>
                         </tr>
@@ -30,7 +30,7 @@
                                     </li>
                                 </ul>
                             </td>
-                            <td class="align-middle text-center">
+                            <td v-if="canManage" class="align-middle text-center">
                                 <button @click="onRemove(member)" class="btn btn-light">
                                     <i class="fas fa-fw fa-trash text-danger"></i> 
                                 </button>
@@ -63,7 +63,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-center" colspan="4">
+                            <td v-if="canManage" class="text-center" colspan="4">
                                 <button v-if="!isAddingMember" @click="onAdd" class="btn btn-outline-primary btn-sm btn-block">
                                     <i class="fas fa-fw fa-plus"></i>
                                 </button>
@@ -98,6 +98,7 @@ const notifs = ref({ msgs: [] });
 
 const props = defineProps<{
     teamId: string
+    canManage?: boolean
 }>()
 
 const members = ref<ITeamMember[]>()
