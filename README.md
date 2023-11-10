@@ -1,4 +1,4 @@
-To run the project: 
+open terminal and run:
 
 1. npm install
 2. npm run dev
