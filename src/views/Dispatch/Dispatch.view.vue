@@ -150,6 +150,10 @@ import TeamInfoModal from '@/components/TeamInfoModal.vue';
 import { ref } from 'vue';
 import { DispatchStatusEnum, IDispatch } from '@/types/types';
 
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
+
 const $dispatch = dispatchStore()
 
 const showDispatchStatusModal = ref(false)
@@ -178,6 +182,8 @@ const onShowTeamInfoModal = (dispatchedTeam: IDispatch) => {
 const onUpdateStatus = (data: {status: DispatchStatusEnum | undefined}) => {
     if(!data.status || !selectedDispatchedTeam.value) return 
     $dispatch.updateDispatchStatus({id: selectedDispatchedTeam.value.dispatch_id, status: data.status})
+
+    toast.success("Status successfully updated!");
 }
 
 </script>

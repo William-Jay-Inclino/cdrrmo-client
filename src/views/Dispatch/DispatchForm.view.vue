@@ -106,6 +106,11 @@
     import TeamMembers from '@/components/TeamMembers.vue'
     import { useRouter } from 'vue-router';
     import { routeNames } from '@/helpers/constants';
+
+    import { useToast } from "vue-toastification";
+
+    const toast = useToast();
+
     const router = useRouter()
 
     const $dispatch = dispatchStore()
@@ -134,6 +139,8 @@
 
         if(dispatched){
             router.push({name: routeNames.dispatch})
+            toast.success("Dispatch Request Successfully Submitted!");
+
         }
     }
 
