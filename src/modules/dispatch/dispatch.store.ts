@@ -103,6 +103,28 @@ export const dispatchStore = defineStore('dispatch', () => {
         formData.value = {..._formDataInitial}
     }
 
+    const onProceedingHospital = (payload: IDispatch) => {
+        const dispatchedTeam = _dispatchedTeams.value.find(i => i.dispatch_id === payload.dispatch_id)
+
+        if(!dispatchedTeam){
+            console.error('dispatchedTeam not found', dispatchedTeam)
+            return null
+        }
+
+        dispatchedTeam.time_proceeding_hospital = new Date()
+    }
+
+    const onArrivedHospital = (payload: IDispatch) => {
+        const dispatchedTeam = _dispatchedTeams.value.find(i => i.dispatch_id === payload.dispatch_id)
+
+        if(!dispatchedTeam){
+            console.error('dispatchedTeam not found', dispatchedTeam)
+            return null
+        }
+
+        dispatchedTeam.time_arrival_hospital = new Date()
+    }
+
     return {
         dispatchedTeams,
         formData,
@@ -111,6 +133,8 @@ export const dispatchStore = defineStore('dispatch', () => {
         saveDispatch,
         resetFormData,
         updateDispatchStatus,
+        onProceedingHospital,
+        onArrivedHospital,
     }
 })
 

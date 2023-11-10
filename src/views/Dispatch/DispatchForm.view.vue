@@ -53,10 +53,10 @@
                                 <label>Description</label>
                                 <textarea v-model="$dispatch.formData.description" class="form-control" rows="3"></textarea>
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label>Medical Description</label>
                                 <textarea v-model="$dispatch.formData.medical_description" class="form-control" rows="3"></textarea>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label>Number of people involved</label>
                                 <input v-model="$dispatch.formData.num_people_involved" type="number" class="form-control">
