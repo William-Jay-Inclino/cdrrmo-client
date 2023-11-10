@@ -1,5 +1,5 @@
 import { useFakeData } from "@/config"
-import { IPersonnelSkills, ITrainingSkill } from "@/types/types"
+import { IPersonnelSkill, ITrainingSkill } from "@/types/types"
 import { appService } from "../app"
 
 class TrainingSkillService{
@@ -29,7 +29,7 @@ class TrainingSkillService{
 
     }
 
-    getPersonnelSkillsBy(p: {personnel_id: string}): IPersonnelSkills[] | null {
+    getPersonnelSkillsBy(p: {personnel_id: string}): IPersonnelSkill[] | null {
 
         if(useFakeData){
             const personnelSkills = appService.personnelSkills.filter(i => i.personnel_id === p.personnel_id)

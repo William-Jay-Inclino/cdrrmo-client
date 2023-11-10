@@ -53,10 +53,10 @@
                                 <label>Description</label>
                                 <textarea v-model="$dispatch.formData.description" class="form-control" rows="3"></textarea>
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label>Medical Description</label>
                                 <textarea v-model="$dispatch.formData.medical_description" class="form-control" rows="3"></textarea>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label>Number of people involved</label>
                                 <input v-model="$dispatch.formData.num_people_involved" type="number" class="form-control">
@@ -106,6 +106,11 @@
     import TeamMembers from '@/components/TeamMembers.vue'
     import { useRouter } from 'vue-router';
     import { routeNames } from '@/helpers/constants';
+
+    import { useToast } from "vue-toastification";
+
+    const toast = useToast();
+
     const router = useRouter()
 
     const $dispatch = dispatchStore()
@@ -134,6 +139,8 @@
 
         if(dispatched){
             router.push({name: routeNames.dispatch})
+            toast.success("Dispatch Request Successfully Submitted!");
+
         }
     }
 

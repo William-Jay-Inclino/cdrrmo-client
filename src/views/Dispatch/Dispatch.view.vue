@@ -32,9 +32,36 @@
                                 Actions
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="javascript:void(0)" @click="onShowDispatchStatusModal(dispatchedTeam)" data-toggle="modal" :data-target="`#${dispatchStatusModalId}`">Update Status</a>
-                                <a class="dropdown-item" href="#">Update Details</a>
-                                <a class="dropdown-item" href="#">Archive</a>
+                                <a
+                                    v-if="dispatchedTeam.status !== DispatchStatusEnum.Deck"
+                                    class="dropdown-item"
+                                    href="javascript:void(0)"
+                                    @click="onShowDispatchStatusModal(dispatchedTeam)"
+                                    data-toggle="modal"
+                                    :data-target="`#${dispatchStatusModalId}`"
+                                >
+                                    Update Status
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    Update Details
+                                </a>
+                                <a
+                                    @click="onProceedingHospital(dispatchedTeam)"
+                                    v-if="dispatchedTeam.status === DispatchStatusEnum.Deck && !dispatchedTeam.time_proceeding_hospital"
+                                    class="dropdown-item"
+                                    href="#"
+                                >
+                                    Proceeding to Hospital
+                                </a>
+                                <a
+                                    @click="onArrivedHospital(dispatchedTeam)"
+                                    v-if="dispatchedTeam.time_proceeding_hospital && !dispatchedTeam.time_arrival_hospital"
+                                    class="dropdown-item"
+                                    href="#"
+                                >
+                                        Arrived in Hospital
+                                </a>
+                                <!-- <a class="dropdown-item" href="#">Archive</a> -->
                             </div>
                         </div>
                     </div>
@@ -150,6 +177,10 @@ import TeamInfoModal from '@/components/TeamInfoModal.vue';
 import { ref } from 'vue';
 import { DispatchStatusEnum, IDispatch } from '@/types/types';
 
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
+
 const $dispatch = dispatchStore()
 
 const showDispatchStatusModal = ref(false)
@@ -178,7 +209,23 @@ const onShowTeamInfoModal = (dispatchedTeam: IDispatch) => {
 const onUpdateStatus = (data: {status: DispatchStatusEnum | undefined}) => {
     if(!data.status || !selectedDispatchedTeam.value) return 
     $dispatch.updateDispatchStatus({id: selectedDispatchedTeam.value.dispatch_id, status: data.status})
+
+    toast.success("Status successfully updated!");
 }
+
+const onProceedingHospital = (dispatchedTeam: IDispatch) => {
+    $dispatch.onProceedingHospital(dispatchedTeam)
+
+    toast.success("Time proceeding to hospital recorded!");
+}
+
+const onArrivedHospital = (dispatchedTeam: IDispatch) => {
+    $dispatch.onArrivedHospital(dispatchedTeam)
+
+    toast.success("Time arrived in hospital recorded!");
+}
+
+
 
 </script>
 

@@ -44,7 +44,11 @@
                             <button v-show="currentStep === 1" @click="onClickCancel" class="btn btn-dark">Cancel</button>
                             <button v-if="currentStep > 1" @click="onClickBack" class="btn btn-dark">Back</button>
                             <button v-if="currentStep < 3" @click="onClickNext" class="btn btn-primary float-end">Next</button>
-                            <button v-if="currentStep === 3" @click="onSubmitForm" class="btn btn-primary float-end">Submit</button>
+
+                            <div v-if="currentStep === 3" class="float-end">
+                                <button @click="onSubmitForm(1)" class="btn btn-success">Submit and Add Again</button>
+                                <button @click="onSubmitForm(2)" class="btn btn-primary ml-2">Submit and Finish</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -66,6 +70,10 @@
     import Step2 from '@/components/User/FormStep2.vue'
     import Step3 from '@/components/User/FormStep3.vue'
     import { userStore } from '@/modules/user';
+
+    import { useToast } from "vue-toastification";
+
+    const toast = useToast();
 
     const router = useRouter()
     const $user = userStore()
@@ -105,7 +113,7 @@
         currentStep.value += 1
     }
 
-    const onSubmitForm = async() => {
+    const onSubmitForm = async(action: number) => {
         console.log('onSubmitForm()')
 
         const userData = {...$user.formData}
@@ -115,7 +123,19 @@
         const savedUser = await $user.saveUser(userData)
 
         if(savedUser){
-            router.push({name: routeNames.users})
+
+            if(action === 1){
+
+                currentStep.value = 1
+
+            }else if(action === 2){
+
+                router.push({name: routeNames.users})
+
+            }
+
+
+            toast.success("Personnel successfully added!");
         }
     }
 

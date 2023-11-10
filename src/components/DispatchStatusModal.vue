@@ -2,7 +2,7 @@
 
     <div class="modal fade" :id="id" tabindex="-1" role="dialog" :aria-labelledby="id"
         aria-hidden="true" v-if="dispatchedTeam">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog is-wider" role="document">
             <div class="modal-content">
                 <div class="modal-header" :class="{'text-bg-success': dispatchedTeam.status === DispatchStatusEnum.Deck}">
                     <h5 v-if="dispatchedTeam.status !== DispatchStatusEnum.Deck" class="modal-title">Please Confirm</h5>
@@ -79,3 +79,9 @@
     }
 
 </script>
+
+<style scoped>
+.is-wider {
+    width: 80%; /* Adjust the width to your desired value */
+}
+</style>

@@ -12,11 +12,13 @@
             </div>
         </div>
 
-        <div class="row mb-3">
-            <div class="col-10">
-                <div class="float-end">
-                    <!-- <button class="btn btn-primary" type="submit">Add Team</button> -->
-                </div>
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+                <TeamInfo :team-id="teamId"/>
+            </div>
+            <div class="col-6">
+                <TeamMembers :team-id="teamId" :can-manage="true" @add-member="onTeamMemberAdded" @remove-member="onTeamMemberRemoved"/>
             </div>
         </div>
 
@@ -30,6 +32,13 @@
     import Breadcrumbs from '@/components/Breadcrumbs.vue'
     import { ref } from 'vue';
     import { useRoute } from 'vue-router';
+    import TeamInfo from '@/components/TeamInfo.vue'
+    import TeamMembers from '@/components/TeamMembers.vue'
+    import { useToast } from "vue-toastification";
+
+    const toast = useToast();
+
+    
     const route = useRoute();
 
     const $teamMember = teamMemberStore()
@@ -52,5 +61,15 @@
             isActive: true,
         }
     ])
+
+    const onTeamMemberAdded = () => {
+        console.log('onTeamMemberAdded()')
+        toast.success("Team member successfully added!");
+    }
+
+    const onTeamMemberRemoved = () => {
+        console.log('onTeamMemberRemoved()')
+        toast.success("Team member successfully removed!");
+    }
 
 </script>

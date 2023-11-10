@@ -1,6 +1,6 @@
 
 interface IUser {
-    user_id: string
+    user_id: string 
     last_name: string 
     first_name: string
     gender: GenderEnum 
@@ -10,7 +10,7 @@ interface IUser {
     blood_type: string 
     status: UserStatusEnum 
     dispatch_status: DispatchStatusEnum 
-    user_name: string
+    user_name: string 
     password: string
     user_level: UserLevelEnum
     type: UserTypeEnum

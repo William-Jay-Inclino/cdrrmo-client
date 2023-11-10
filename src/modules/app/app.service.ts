@@ -1,25 +1,6 @@
 import { fakeData } from "@/config"
-import { IBART, ICSO, IEmergency, INationalAgency, IPO, IPersonnelSkills, ITeam, ITeamMember, ITrainingSkill, IUser } from "@/types/types"
+import { IBART, ICSO, IEmergency, INationalAgency, IPO, IPersonnelSkill, ITeam, ITeamMember, ITrainingSkill, IUser } from "@/types/types"
 import { generateFakeCSO, fakeCSOs, generateFakeNA, fakeNAs, generateFakeBART, fakeBARTs, generateFakePO, fakePOs, generateFakeUsers, generateFakeTeams, generateFakeTeamMembers, generateFakeEmergencies, fakeEmergencies, fakeTeams, generateFakeSkills, fakeSkills, generateFakePersonnelSkills } from "@/helpers/faker"
-
-// root class
-
-// const _authUser: IUser = {
-//     user_id: '0',
-//     last_name: 'Inclino',
-//     first_name: 'Jay',
-//     gender: GenderEnum.Male,
-//     address: 'Puerto Bello, Merida Leyte',
-//     birth_date: new Date('1997-10-24'),
-//     contact_no: '09106024370',
-//     blood_type: 'O+',
-//     status: UserStatusEnum.Active,
-//     dispatch_status: DispatchStatusEnum.Queue,
-//     user_name: 'Jay',
-//     password: 'Jay123',
-//     user_level: UserLevelEnum.Admin,
-//     type: UserTypeEnum.LGU_Regular,
-// }
 
 class AppService{
 
@@ -33,7 +14,7 @@ class AppService{
     teamMembers: ITeamMember[] = []
     emergencies: IEmergency[] = []
     trainingSkills: ITrainingSkill[] = []
-    personnelSkills: IPersonnelSkills[] = []
+    personnelSkills: IPersonnelSkill[] = []
 
     init(){
         console.log('class App init()')

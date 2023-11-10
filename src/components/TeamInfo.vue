@@ -25,7 +25,7 @@
                         </tr>
                         <tr v-for="skill in teamLeaderSkills">
                             <td>
-                                {{ skill.trainingSkill.description }}
+                                {{ skill.trainingSkill?.description }}
                                 <button class="btn btn-light btn-sm float-end">
                                     <i class="fas fa-fw fa-eye text-info"></i>
                                 </button>
@@ -60,7 +60,7 @@
     import { teamMemberService } from '@/modules/team_members';
     import { trainingSkillService } from '@/modules/training_skill';
     import { userService } from '@/modules/user';
-    import { IPersonnelSkills, ITeam, ITeamMember, UserTypeEnum } from '@/types/types';
+    import { IPersonnelSkill, ITeam, ITeamMember, UserTypeEnum } from '@/types/types';
     import { computed, onMounted, ref, watch } from 'vue';
 
     const props = defineProps<{
@@ -68,7 +68,7 @@
     }>()
 
     const team = ref<ITeam | null>()
-    const teamLeaderSkills = ref<IPersonnelSkills[]>()
+    const teamLeaderSkills = ref<IPersonnelSkill[]>()
     const members = ref<ITeamMember[]>()
 
     const teamId = computed( () => props.teamId)
@@ -131,7 +131,7 @@
         members.value = teamMemberService.getAllTeamMembers({teamId})
     }
 
-    const getPersonnelSkills = (personnelId: string): IPersonnelSkills[] => {
+    const getPersonnelSkills = (personnelId: string): IPersonnelSkill[] => {
         const personnelSkills = trainingSkillService.getPersonnelSkillsBy({personnel_id: personnelId})
 
         if(personnelSkills){
