@@ -15,7 +15,7 @@
 
 				</div>
 
-				<Footer />
+				<!-- <Footer /> -->
 
 			</div>
 
@@ -43,7 +43,7 @@
 
 	import Navbar from '@/components/Navbar.vue';
 	import Sidebar from '@/components/Sidebar.vue';
-	import Footer from '@/components/Footer.vue'
+	// import Footer from '@/components/Footer.vue'
 	import LogoutModal from '@/components/LogoutModal.vue'
 	import ScrollToTop from '@/components/ScrollToTop.vue'
 

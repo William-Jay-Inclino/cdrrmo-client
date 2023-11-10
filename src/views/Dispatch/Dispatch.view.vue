@@ -32,6 +32,11 @@
                                 Actions
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-fw fa-sync-alt text-primary"></i>
+                                    <span class="ml-2">Update Details</span>
+                                </a>
+                                <div v-if="!dispatchedTeam.time_arrival_hospital" class="dropdown-divider"></div>
                                 <a
                                     v-if="dispatchedTeam.status !== DispatchStatusEnum.Deck"
                                     class="dropdown-item"
@@ -40,10 +45,8 @@
                                     data-toggle="modal"
                                     :data-target="`#${dispatchStatusModalId}`"
                                 >
-                                    Update Status
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    Update Details
+                                    <i class="fas fa-fw fa-check text-primary"></i>
+                                    <span class="ml-2">Update Status</span>
                                 </a>
                                 <a
                                     @click="onProceedingHospital(dispatchedTeam)"
@@ -51,7 +54,8 @@
                                     class="dropdown-item"
                                     href="#"
                                 >
-                                    Proceeding to Hospital
+                                    <i class="fas fa-fw fa-ambulance text-primary"></i>
+                                    <span class="ml-2">Proceeding to Hospital</span>
                                 </a>
                                 <a
                                     @click="onArrivedHospital(dispatchedTeam)"
@@ -59,7 +63,8 @@
                                     class="dropdown-item"
                                     href="#"
                                 >
-                                        Arrived in Hospital
+                                    <i class="fas fa-fw fa-hospital text-primary"></i>
+                                    <span class="ml-2">Arrived in Hospital</span>
                                 </a>
                                 <!-- <a class="dropdown-item" href="#">Archive</a> -->
                             </div>
@@ -109,20 +114,20 @@
                                         <th>Caller Name</th>
                                         <th>Caller Number</th>
                                         <th width="18.75%">
-                                            <i class="fas fa-fw fa-clock"></i>
-                                            <span class="ml-2">Proceeding</span>
+                                            <!-- <i class="fas fa-fw fa-clock"></i> -->
+                                            <span class="ml-2">Time Proceeding</span>
                                         </th>
                                         <th width="18.75%">
-                                            <i class="fas fa-fw fa-clock"></i>
-                                            <span class="ml-2">Arrival</span>
+                                            <!-- <i class="fas fa-fw fa-clock"></i> -->
+                                            <span class="ml-2">Time Arrival</span>
                                         </th>
                                         <th width="18.75%">
-                                            <i class="fas fa-fw fa-clock"></i>
-                                            <span class="ml-2">Proceeding Hospital</span>
+                                            <!-- <i class="fas fa-fw fa-clock"></i> -->
+                                            <span class="ml-2">Time Proceeding Hospital</span>
                                         </th>
                                         <th width="18.75%">
-                                            <i class="fas fa-fw fa-clock"></i>
-                                            <span class="ml-2">Arrival Hospital</span>
+                                            <!-- <i class="fas fa-fw fa-clock"></i> -->
+                                            <span class="ml-2">Time Arrival Hospital</span>
                                         </th>
                                     </tr>
                                 </thead>

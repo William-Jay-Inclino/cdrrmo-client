@@ -87,7 +87,8 @@ export const userStore = defineStore('user', () => {
     const userTypes = computed( (): ISingleSelect[] => constantToSingleSelect(CONST_DistinctUserTypes))
     const userLevels = computed( (): ISingleSelect[] => {
         const items = constantToSingleSelect(CONST_UserLevel)
-        return items.filter(i => i.id !== UserLevelEnum.Admin)
+        return items
+        // return items.filter(i => i.id !== UserLevelEnum.Admin)
     })
     const bloodTypes = computed( (): string[] => CONST_bloodTypes)
 
