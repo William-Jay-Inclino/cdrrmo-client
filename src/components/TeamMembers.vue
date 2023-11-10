@@ -77,8 +77,6 @@
             </div>
         </div>
 
-        <toast :msgs="notifs.msgs"></toast>
-
     </div>
 
 </template>
@@ -90,16 +88,14 @@ import { trainingSkillService } from '@/modules/training_skill';
 import { userService } from '@/modules/user';
 import { IPersonnelSkill, ITeamMember, IUser } from '@/types/types';
 import { ref, computed, watch, onMounted } from 'vue';
-import toast from '@/components/Toast.vue'
-import { push as toastPush } from './Toast.vue';
-import { faker } from '@faker-js/faker';
 
-const notifs = ref({ msgs: [] });
 
 const props = defineProps<{
     teamId: string
     canManage?: boolean
 }>()
+
+const emit = defineEmits(['add-member', 'remove-member'])
 
 const members = ref<ITeamMember[]>()
 const isAddingMember = ref(false)
@@ -136,7 +132,7 @@ const onRemove = (member: ITeamMember) => {
 
     members.value?.splice(indx, 1)
 
-    pushNotifs('Member removed successfully!')
+    emit('remove-member')
 }
 
 const onAdd = () => {
@@ -156,9 +152,9 @@ const onSave = () => {
     member.team_member_id = ''
     members.value.push(member)
 
-    pushNotifs('Member added successfully!')
-
     reset()
+    
+    emit('add-member')
 
 }
 
@@ -183,11 +179,6 @@ const reset = () => {
     selectedUser.value = undefined 
     personnelSkills.value = []
     isAddingMember.value = false
-}
-
-const pushNotifs = (msg: string) => {
-    const id = faker.string.uuid()
-    toastPush(notifs.value.msgs, { id, msg });
 }
 
 </script>

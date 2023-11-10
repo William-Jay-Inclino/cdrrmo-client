@@ -1,4 +1,4 @@
-import { DispatchStatusEnum, GenderEnum, IBART, ICSO, IEmergency, INationalAgency, IPO, IPersonnelSkills, ITeam, ITeamMember, ITrainingSkill, IUser, TeamStatusEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '../types/types'
+import { DispatchStatusEnum, GenderEnum, IBART, ICSO, IEmergency, INationalAgency, IPO, IPersonnelSkill, ITeam, ITeamMember, ITrainingSkill, IUser, TeamStatusEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '../types/types'
 import { faker } from '@faker-js/faker'
 import { appService } from '@/modules/app'
 import { CONST_bloodTypes } from '@/helpers/constants'
@@ -87,16 +87,16 @@ export const generateFakeSkills = (p: {count: number}) :ITrainingSkill[] => {
 
 }
 
-export const generateFakePersonnelSkills = (p: {users: IUser[], trainingSkills: ITrainingSkill[], countSkill: number}) :IPersonnelSkills[] => {
+export const generateFakePersonnelSkills = (p: {users: IUser[], trainingSkills: ITrainingSkill[], countSkill: number}) :IPersonnelSkill[] => {
     console.log('generateFakePersonnelSkills()')
 
-    const fakeData: IPersonnelSkills[] = []
+    const fakeData: IPersonnelSkill[] = []
     
 
     for(let user of p.users){
         let totalSkills = p.countSkill
         
-        const personnelSkill = {} as IPersonnelSkills
+        const personnelSkill = {} as IPersonnelSkill
         personnelSkill.personnel_id = user.user_id 
         
         while(totalSkills--){

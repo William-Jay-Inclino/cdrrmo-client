@@ -18,7 +18,7 @@
                 <TeamInfo :team-id="teamId"/>
             </div>
             <div class="col-6">
-                <TeamMembers :team-id="teamId" :can-manage="true"/>
+                <TeamMembers :team-id="teamId" :can-manage="true" @add-member="onTeamMemberAdded" @remove-member="onTeamMemberRemoved"/>
             </div>
         </div>
 
@@ -34,7 +34,11 @@
     import { useRoute } from 'vue-router';
     import TeamInfo from '@/components/TeamInfo.vue'
     import TeamMembers from '@/components/TeamMembers.vue'
+    import { useToast } from "vue-toastification";
 
+    const toast = useToast();
+
+    
     const route = useRoute();
 
     const $teamMember = teamMemberStore()
@@ -57,5 +61,15 @@
             isActive: true,
         }
     ])
+
+    const onTeamMemberAdded = () => {
+        console.log('onTeamMemberAdded()')
+        toast.success("Team member successfully added!");
+    }
+
+    const onTeamMemberRemoved = () => {
+        console.log('onTeamMemberRemoved()')
+        toast.success("Team member successfully removed!");
+    }
 
 </script>
