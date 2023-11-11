@@ -1,66 +1,66 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { routeNames } from '@/helpers/constants'
+import { routeNames } from '@/common/constants'
 
 const routes = [
     {
         path: '/users',
         name: routeNames.users,
-        component: () => import('@/views/User/User.view.vue')
+        component: () => import('./user/User.view.vue')
     },
     {
         path: '/users/form',
         name: routeNames.userForm,
-        component: () => import('@/views/User/UserForm.view.vue')
+        component: () => import('./user/UserForm.view.vue')
     },
     {
         path: '/dispatch',
         name: routeNames.dispatch,
-        component: () => import('@/views/Dispatch/Dispatch.view.vue')
+        component: () => import('./dispatch/Dispatch.view.vue')
     },
     {
         path: '/dispatch/form',
         name: routeNames.dispatchForm,
-        component: () => import('@/views/Dispatch/DispatchForm.view.vue')
+        component: () => import('./dispatch/DispatchForm.view.vue')
     },
     {
         path: '/teams',
         name: routeNames.teams,
-        component: () => import('@/views/Team/Team.view.vue')
+        component: () => import('./team/Team.view.vue')
     },
     {
         path: '/teams/members/:id',
         name: routeNames.teamMembers,
-        component: () => import('@/views/Team/TeamMembers.view.vue')
+        component: () => import('./team/TeamMembers.view.vue')
     },
     {
         path: '/csos',
         name: routeNames.csos,
-        component: () => import('@/views/Cso/Cso.view.vue')
+        component: () => import('./cso/Cso.view.vue')
     },
     {
         path: '/pos',
         name: routeNames.pos,
-        component: () => import('@/views/Po/Po.view.vue')
+        component: () => import('./po/Po.view.vue')
     },
     {
         path: '/barts',
         name: routeNames.barts,
-        component: () => import('@/views/Bart/Bart.view.vue')
+        component: () => import('./bart/Bart.view.vue')
     },
     {
         path: '/national-agencies',
         name: routeNames.nationalAgencies,
-        component: () => import('@/views/Na/Na.view.vue')
+        component: () => import('./na/Na.view.vue')
     },
     {
         path: '/emergencies',
         name: routeNames.emergencies,
-        component: () => import('@/views/Emergency/Emergency.view.vue')
+        component: () => import('./emergency/Emergency.view.vue')
     },
     {
         path: '/training-skills',
         name: routeNames.trainingSkills,
-        component: () => import('@/views/TrainingSkill/TrainingSkill.vue')
+        component: () => import('./training_skill/TrainingSkill.vue')
     },
 //   {
 //     path: '/login',
