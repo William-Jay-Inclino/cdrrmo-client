@@ -11,33 +11,28 @@ import { DistinctUserTypeEnum, GenderEnum, IUser, UserLevelEnum, UserStatusEnum,
 import { DispatchStatusEnum } from '@/dispatch';
 
 
-const _formDataInitial: IUser = {
-    user_id: '',
-    last_name: '', 
-    first_name: '',
-    gender: GenderEnum.Male, 
-    address: '', 
-    birth_date: new Date(), 
-    contact_no: '',
-    blood_type: CONST_bloodTypes[0], 
-    status: UserStatusEnum.Active,
-    dispatch_status: DispatchStatusEnum.Queue, 
-    user_name: '',
-    password: '',
-    user_level: UserLevelEnum.Field_Operator,
-    type: UserTypeEnum.LGU_Casual,
-    sub_type_id: UserTypeEnum.LGU_Casual.toString(),
-
-    distinctType: DistinctUserTypeEnum.LGU,
-    personnelSkills: [],
-}
-
-const _nationalAgencies = NAService.getAllNAs()
-const _csos = CSOService.getAllCSOs()
-const _pos = POService.getAllPOs()
-const _barts = BARTService.getAllBARTs()
-
 export const userStore = defineStore('user', () => {
+
+    const _formDataInitial: IUser = {
+        user_id: '',
+        last_name: '', 
+        first_name: '',
+        gender: GenderEnum.Male, 
+        address: '', 
+        birth_date: new Date(), 
+        contact_no: '',
+        blood_type: CONST_bloodTypes[0], 
+        status: UserStatusEnum.Active,
+        dispatch_status: DispatchStatusEnum.Queue, 
+        user_name: '',
+        password: '',
+        user_level: UserLevelEnum.Field_Operator,
+        type: UserTypeEnum.LGU_Casual,
+        sub_type_id: UserTypeEnum.LGU_Casual.toString(),
+    
+        distinctType: DistinctUserTypeEnum.LGU,
+        personnelSkills: [],
+    }
     
     // state
     const _users = ref<IUser[]>([])

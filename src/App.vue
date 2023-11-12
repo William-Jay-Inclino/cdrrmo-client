@@ -41,11 +41,11 @@
 
 <script setup lang="ts">
 
-	import Navbar from '@/common/components/Navbar.vue';
-	import Sidebar from '@/common/components/Sidebar.vue';
+	import Navbar from './common/components/Navbar.vue';
+	import Sidebar from './common/components/Sidebar.vue';
 	// import Footer from '@/components/Footer.vue'
-	import LogoutModal from '@/common/components/LogoutModal.vue'
-	import ScrollToTop from '@/common/components/ScrollToTop.vue'
+	import LogoutModal from './common/components/LogoutModal.vue'
+	import ScrollToTop from './common/components/ScrollToTop.vue'
 
 	// import { appStore } from '@/modules/app'
 
@@ -57,4 +57,4 @@
 
 <style>
 
-</style>./modules/app.store
+</style>

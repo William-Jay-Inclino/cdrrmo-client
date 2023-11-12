@@ -3,6 +3,11 @@ import { routeNames } from '@/common/constants'
 
 const routes = [
     {
+        path: '/',
+        name: routeNames.dashboard,
+        component: () => import('./dashboard/Dashboard.vue')
+    },
+    {
         path: '/users',
         name: routeNames.users,
         component: () => import('./user/User.view.vue')

@@ -13,10 +13,11 @@
 <hr class="sidebar-divider my-0">
 
 <!-- Nav Item - Dashboard -->
-<li class="nav-item">
-    <a class="nav-link" href="index.html">
+<li class="nav-item" :class="{'active': routeName === routeNames.dashboard}">
+    <router-link :to="{name: routeNames.dashboard}" class="nav-link">
         <i class="fas fa-fw fa-tachometer-alt"></i>
-        <span>Dashboard</span></a>
+        <span>Dashboard</span>
+    </router-link>
 </li>
 
 <!-- Divider -->
@@ -130,7 +131,7 @@
 <script setup lang="ts">
     import { computed } from 'vue';
     import { useRoute } from 'vue-router';
-    import { routeNames } from '@/helpers/constants'
+    import { routeNames } from '../constants'
 
     const route = useRoute();
     const routeName = computed( () => route.name) 

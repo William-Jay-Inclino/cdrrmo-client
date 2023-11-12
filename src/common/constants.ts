@@ -1,6 +1,9 @@
-import { DispatchStatusEnum, DistinctUserTypeEnum, GenderEnum, TeamStatusEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '@/common/types/types'
+import { DispatchStatusEnum } from "@/dispatch";
+import { TeamStatusEnum } from "@/team";
+import { DistinctUserTypeEnum, GenderEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from "@/user";
 
 export const routeNames = {
+    dashboard: 'dashboard.route',
     users: 'users.route',
     userForm: 'userForm.route',
     dispatch: 'dispatch.route',

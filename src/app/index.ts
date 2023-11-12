@@ -1,7 +1,2 @@
-import { appStore } from "./app.store"
-import { appService } from "./app.service"
-
-export {
-    appStore,
-    appService,
-}
+export * from './app.service'
+export * from './app.store'

@@ -9,35 +9,35 @@ import { dispatchService } from '.';
 import { CONST_DispatchStatus } from '@/common/constants';
 import { userService } from '../user';
 
-const authUser = appService.getAuthUser() 
-const emergencies = emergencyService.getAllEmergencies()
-const teams = teamService.getAllTeams()
-const users = userService.getAllUsers()
-
-const _formDataInitial: IDispatch = {
-    dispatch_id: '',
-    caller_name: '',
-    dispatcher_id: authUser!.user_id,
-    caller_number: '',
-    location: '',
-    emergency_id: emergencies[0].emergency_id,
-    description: '',
-    medical_description: '',
-    num_people_involved: 0,
-    hazard: '',
-    team_id: teams[0].team_id,
-    time_dispatch: new Date(),
-    remarks: '',
-    time_proceeding: null,
-    time_arrival: null,
-    time_proceeding_hospital: null,
-    time_arrival_hospital: null,
-    status: DispatchStatusEnum.Queue,
-}
-
 
 export const dispatchStore = defineStore('dispatch', () => {
     
+    const authUser = appService.getAuthUser() 
+    const emergencies = emergencyService.getAllEmergencies()
+    const teams = teamService.getAllTeams()
+    const users = userService.getAllUsers()
+
+    const _formDataInitial: IDispatch = {
+        dispatch_id: '',
+        caller_name: '',
+        dispatcher_id: authUser!.user_id,
+        caller_number: '',
+        location: '',
+        emergency_id: (emergencies.length > 0) ? emergencies[0].emergency_id : '',
+        description: '',
+        medical_description: '',
+        num_people_involved: 0,
+        hazard: '',
+        team_id: (teams.length > 0) ? teams[0].team_id : '',
+        time_dispatch: new Date(),
+        remarks: '',
+        time_proceeding: null,
+        time_arrival: null,
+        time_proceeding_hospital: null,
+        time_arrival_hospital: null,
+        status: DispatchStatusEnum.Queue,
+    }
+
     // state
     const _dispatchedTeams = ref<IDispatch[]>([])
     const formData = ref<IDispatch>({..._formDataInitial})
