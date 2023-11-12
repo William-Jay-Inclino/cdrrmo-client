@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { routeNames } from '@/common/constants'
+import { routeNames } from './common/constants'
 
 const routes = [
     {

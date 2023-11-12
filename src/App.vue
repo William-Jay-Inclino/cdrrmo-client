@@ -51,6 +51,31 @@
 
 	// const $app = appStore()
 	// $app.init()
+
+	import axios from 'axios';
+	import { onMounted } from 'vue';
+
+
+	onMounted( async() => {
+		await test()
+	})
+
+	const api = axios.create({
+		baseURL: "http://localhost:5173/api/v1",
+		headers: {
+			"Access-Control-Allow-Origin": "*",
+			"Content-Type": "application/json",
+		},
+	});
+
+	const test = async() => {
+		try {
+			const response = await api.get('/user');
+			console.log({response})
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+	}
 	
 </script>
 

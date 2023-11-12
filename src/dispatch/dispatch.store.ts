@@ -6,7 +6,7 @@ import { appService } from '../app';
 import { emergencyService } from '../emergency';
 import { teamService } from '../team';
 import { dispatchService } from '.';
-import { CONST_DispatchStatus } from '@/common/constants';
+import { CONST_DispatchStatus } from '../common';
 import { userService } from '../user';
 
 

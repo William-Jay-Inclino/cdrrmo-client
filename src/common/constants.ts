@@ -1,6 +1,6 @@
-import { DispatchStatusEnum } from "@/dispatch";
-import { TeamStatusEnum } from "@/team";
-import { DistinctUserTypeEnum, GenderEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from "@/user";
+import { DispatchStatusEnum } from "../dispatch";
+import { TeamStatusEnum } from "../team";
+import { DistinctUserTypeEnum, GenderEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from "../user";
 
 export const routeNames = {
     dashboard: 'dashboard.route',

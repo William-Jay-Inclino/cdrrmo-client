@@ -8,7 +8,7 @@ import { computed, ref } from 'vue'
 // import { CSOService } from '@/cso';
 // import { POService } from '@/po';
 import { DistinctUserTypeEnum, GenderEnum, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '.';
-import { DispatchStatusEnum } from '@/dispatch';
+import { DispatchStatusEnum } from '../dispatch';
 import { CONST_bloodTypes } from '../common/constants';
 
 
