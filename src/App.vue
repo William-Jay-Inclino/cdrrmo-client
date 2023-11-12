@@ -41,16 +41,16 @@
 
 <script setup lang="ts">
 
-	import Navbar from '@/components/Navbar.vue';
-	import Sidebar from '@/components/Sidebar.vue';
+	import Navbar from '@/common/components/Navbar.vue';
+	import Sidebar from '@/common/components/Sidebar.vue';
 	// import Footer from '@/components/Footer.vue'
-	import LogoutModal from '@/components/LogoutModal.vue'
-	import ScrollToTop from '@/components/ScrollToTop.vue'
+	import LogoutModal from '@/common/components/LogoutModal.vue'
+	import ScrollToTop from '@/common/components/ScrollToTop.vue'
 
-	import { appStore } from '@/modules/app'
+	// import { appStore } from '@/modules/app'
 
-	const $app = appStore()
-	$app.init()
+	// const $app = appStore()
+	// $app.init()
 	
 </script>
 
