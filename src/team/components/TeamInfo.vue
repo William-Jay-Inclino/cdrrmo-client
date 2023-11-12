@@ -56,9 +56,9 @@
 
 <script setup lang="ts">
 
-    const props = defineProps<{
-        teamId: string
-    }>()
+    // const props = defineProps<{
+    //     teamId: string
+    // }>()
 
 
 </script>

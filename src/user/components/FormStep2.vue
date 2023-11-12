@@ -11,19 +11,25 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="skill in skills">
+                <tr>
                     <td class="align-middle">
                         <button
-                          @click="onClickSelectSkill(skill)"
+                          @click="() => console.log('onClickSelectSkill')"
                           class="btn btn-sm"
-                          :class="{'btn-primary': skill.selected, 'btn-outline-primary': !skill.selected}">
+                          :class="{'btn-primary': true, 'btn-outline-primary': false}">
                           <i
                           class="fas fa-fw fa-check"></i>
                           </button>
                     </td>
-                    <td class="align-middle"> {{ skill.description }} </td>
+                    <td class="align-middle"> {{ 'skill.description' }} </td>
                     <td class="text-center">
-                        <CertificateManager :id="skill.training_id" :certificates="skill.certificates" :show="skill.selected" @add-cert="addCertificate" @del-cert="deleteCertificate"/>
+                        <CertificateManager
+                            :id="'skill.training_id'"
+                            :certificates="'skill.certificates'"
+                            :show="'skill.selected'"
+                            @add-cert="() => console.log('addCertificate')"
+                            @del-cert="() => console.log('deleteCertificate')" 
+                        />
                     </td>
                 </tr>
             </tbody>
@@ -35,7 +41,7 @@
 </template>
 
 
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import { trainingSkillService, ICompSkill, ICompCertificate } from '@/modules/training_skill';
 import { ref } from 'vue';
 import CertificateManager from '@/components/User/CertificateManager.vue'
@@ -127,4 +133,4 @@ const deleteCertificate = (data: {id: string, certificateId: string}) => {
 
 
 
-</script>
+</script> -->

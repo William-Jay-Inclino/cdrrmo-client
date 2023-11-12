@@ -1,14 +1,15 @@
 
 import { defineStore } from 'pinia'
-import { computed, ref, watch } from 'vue'
-import { CONST_DispatchStatus, CONST_DistinctUserTypes, CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_UserSubTypeText, CONST_UserTypeText, CONST_UserlvlText, CONST_bloodTypes } from '@/common/constants';
-import { userService } from './user.service'
-import { NAService } from '@/na';
-import { BARTService } from '@/bart';
-import { CSOService } from '@/cso';
-import { POService } from '@/po';
+import { computed, ref } from 'vue'
+// import { CONST_DispatchStatus, CONST_DistinctUserTypes, CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_UserSubTypeText, CONST_UserTypeText, CONST_UserlvlText, CONST_bloodTypes } from '@/common/constants';
+// import { userService } from './user.service'
+// import { NAService } from '@/na';
+// import { BARTService } from '@/bart';
+// import { CSOService } from '@/cso';
+// import { POService } from '@/po';
 import { DistinctUserTypeEnum, GenderEnum, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '.';
 import { DispatchStatusEnum } from '@/dispatch';
+import { CONST_bloodTypes } from '../common/constants';
 
 
 export const userStore = defineStore('user', () => {
@@ -268,7 +269,7 @@ export const userStore = defineStore('user', () => {
         users,
         formData,
         // genders,
-        status,
+        // status,
         // bloodTypes,
         // userLevels,
         // userTypes,

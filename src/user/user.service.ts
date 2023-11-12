@@ -1,4 +1,4 @@
-import { CONST_UserSubTypeText } from "@/common/constants"
+import { CONST_UserSubTypeText } from "../common/constants"
 import { IUser, UserTypeEnum } from "."
 
 
@@ -40,6 +40,7 @@ class UserService{
     }
 
     getSubType(userType: UserTypeEnum, subTypeId: string) :string {
+        console.log('subTypeId', subTypeId)
 
         // if(userType === UserTypeEnum.ACDV_BART){
         //     const bart = appService.barts.find(i => i.id === subTypeId)

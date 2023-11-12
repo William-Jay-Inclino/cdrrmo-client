@@ -48,9 +48,9 @@
                     <th>Personnel Subtype</th>
                     <td> {{ CONST_SubTypes[$user.formData.type].text }} </td>
                 </tr>
-                <tr v-if="subSubType">
+                <tr v-if="false">
                     <th>Personnel Sub-subType</th>
-                    <td> {{ subSubType }} </td>
+                    <td> {{ 'subSubType' }} </td>
                 </tr>
                 <tr v-if="$user.formData.personnelSkills">
                     <th class="align-middle" :rowspan="$user.formData.personnelSkills.length + 1">Personnel Skills</th>
@@ -67,22 +67,22 @@
 
 <script setup lang="ts">
 
-import { CONST_DistinctUserTypes, CONST_Gender, CONST_UserLevel, CONST_UserStatus, CONST_SubTypes } from '@/helpers/constants';
-import { trainingSkillService } from '@/modules/training_skill';
-import { userStore } from '@/modules/user';
+import { CONST_DistinctUserTypes, CONST_Gender, CONST_UserLevel, CONST_UserStatus, CONST_SubTypes } from '../../common/constants';
+import { trainingSkillService } from '../../training_skill';
+import { userStore } from '../../user';
 import { computed } from 'vue';
 
 const $user = userStore()
 
 const skills = trainingSkillService.getAllTrainingSkills()
 
-const subSubType = computed( () => {
-    const x = $user.userSubSubTypes?.find(i => i.id === $user.formData.sub_type_id)
-    if(x){
-        return x.name
-    }
-    return null
-})
+// const subSubType = computed( () => {
+//     const x = $user.userSubSubTypes?.find(i => i.id === $user.formData.sub_type_id)
+//     if(x){
+//         return x.name
+//     }
+//     return null
+// })
 
 const personnelSkills = computed( () => {
     const x: {id: string, label: string}[] = []

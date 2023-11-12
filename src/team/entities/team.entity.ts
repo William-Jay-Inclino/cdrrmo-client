@@ -1,5 +1,5 @@
 import { TeamStatusEnum } from "."
-import { IUser, IPersonnelSkill } from '@/user/entites'
+import { IUser, IPersonnelSkill } from '../../user/entities'
 
 export interface ITeam{
     team_id: string
