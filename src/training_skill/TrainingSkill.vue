@@ -11,7 +11,9 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">List of Training Skills</h6>
-                        <button class="btn btn-primary" type="submit">Add Training Skill</button>
+                        <router-link :to="{name: routeNames.trainingSkillsForm}">
+                            <button class="btn btn-primary" type="submit">Add Training Skill</button>
+                        </router-link>
                     </div>
 
                     <!-- Card Body -->
@@ -27,13 +29,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="skill of $trainingSkill.trainingSkills">
-                                        <td> {{ skill.name }} </td>
+                                    <tr v-for="item of $module.trainingSkills">
+                                        <td> {{ item.name }} </td>
                                         <td class="text-center">
-                                            <button class="btn btn-light btn-sm">
+                                            <button @click="onClickUpdateIcon(item)" class="btn btn-light btn-sm">
                                                 <i class="fas fa-fw fa-pencil-alt"></i>
                                             </button>
-                                            <button @click="onRemove(skill.id)" class="btn btn-light btn-sm">
+                                            <button data-toggle="modal" :data-target="`#${deleteModalId}`" @click="onShowDeleteModal(item.id)" class="btn btn-light btn-sm">
                                                 <i class="fas fa-fw fa-trash text-danger"></i>
                                             </button>
                                         </td>
@@ -45,6 +47,9 @@
                 </div>
             </div>
         </div>
+
+        <DeleteModal :id="deleteModalId" @on-delete="onDelete" @on-cancel="onCancelDelete"/>
+
   </div>
 
 </template>
@@ -53,18 +58,45 @@
 <script setup lang="ts">
 
 import { useToast } from "vue-toastification";
-import { trainingSkillStore } from '.'
+import { ITrainingSkill, trainingSkillStore } from '.'
+import { routeNames } from '../common/constants'
+import DeleteModal from "../common/components/DeleteModal.vue";
+import { ref } from "vue";
+import { useRouter } from 'vue-router';
 
 const toast = useToast();
-const $trainingSkill = trainingSkillStore()
-const module = 'Training skill'
+const $module = trainingSkillStore()
+const moduleLabel = 'Training skill'
+const deleteModalId = ref('deleteModalId')
+const idToDelete = ref('')
+const router = useRouter()
 
-const onRemove = async(id: string) => {
-    const removed = await $trainingSkill.onRemove(id)
+const onShowDeleteModal = (id: string) => {
+    console.log('onShowDeleteModal()')
+    idToDelete.value = id
+}
+
+const onDelete = async() => {
+
+    if(idToDelete.value.trim() === '') return 
+
+    const removed = await $module.onDelete(idToDelete.value)
 
     if(removed){
-        toast.success(module + ' successfully deleted!')
+        toast.success(moduleLabel + ' successfully deleted!')
+    }else{
+        toast.error('Failed to remove ' + moduleLabel)
     }
+
+    idToDelete.value = ''
+}
+
+const onCancelDelete = () => {
+    idToDelete.value = ''
+}
+
+const onClickUpdateIcon = (data: ITrainingSkill) => {
+    router.push({name: routeNames.trainingSkillsForm, query: {id: data.id}})
 }
 
 </script>

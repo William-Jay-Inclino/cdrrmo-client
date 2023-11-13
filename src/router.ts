@@ -67,6 +67,11 @@ const routes = [
         name: routeNames.trainingSkills,
         component: () => import('./training_skill/TrainingSkill.vue')
     },
+    {
+        path: '/training-skills/form',
+        name: routeNames.trainingSkillsForm,
+        component: () => import('./training_skill/TrainingSkillForm.vue')
+    },
 //   {
 //     path: '/login',
 //     name: 'Login',

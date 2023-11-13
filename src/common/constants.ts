@@ -9,13 +9,20 @@ export const routeNames = {
     dispatch: 'dispatch.route',
     dispatchForm: 'dispatchForm.route',
     teams: 'teams.route',
-    teamMembers: 'teamMembers.route',
+    teamsForm: 'teamsForm.route',
+    teamMembers: 'teamMembers.route', // To be remove
     barts: 'barts.route',
+    bartsForm: 'bartsForm.route',
     csos: 'csos.route',
+    csosForm: 'csosForm.route',
     nationalAgencies: 'nas.route',
+    nationalAgenciesForm: 'nasForm.route',
     pos: 'pos.route',
+    posForm: 'posForm.route',
     emergencies: 'emergencies.route',
+    emergenciesForm: 'emergenciesForm.route',
     trainingSkills: 'trainingSkills.route',
+    trainingSkillsForm: 'trainingSkillsForm.route',
 }
 
 

@@ -82,6 +82,6 @@
 
 <style scoped>
 .is-wider {
-    width: 80%; /* Adjust the width to your desired value */
+    width: 80%; 
 }
-</style>@/common/constants@/common/types/types
+</style>
