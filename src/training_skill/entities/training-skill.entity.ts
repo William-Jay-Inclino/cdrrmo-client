@@ -1,4 +1,5 @@
 export interface ITrainingSkill{
-    training_id: string
+    id: string
+    name: string
     description: string
 }

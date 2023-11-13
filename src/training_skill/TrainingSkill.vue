@@ -20,12 +20,23 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Training Skill Description</th>
+                                        <th>Name</th>
+                                        <th class="text-center">
+                                            <i class="fas fa-fw fa-cogs"></i>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="skill of $trainingSkill.trainingSkills">
-                                        <td> {{ skill.description }} </td>
+                                        <td> {{ skill.name }} </td>
+                                        <td class="text-center">
+                                            <button class="btn btn-light btn-sm">
+                                                <i class="fas fa-fw fa-pencil-alt"></i>
+                                            </button>
+                                            <button @click="onRemove(skill.id)" class="btn btn-light btn-sm">
+                                                <i class="fas fa-fw fa-trash text-danger"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -40,12 +51,20 @@
 
 
 <script setup lang="ts">
-    import { trainingSkillService, trainingSkillStore } from '.'
 
-    const $trainingSkill = trainingSkillStore()
-    const trainingSkills = trainingSkillService.getAllTrainingSkills()
-    $trainingSkill.setTrainingSkills(trainingSkills)
+import { useToast } from "vue-toastification";
+import { trainingSkillStore } from '.'
 
+const toast = useToast();
+const $trainingSkill = trainingSkillStore()
+const module = 'Training skill'
 
+const onRemove = async(id: string) => {
+    const removed = await $trainingSkill.onRemove(id)
+
+    if(removed){
+        toast.success(module + ' successfully deleted!')
+    }
+}
 
 </script>

@@ -1,14 +1,15 @@
+import axios from "axios";
+
+const api = axios.create({
+    baseURL: "http://localhost:5173/api/v1",
+    headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+    },
+});
 
 
-export const useFakeData = true  
-
-// Note: (teamCount * teamMemberCount) should not exceed userCount
-// team count is static. It is set to fakeTeams.length in src/helpers/faker,ts
-
-export const fakeData = {
-    userCount: 20,
-    teamMemberCount: 5,
-    personnelSkillsCount: 3,
-} 
-
+export const config = {
+    api
+}
 
