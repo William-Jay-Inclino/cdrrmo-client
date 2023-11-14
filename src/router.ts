@@ -59,6 +59,11 @@ const routes = [
         name: routeNames.pos,
         component: () => import('./po/Po.view.vue')
     },
+    {
+        path: '/pos/form',
+        name: routeNames.posForm,
+        component: () => import('./po/PoForm.view.vue')
+    },
 
     // ================ bart route ================ 
     {

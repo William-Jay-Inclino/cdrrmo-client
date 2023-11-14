@@ -22,7 +22,7 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
+                                        <th width="10%">Name</th>
                                         <th>Description</th>
                                         <th width="10%" class="text-center">
                                             <i class="fas fa-fw fa-cogs"></i>

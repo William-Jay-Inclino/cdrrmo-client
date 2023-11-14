@@ -66,12 +66,12 @@ export const bartStore = defineStore('bart', () => {
             formErrors.value.name = false  
         }
 
-        if(payload.data.description.trim() === ''){ 
-            formErrors.value.description = true 
-        }
-        else{ 
-            formErrors.value.description = false  
-        }
+        // if(payload.data.description.trim() === ''){ 
+        //     formErrors.value.description = true 
+        // }
+        // else{ 
+        //     formErrors.value.description = false  
+        // }
 
         const hasError = Object.values(formErrors.value).includes(true);
 
@@ -163,10 +163,5 @@ export const bartStore = defineStore('bart', () => {
     }
 })
 
-
-
-
-
-// methods
 
 
