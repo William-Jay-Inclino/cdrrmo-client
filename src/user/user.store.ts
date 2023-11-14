@@ -1,55 +1,69 @@
 
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 // import { CONST_DispatchStatus, CONST_DistinctUserTypes, CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_UserSubTypeText, CONST_UserTypeText, CONST_UserlvlText, CONST_bloodTypes } from '@/common/constants';
 // import { userService } from './user.service'
 // import { NAService } from '@/na';
 // import { BARTService } from '@/bart';
 // import { CSOService } from '@/cso';
 // import { POService } from '@/po';
-import { DistinctUserTypeEnum, GenderEnum, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum } from '.';
+import { DistinctUserTypeEnum, GenderEnum, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum, userService } from '.';
 import { DispatchStatusEnum } from '../dispatch';
 import { CONST_bloodTypes } from '../common/constants';
 
 
 export const userStore = defineStore('user', () => {
 
+    const _store = 'userStore: '
+
     const _formDataInitial: IUser = {
-        user_id: '',
-        last_name: '', 
-        first_name: '',
-        gender: GenderEnum.Male, 
-        address: '', 
-        birth_date: new Date(), 
-        contact_no: '',
-        blood_type: CONST_bloodTypes[0], 
-        status: UserStatusEnum.Active,
-        dispatch_status: DispatchStatusEnum.Queue, 
+        id: '',
         user_name: '',
-        password: '',
         user_level: UserLevelEnum.Field_Operator,
+        password: '',
+        last_name: '',
+        first_name: '',
+        gender: GenderEnum.Male,
+        address: '',
+        birth_date: new Date(),
+        contact_no: '',
+        blood_type: CONST_bloodTypes[0],
+        status: UserStatusEnum.Active,
+        dispatch_status: DispatchStatusEnum.Queue,
         type: UserTypeEnum.LGU_Casual,
-        sub_type_id: UserTypeEnum.LGU_Casual.toString(),
-    
-        distinctType: DistinctUserTypeEnum.LGU,
-        personnelSkills: [],
+
+        bart_id: '',
+        cso_id: '',
+        po_id: '',
+        na_id: '',
+
+        skills: [],
     }
     
     // state
     const _users = ref<IUser[]>([])
     const formData = ref<IUser>({..._formDataInitial})
+
+    onMounted( async() => {
+        console.log(_store + 'onMounted()')
+        const items = await userService.findAll()
+        setUsers(items)
+    })
     
     // setters 
 
-    const setUsers = (users: IUser[]) => {
-        _users.value = users 
+    const setUsers = (items: IUser[]) => {
+        console.log(_store + 'setUsers()', items)
+        _users.value = items 
     }
 
     // getters 
 
     const users = computed( () => {
-
-        return []
+        return _users.value.map(i => {
+            i.age = getAge(new Date(i.birth_date))
+            return i
+        })
     })
 
     // const genders = computed( (): ISingleSelect[] => constantToSingleSelect(CONST_Gender))
@@ -264,6 +278,17 @@ export const userStore = defineStore('user', () => {
     // const resetFormData = () => {
     //     formData.value = {..._formDataInitial}
     // }
+
+
+    const getAge = (birthDate: Date): number => {
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
   
     return {
         users,

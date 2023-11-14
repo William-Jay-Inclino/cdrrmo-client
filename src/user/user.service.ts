@@ -1,85 +1,104 @@
-import { CONST_UserSubTypeText } from "../common/constants"
-import { IUser, UserTypeEnum } from "."
-
+import { IUser } from "."
+import { config } from "../config"
 
 
 class UserService{
 
-    getAllUsers() :IUser[]{
-        console.log('getAllUsers()')
+    private endpoint = '/user/'
+    private service = 'UserService: '
+
+    async findAll(): Promise<IUser[]>{
+        console.log(this.service + 'findAll()')
         
+		try {
+			const response = await config.api.get(this.endpoint);
+			console.log({response})
+            if(response.status === 200){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
         return []
     }
 
-    async getUserById(user_id: string): Promise<IUser | null>{
-        console.log('getUserById()', user_id)
+    async findOne(id: string): Promise<IUser | null>{
+        console.log(this.service + 'findOne()', id)
+		try {
+			const response = await config.api.get(this.endpoint + id);
+			console.log({response})
+            if(response.status === 200){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
 
         return null
     }
 
-    async createUser(payload: IUser): Promise<IUser> {
-        console.log('createUser()', payload)
-        
-        return payload
+    async create(payload: {data: IUser}): Promise<IUser | null>{
+        console.log(this.service + 'create()', payload)
+
+		try {
+			const response = await config.api.post(this.endpoint, payload.data);
+			console.log({response})
+            if(response.status === 201){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return null 
     }
 
-    async updateUser(id: string, payload: IUser): Promise<IUser | null> {
-        console.log('id', id)
-        console.log('updateUser()', payload)
-        return payload
+    async update(payload: {id: string, data: IUser}): Promise<IUser | null>{
+        console.log(this.service + 'update()', payload)
+
+		try {
+			const response = await config.api.patch(this.endpoint + payload.id, payload.data);
+			console.log({response})
+            if(response.status === 200){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return null 
     }
 
-    getAge(birthDate: Date) :number{
-        const today = new Date();
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const m = today.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-        return age;
+    async remove(id: string): Promise<boolean> {
+        console.log(this.service + 'remove()', id)
+		try {
+			const response = await config.api.delete(this.endpoint + id);
+			console.log({response})
+            if(response.status === 204){
+                return true
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+        return false
+
     }
 
-    getSubType(userType: UserTypeEnum, subTypeId: string) :string {
-        console.log('subTypeId', subTypeId)
-
-        // if(userType === UserTypeEnum.ACDV_BART){
-        //     const bart = appService.barts.find(i => i.id === subTypeId)
-        //     if(!bart){
-        //         console.error('bart not found')
-        //         return ''
-        //     }
-        //     return bart.name
-        // }
-    
-        // if(userType === UserTypeEnum.ACDV_CSO){
-        //     const cso = appService.csos.find(i => i.id === subTypeId)
-        //     if(!cso){
-        //         console.error('cso not found')
-        //         return ''
-        //     }
-        //     return cso.name
-        // }
-    
-        // if(userType === UserTypeEnum.ACDV_PO){
-        //     const po = appService.pos.find(i => i.id === subTypeId)
-        //     if(!po){
-        //         console.error('po not found')
-        //         return ''
-        //     }
-        //     return po.name
-        // }
-    
-        // if(userType === UserTypeEnum.National_Agency){
-        //     const na = appService.nas.find(i => i.id === subTypeId)
-        //     if(!na){
-        //         console.error('na not found')
-        //         return ''
-        //     }
-        //     return na.name
-        // }
-    
-        return CONST_UserSubTypeText[userType]
-    }
+    // getAge(birthDate: Date) :number{
+    //     const today = new Date();
+    //     let age = today.getFullYear() - birthDate.getFullYear();
+    //     const m = today.getMonth() - birthDate.getMonth();
+    //     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    //         age--;
+    //     }
+    //     return age;
+    // }
 
 }
 

@@ -1,9 +1,17 @@
-import { ITrainingSkill } from "@/training_skill"
-import { DistinctUserTypeEnum, GenderEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from "."
+import { ITrainingSkill } from "../../training_skill"
+import { GenderEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from "."
 import { DispatchStatusEnum } from "@/dispatch"
+import { IBART } from "../../bart"
+import { ICSO } from "../../cso"
+import { IPO } from "../../po"
+import { INa } from "../../na"
+import { ITeam, ITeamMember } from "../../team"
 
 export interface IUser {
-    user_id: string 
+    id: string
+    user_name: string 
+    user_level: UserLevelEnum
+    password: string
     last_name: string 
     first_name: string
     gender: GenderEnum 
@@ -12,25 +20,27 @@ export interface IUser {
     contact_no: string 
     blood_type: string 
     status: UserStatusEnum 
-    dispatch_status: DispatchStatusEnum 
-    user_name: string 
-    password: string
-    user_level: UserLevelEnum
+    dispatch_status?: DispatchStatusEnum 
     type: UserTypeEnum
 
-    // LGU id / CSO id / PO id / BART id / NA id
-    // if no subtype meaning individual
-    sub_type_id?: string
+    bart_id?: string
+    cso_id?: string 
+    po_id?: string 
+    na_id?: string 
+
+    Bart?: IBART
+    Cso?: ICSO 
+    Po?: IPO
+    Na?: INa
+
+    teamMembers?: ITeamMember[]
+    teamLeader?: ITeam
+    skills: IUserSkill[]
      
     // end
 
     // set programmatically 
     age?: number
-    userLevelText?: string 
-    typeText?: string
-    subTypeText?: string
-    subSubTypeText?: string
-    personnelSkills?: IPersonnelSkill[]
 
     statusObj?: {
         text: string,
@@ -46,16 +56,24 @@ export interface IUser {
         icon: string,
     },
     
-    distinctType?: DistinctUserTypeEnum,
+    // distinctType?: DistinctUserTypeEnum,
 }
 
 
 
-export interface IPersonnelSkill{
-    training_id: string 
-    personnel_id: string // user_id
-    certificates?: string[] // file src 
-    
-    // props that are set programmatically
-    trainingSkill?: ITrainingSkill
+export interface IUserSkill{
+    id: string 
+    user: IUser 
+    user_id: string 
+    TrainingSkill: ITrainingSkill
+    training_skill_id: string 
+    SkillCertificate: ISkillCertificate[]
+}
+
+
+export interface ISkillCertificate{
+    id: string 
+    userSkill: IUserSkill
+    user_skill_id: string 
+    certificateUrl: string 
 }
