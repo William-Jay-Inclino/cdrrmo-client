@@ -12,7 +12,7 @@
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">List of Training Skills</h6>
                         <router-link :to="{name: routeNames.trainingSkillsForm}">
-                            <button class="btn btn-primary" type="submit">Add Training Skill</button>
+                            <button class="btn btn-primary" type="button">Add Training Skill</button>
                         </router-link>
                     </div>
 

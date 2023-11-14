@@ -80,22 +80,20 @@ const errorMsg = ref('This field is required')
 const breadcrumbItems = ref([
     {
         text: 'Training Skills List',
-        route: 'trainingSkills.route',
+        route: routeNames.trainingSkills,
         isActive: false,
     },
     {
         text: 'Training Skill Form',
-        route: 'trainingSkillsForm.route',
+        route: routeNames.trainingSkillsForm,
         isActive: true,
     }
 ])
 
 onMounted( async() => {
     const query = router.currentRoute.value.query
-    console.log('queryStrings', query)
 
     if(query.id){
-        // intialize update form / populate form 
         await $module.initUpdateFormData(query.id as string)
     }
 })
@@ -103,7 +101,6 @@ onMounted( async() => {
 const action = computed( () => $module.formData.id === '' ? 'Add' : 'Update')
 
 const onSubmit = async() => {
-    console.log('TrainingSkillForm.vue: onSubmit()')
     const submitted = await $module.onSubmit({data: {...$module.formData}})
 
     if(!submitted){

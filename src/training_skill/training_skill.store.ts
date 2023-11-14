@@ -25,8 +25,8 @@ export const trainingSkillStore = defineStore('trainingSkill', () => {
 
     onMounted( async() => {
         console.log('trainingSkillStore: onMounted()')
-        const trainings = await trainingSkillService.getAllTrainingSkills()
-        setTrainingSkills(trainings)
+        const items = await trainingSkillService.findAll()
+        setTrainingSkills(items)
     })
 
     // getters 
@@ -34,9 +34,9 @@ export const trainingSkillStore = defineStore('trainingSkill', () => {
 
 
     // setters 
-    const setTrainingSkills = (trainingSkills: ITrainingSkill[]) => {
-        console.log('trainingSkillStore: setTrainingSkills()', trainingSkills)
-        _trainingSkills.value = trainingSkills
+    const setTrainingSkills = (items: ITrainingSkill[]) => {
+        console.log('trainingSkillStore: setTrainingSkills()', items)
+        _trainingSkills.value = items
     }
 
     const setFormData = (payload: {data: ITrainingSkill}) => {
@@ -48,9 +48,9 @@ export const trainingSkillStore = defineStore('trainingSkill', () => {
 
     const initUpdateFormData = async(id: string) => {
         console.log('trainingSkillStore: initUpdateFormData()', id)
-        const trainingSkill = await trainingSkillService.getTrainingSkillById(id)
-        if(trainingSkill){
-            setFormData({data: trainingSkill})
+        const itemFound = await trainingSkillService.findOne(id)
+        if(itemFound){
+            setFormData({data: itemFound})
         }
     }
 
@@ -64,12 +64,12 @@ export const trainingSkillStore = defineStore('trainingSkill', () => {
             formErrors.value.name = false  
         }
 
-        if(payload.data.description.trim() === ''){ 
-            formErrors.value.description = true 
-        }
-        else{ 
-            formErrors.value.description = false  
-        }
+        // if(payload.data.description.trim() === ''){ 
+        //     formErrors.value.description = true 
+        // }
+        // else{ 
+        //     formErrors.value.description = false  
+        // }
 
         const hasError = Object.values(formErrors.value).includes(true);
 
@@ -132,7 +132,7 @@ export const trainingSkillStore = defineStore('trainingSkill', () => {
             return false 
         }
 
-        const deleted = await trainingSkillService.deleteItem(id)
+        const deleted = await trainingSkillService.remove(id)
 
         if(deleted){
             _trainingSkills.value.splice(indx, 1)
