@@ -1,5 +1,5 @@
 import { ITrainingSkill } from "../../training_skill"
-import { GenderEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from "."
+import { DistinctUserTypeEnum, GenderEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from "."
 import { DispatchStatusEnum } from "@/dispatch"
 import { IBART } from "../../bart"
 import { ICSO } from "../../cso"
@@ -41,22 +41,35 @@ export interface IUser {
 
     // set programmatically 
     age?: number
-
+    userLevelObj?: {
+        id: UserLevelEnum,
+        text: string,
+        color: string,
+    }
+    userTypeObj?: {
+        id: UserTypeEnum,
+        text: string,
+        color: string,
+    }
+    userSubTypeObj?: {
+        id: UserTypeEnum,
+        text: string,
+        color: string,
+    }
     statusObj?: {
         text: string,
         color: string,
-    },
+    }
     dispatchStatusObj?: {
         text: string,
         color: string,
-    },
+    }
     genderObj?: {
         text: string,
         color: string,
         icon: string,
-    },
+    }
     
-    // distinctType?: DistinctUserTypeEnum,
 }
 
 

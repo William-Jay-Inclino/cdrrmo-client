@@ -27,44 +27,50 @@
                                         <th>Age</th>
                                         <th>Contact #</th>
                                         <th>Blood Type</th>
-                                        <th>Gender</th>
+                                        <th class="text-center">Gender</th>
                                         <th>Userlevel</th>
                                         <th>Type</th>
                                         <th>Subtype</th>
                                         <th>Sub-Subtype</th>
                                         <th class="text-center">Status</th>
-                                        <th class="text-center">Dispatch Status</th>
+                                        <!-- <th class="text-center">Dispatch Status</th> -->
                                         <th class="text-center">
                                             <i class="fas fa-fw fa-cogs"></i>
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- <tr v-for="user in $userStore.users">
+                                    <tr v-for="user in $userStore.users">
                                         <td> {{ user.first_name + ' ' + user.last_name }} </td>
                                         <td> {{ user.address }} </td>
                                         <td> {{ user.age }} </td>
                                         <td> {{ user.contact_no }} </td>
                                         <td> {{ user.blood_type }} </td>
-                                        <td>
+                                        <td class="text-center">
                                             <i class="fas fa-fw" :class="{[`${user.genderObj?.icon}`]: true}" :style="{color: user.genderObj?.color}">
 
                                             </i>
                                         </td>
-                                        <td> {{ user.userLevelText }} </td>
-                                        <td> {{ user.typeText }} </td>
-                                        <td> {{ user.subTypeText }} </td>
-                                        <td> {{ user.subSubTypeText }} </td>
+                                        <td> {{ user.userLevelObj?.text }} </td>
+                                        <td> {{ user.userTypeObj?.text }} </td>
+
+                                        <td v-if="user.Na"> {{ user.Na.name }} </td>
+                                        <td v-else> {{ user.userSubTypeObj?.text }} </td>
+
+                                        <td v-if="user.Bart"> {{ user.Bart.name }} </td>
+                                        <td v-else-if="user.Cso"> {{ user.Cso.name }} </td>
+                                        <td v-else-if="user.Po"> {{ user.Po.name }} </td>
+                                        <td v-else></td>
                                         <td class="text-center"> 
                                             <span :class="{[`text-bg-${user.statusObj?.color}`]: true}" class="badge rounded-pill text-white"> 
                                                 {{ user.statusObj?.text }} 
                                             </span> 
                                         </td>
-                                        <td class="text-center"> 
+                                        <!-- <td class="text-center"> 
                                             <span :class="{[`text-bg-${user.dispatchStatusObj?.color}`]: true}" class="badge rounded-pill text-white"> 
                                                 {{ user.dispatchStatusObj?.text }} 
                                             </span> 
-                                        </td>
+                                        </td> -->
                                         <td class="text-center">
                                             <div class="dropdown no-arrow">
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -83,14 +89,14 @@
                                                         <span class="ml-2">View Skills</span>
                                                     </a>
                                                     <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item" href="#">
+                                                    <!-- <a class="dropdown-item" href="#">
                                                         <i class="fas fa-fw fa-archive text-danger"></i>
                                                         <span class="ml-2">Archive</span>
-                                                    </a>
+                                                    </a> -->
                                                 </div>
                                             </div>
                                         </td>
-                                    </tr> -->
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -109,11 +115,7 @@
     import { routeNames } from '../common/constants'
 
     const $userStore = userStore()
-    // const users = $userStore.getUsers()
-    $userStore.setUsers([])
 
-
+    console.log('$userStore', $userStore)
 
 </script>
-
-../modules/user@/common/constants

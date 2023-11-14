@@ -1,6 +1,6 @@
 <template>
 
-    <!-- <div class="container-fluid mb-5">
+    <div class="container-fluid mb-5">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Personnel Module</h1>
@@ -31,7 +31,7 @@
                             <div class="card-body">
                                 <Step1 v-show="currentStep === 1" />
                                 <Step2 v-show="currentStep === 2" />
-                                <Step3 v-show="currentStep === 3" />
+                                <!-- <Step3 v-show="currentStep === 3" /> -->
                             </div>
                         </div>
                     </div>
@@ -55,28 +55,25 @@
             </div>
             
         </div>
-  </div> -->
+  </div>
 
 </template>
 
 
-<!-- <script setup lang="ts">
+<script setup lang="ts">
     import { computed, ref } from 'vue';
-    import Breadcrumbs from '@/components/Breadcrumbs.vue'
-    import { routeNames } from '@/helpers/constants';
+    import Breadcrumbs from '../common/components/Breadcrumbs.vue'
+    import { routeNames } from '../common/constants';
     import { useRouter } from 'vue-router';
-    import FormStepper from '@/components/User/FormStepper.vue'
-    import Step1 from '@/components/User/FormStep1.vue'
-    import Step2 from '@/components/User/FormStep2.vue'
-    import Step3 from '@/components/User/FormStep3.vue'
-    import { userStore } from '@/modules/user';
+    import FormStepper from './components/FormStepper.vue'
+    import Step1 from './components/FormStep1.vue'
+    import Step2 from './components/FormStep2.vue'
+    // import { userStore } from '.';
+    // import { useToast } from "vue-toastification";
 
-    import { useToast } from "vue-toastification";
-
-    const toast = useToast();
-
+    // const toast = useToast();
     const router = useRouter()
-    const $user = userStore()
+    // const $user = userStore()
 
     const currentStep = ref(1)
     
@@ -95,9 +92,10 @@
 
     const formHeader = computed( () => {
         
-        if(currentStep.value === 1) return 'Step 1 - Fill up Personnel Info'
-        if(currentStep.value === 2) return 'Step 2 - Add Skills of Personnel'
-        if(currentStep.value === 3) return 'Step 3 - Final Confirmation: Ready to Submit?'
+        if(currentStep.value === 1) return 'Step 1 - Basic Information'
+        if(currentStep.value === 2) return 'Step 2 - Authentication'
+        if(currentStep.value === 3) return 'Step 3 - Training Skills'
+        if(currentStep.value === 4) return 'Step 3 - Final Confirmation: Ready to Submit?'
 
     })
 
@@ -114,29 +112,29 @@
     }
 
     const onSubmitForm = async(action: number) => {
-        console.log('onSubmitForm()')
+        console.log('onSubmitForm()', action)
 
-        const userData = {...$user.formData}
+        // const userData = {...$user.formData}
 
         // validations here
 
-        const savedUser = await $user.saveUser(userData)
+        // const savedUser = await $user.saveUser(userData)
 
-        if(savedUser){
+        // if(savedUser){
 
-            if(action === 1){
+        //     if(action === 1){
 
-                currentStep.value = 1
+        //         currentStep.value = 1
 
-            }else if(action === 2){
+        //     }else if(action === 2){
 
-                router.push({name: routeNames.users})
+        //         router.push({name: routeNames.users})
 
-            }
+        //     }
 
 
-            toast.success("Personnel successfully added!");
-        }
+        //     toast.success("Personnel successfully added!");
+        // }
     }
 
     const onUpdateStep = (step: number) => {
@@ -144,5 +142,5 @@
         currentStep.value = step
     }
 
-</script> -->
+</script>
 

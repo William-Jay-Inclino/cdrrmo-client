@@ -1,112 +1,136 @@
 <template>
+    
+    <div class="table-responsive" style="overflow-x: hidden;">
 
-    <div class="table-responsive">
         <table class="table">
+            <thead>
+                <tr>
+                    <th width="10%">Select</th>
+                    <th>Skill</th>
+                    <th class="text-center">Certificates</th>
+                </tr>
+            </thead>
             <tbody>
                 <tr>
-                    <th>First Name</th>
-                    <td> {{ $user.formData.first_name }} </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th>Last Name</th>
-                    <td> {{ $user.formData.last_name }} </td>
-                </tr>
-                <tr>
-                    <th>Gender</th>
-                    <td> {{ CONST_Gender[$user.formData.gender].text }} </td>
-                </tr>
-                <tr>
-                    <th>Address</th>
-                    <td> {{ $user.formData.address }} </td>
-                </tr>
-                <tr>
-                    <th>Birth Date</th>
-                    <td> {{ birthDate }} </td>
-                </tr>
-                <tr>
-                    <th>Contact Number</th>
-                    <td> +639{{ $user.formData.contact_no }} </td>
-                </tr>
-                <tr>
-                    <th>Blood Type</th>
-                    <td> {{ $user.formData.blood_type }} </td>
-                </tr>
-                <tr>
-                    <th>Status</th>
-                    <td> {{ CONST_UserStatus[$user.formData.status].text }} </td>
-                </tr>
-                <tr>
-                    <th>User Level</th>
-                    <td> {{ CONST_UserLevel[$user.formData.user_level].text }} </td>
-                </tr>
-                <tr>
-                    <th>Personnel Type</th>
-                    <td> {{ CONST_DistinctUserTypes[$user.formData.distinctType!].text }} </td>
-                </tr>
-                <tr>
-                    <th>Personnel Subtype</th>
-                    <td> {{ CONST_SubTypes[$user.formData.type].text }} </td>
-                </tr>
-                <tr v-if="false">
-                    <th>Personnel Sub-subType</th>
-                    <td> {{ 'subSubType' }} </td>
-                </tr>
-                <tr v-if="$user.formData.personnelSkills">
-                    <th class="align-middle" :rowspan="$user.formData.personnelSkills.length + 1">Personnel Skills</th>
-                </tr>
-                <tr v-for="skill in personnelSkills">
-                    <td>{{ skill.label }}</td>
+                    <td class="align-middle">
+                        <button
+                          @click="() => console.log('onClickSelectSkill')"
+                          class="btn btn-sm"
+                          :class="{'btn-primary': true, 'btn-outline-primary': false}">
+                          <i
+                          class="fas fa-fw fa-check"></i>
+                          </button>
+                    </td>
+                    <td class="align-middle"> {{ 'skill.description' }} </td>
+                    <td class="text-center">
+                        <CertificateManager
+                            :id="'skill.training_id'"
+                            :certificates="'skill.certificates'"
+                            :show="'skill.selected'"
+                            @add-cert="() => console.log('addCertificate')"
+                            @del-cert="() => console.log('deleteCertificate')" 
+                        />
+                    </td>
                 </tr>
             </tbody>
         </table>
+
+
     </div>
 
 </template>
 
 
-<script setup lang="ts">
+<!-- <script setup lang="ts">
+import { trainingSkillService, ICompSkill, ICompCertificate } from '@/modules/training_skill';
+import { ref } from 'vue';
+import CertificateManager from '@/components/User/CertificateManager.vue'
+import { userStore } from '@/modules/user';
 
-import { CONST_DistinctUserTypes, CONST_Gender, CONST_UserLevel, CONST_UserStatus, CONST_SubTypes } from '../../common/constants';
-import { trainingSkillService } from '../../training_skill';
-import { userStore } from '../../user';
-import { computed } from 'vue';
+const skills = ref<ICompSkill[]>([])
 
 const $user = userStore()
 
-const skills = trainingSkillService.getAllTrainingSkills()
+init()
 
-// const subSubType = computed( () => {
-//     const x = $user.userSubSubTypes?.find(i => i.id === $user.formData.sub_type_id)
-//     if(x){
-//         return x.name
-//     }
-//     return null
-// })
+function init(){
+    const _trainingSkills = trainingSkillService.getAllTrainingSkills()
 
-const personnelSkills = computed( () => {
-    const x: {id: string, label: string}[] = []
+    const newTrainingSkills: ICompSkill[] = []
 
-    $user.formData.personnelSkills?.forEach(i => {
+    for(let i of _trainingSkills){
+        newTrainingSkills.push({
+            training_id: i.training_id,
+            description: i.description,
+            selected: false,
+            certificates: []
+        })
+    }
 
-        const j = skills.find(k => k.training_id === i.training_id)
-        if(j){
-            x.push({
-                id: i.training_id,
-                label: j.description,
-            })
-        }
-    })
+    skills.value = newTrainingSkills
+} 
 
-    return x
 
-})
+const onClickSelectSkill = (skill: ICompSkill) => {
 
-const birthDate = computed ( () => {
-    const dob = new Date($user.formData.birth_date);
-    const dobArr = dob.toDateString().split(' ');
-    const dobFormat = dobArr[2] + ' ' + dobArr[1] + ' ' + dobArr[3];
-    return dobFormat
-})
+    console.log('onClickSelectSkill()', skill)
 
-</script>@/common/constants
+    if(!$user.formData.personnelSkills){
+        $user.formData.personnelSkills = []
+    }
+
+    
+    if(skill.selected){
+        skill.selected = false
+        $user.removeSkillInFormData(skill.training_id)
+    }else{
+        skill.selected = true
+
+        const certificates = skill.certificates.map(i => i.src)
+
+        $user.addSkillInFormData({
+            training_id: skill.training_id,
+            personnel_id: $user.formData.user_id,
+            certificates: certificates,
+        })
+    }
+
+}
+
+
+const addCertificate = (data: {id: string, certificate: ICompCertificate}) => {
+    console.log('addCertificate()', data)
+
+    const skill = skills.value.find(i => i.training_id === data.id)
+
+    if(skill){
+        skill.certificates.push(data.certificate)
+        $user.addCertificateInSkill(skill.training_id, data.certificate.src)
+    }
+
+}
+
+const deleteCertificate = (data: {id: string, certificateId: string}) => {
+    console.log('deleteCertificate()', data)
+
+    const skill = skills.value.find(i => i.training_id === data.id)
+
+    if(!skill){
+        console.error('skill is undefined')
+        return 
+    }
+
+    const certIndx = skill.certificates.findIndex(i => i.id === data.certificateId)
+
+    if(certIndx === -1){
+        console.error('Certificate not found in skill')
+        return 
+    }
+
+    $user.delCertificateInSkill(skill.training_id, skill.certificates[certIndx].src)
+    skill.certificates.splice(certIndx, 1)
+}
+
+
+
+</script> -->

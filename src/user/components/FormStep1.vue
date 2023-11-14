@@ -16,20 +16,34 @@
         </div>
         <div class="form-group">
             <label>Gender</label>
-            <div class="row ml-5 mr-5">
-                <div class="col ml-5 mr-5">
+            <div class="row">
+                <div class="col">
                     <div class="d-grid gap-2">
-                       <button
-                            @click="() => console.log('onClickGender')"
-                            :class="{'btn-primary': true, 'btn-outline-primary': false}"
+                        <button
+                            :class="{'btn-primary': $user.formData.gender === GenderEnum.Male, 'btn-outline-primary': $user.formData.gender !== GenderEnum.Male}"
                             class="btn"
-                            type="button">
-                            {{ 'gender.text' }}
+                            type="button"
+                            @click="$user.formData.gender = GenderEnum.Male"
+                        >
+                            {{ CONST_Gender[GenderEnum.Male].text }}
+                        </button>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="d-grid gap-2">
+                        <button
+                            :class="{'btn-primary': $user.formData.gender === GenderEnum.Female, 'btn-outline-primary': $user.formData.gender !== GenderEnum.Female}"
+                            class="btn"
+                            type="button"
+                            @click="$user.formData.gender = GenderEnum.Female"
+                        >
+                            {{ CONST_Gender[GenderEnum.Female].text }}
                         </button>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="form-group">
             <label>Address</label>
             <textarea v-model="$user.formData.address" class="form-control" rows="3"></textarea>
@@ -48,61 +62,89 @@
         <div class="form-group">
             <label>Blood Type</label>
             <select class="form-control" v-model="$user.formData.blood_type">
-                <option :value="'bloodType'" :key="'bloodType'">
-                    {{ 'bloodType' }}
+                <option :value="i" :key="i" v-for="i in bloodTypes">
+                    {{ i }}
                 </option>
             </select>
         </div>
 
         <div class="form-group">
             <label>Status</label>
-            <div class="row mr-5 ml-5">
-                <div class="col mr-5 ml-5">
+            <div class="row">
+                <div class="col">
                     <div class="d-grid gap-2">
                         <button
-                            @click="() => console.log('onClickStatus')"
-                            :class="{'btn-primary': true, 'btn-outline-primary': false}"
+                            :class="{'btn-primary': $user.formData.status === UserStatusEnum.Active, 'btn-outline-primary': $user.formData.status !== UserStatusEnum.Active}"
                             class="btn"
-                            type="button">
-                            {{ 'status.text' }}
+                            type="button"
+                            @click="$user.formData.status = UserStatusEnum.Active"
+                        >
+                            {{ CONST_UserStatus[UserStatusEnum.Active].text }}
+                        </button>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="d-grid gap-2">
+                        <button
+                            :class="{'btn-primary': $user.formData.status === UserStatusEnum.Inactive, 'btn-outline-primary': $user.formData.status !== UserStatusEnum.Inactive}"
+                            class="btn"
+                            type="button"
+                            @click="$user.formData.status = UserStatusEnum.Inactive"
+                        >
+                        {{ CONST_UserStatus[UserStatusEnum.Inactive].text }}
                         </button>
                     </div>
                 </div>
             </div>
         </div>
+
+
         <div class="form-group">
             <label>User Level</label>
             <select class="form-control" v-model="$user.formData.user_level">
-                <option :value="'userLvl.id'" :key="'userLvl.id'">
-                    {{ 'userLvl.text' }}
+                <option :value="i.id" :key="i.id" v-for="i in userLevels">
+                    {{ i.text }}
                 </option>
             </select>
         </div>
 
         <div class="form-group">
             <label>Personnel Type</label>
-            <select class="form-control" v-model="$user.formData.distinctType">
-                <option :value="'userType.id'" :key="'userType.id'">
-                    {{ 'userType.text' }}
+            <select class="form-control" v-model="userType">
+                <option :value="i.id" :key="i.id" v-for="i in userTypes">
+                    {{ i.text }}
                 </option>
             </select>
         </div>
 
-        <div class="form-group" v-show="showSubType">
+        <div class="form-group">
             <label>Personnel Subtype</label>
-            <select class="form-control" v-model="$user.formData.type">
-                <option :value="'userSubType.id'" :key="'userSubType.id'">
-                    {{ 'userSubType.text' }}
-                </option>
+
+            <select class="form-control" v-model="$user.formData.type" v-if="userType === DistinctUserTypeEnum.LGU">
+                <option v-for="i in LGUs" :key="i.id" :value="i.id"> {{ i.text }} </option>
             </select>
+
+            <select class="form-control" v-model="$user.formData.type" v-else-if="userType === DistinctUserTypeEnum.ACDV">
+                <option v-for="i in ACDVs" :key="i.id" :value="i.id"> {{ i.text }} </option>
+            </select>
+
+            <select class="form-control"  v-model="$user.formData.na_id" v-else-if="userType === DistinctUserTypeEnum.National_Agency">
+                <option v-for="i in NAs" :key="i.id" :value="i.id"> {{ i.name }} </option>
+            </select>
+
+
         </div>
 
-        <div class="form-group" v-show="showSubSubType">
-            <label> Personnel {{ subSubTypeText }} </label>
-            <select class="form-control" v-model="$user.formData.sub_type_id">
-                <option :value="'userSubSubType.id'" :key="'userSubSubType.id'">
-                    {{ 'userSubSubType.name' }}
-                </option>
+        <div class="form-group" v-if="userType === DistinctUserTypeEnum.ACDV">
+            <label v-if="$user.formData.type && $user.formData.type !== UserTypeEnum.ACDV_INDIVIDUAL"> Personnel Sub-subtype</label>
+            <select v-model="$user.formData.bart_id" class="form-control" v-if="$user.formData.type === UserTypeEnum.ACDV_BART">
+                <option :value="i.id" :key="i.id" v-for="i in BARTs"> {{ i.name }} </option>
+            </select>
+            <select v-model="$user.formData.po_id" class="form-control" v-if="$user.formData.type === UserTypeEnum.ACDV_PO">
+                <option :value="i.id" :key="i.id" v-for="i in POs"> {{ i.name }} </option>
+            </select>
+            <select v-model="$user.formData.cso_id" class="form-control" v-if="$user.formData.type === UserTypeEnum.ACDV_CSO">
+                <option :value="i.id" :key="i.id" v-for="i in CSOs"> {{ i.name }} </option>
             </select>
         </div>
 
@@ -113,39 +155,96 @@
 
 
 <script setup lang="ts">
-    import { computed } from 'vue';
-    import { userStore } from '../'
-    import { DistinctUserTypeEnum, UserTypeEnum } from '../'
+import { computed, ref, watch } from 'vue';
+import { UserLevelEnum, UserStatusEnum, userStore } from '../'
+import { DistinctUserTypeEnum, UserTypeEnum, GenderEnum } from '../'
+import { CONST_DistinctUserTypes, CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_bloodTypes } from '../../common';
+import { INa, naStore } from '../../na';
+import { ICSO, csoStore } from '../../cso';
+import { IPO, poStore } from '../../po';
+import { IBART, bartStore } from '../../bart';
 
     const $user = userStore()
+    const $na = naStore()
+    const $cso = csoStore()
+    const $po = poStore()
+    const $bart = bartStore()
 
-    const showSubType = computed( (): boolean => {
+    const userTypes = ref([
+        CONST_DistinctUserTypes[DistinctUserTypeEnum.LGU],
+        CONST_DistinctUserTypes[DistinctUserTypeEnum.ACDV],
+        CONST_DistinctUserTypes[DistinctUserTypeEnum.National_Agency]
+    ])
+    
+    const userLevels = ref([
+        CONST_UserLevel[UserLevelEnum.Admin],
+        CONST_UserLevel[UserLevelEnum.Dispatcher],
+        CONST_UserLevel[UserLevelEnum.Field_Operator],
+        CONST_UserLevel[UserLevelEnum.Team_Leader],
+    ])
 
-        // @ts-ignore
-        if($user.formData.distinctType === DistinctUserTypeEnum.National_Agency) return false
+    const userType = ref(userTypes.value[0].id)
 
-        return true 
+
+    const LGUs = computed( (): {id: UserTypeEnum, text: string, color: string}[] => {
+        const arr = []
+        arr.push(CONST_SubTypes[UserTypeEnum.LGU_Casual])
+        arr.push(CONST_SubTypes[UserTypeEnum.LGU_Regular])
+        arr.push(CONST_SubTypes[UserTypeEnum.LGU_Job_Order])
+        return arr
     })
 
-    const showSubSubType = computed( (): boolean => {
-
-        // @ts-ignore
-        if($user.formData.distinctType === DistinctUserTypeEnum.LGU){
-            return false
-        }
-        if($user.formData.distinctType === DistinctUserTypeEnum.ACDV && $user.formData.type === UserTypeEnum.ACDV_INDIVIDUAL){
-            return false
-        }
-
-        return true 
+    const ACDVs = computed( (): {id: UserTypeEnum, text: string, color: string}[] => {
+        const arr = []
+        arr.push(CONST_SubTypes[UserTypeEnum.ACDV_BART])
+        arr.push(CONST_SubTypes[UserTypeEnum.ACDV_CSO])
+        arr.push(CONST_SubTypes[UserTypeEnum.ACDV_PO])
+        arr.push(CONST_SubTypes[UserTypeEnum.ACDV_INDIVIDUAL])
+        return arr
     })
 
-    const subSubTypeText = computed( () => {
-        if($user.formData.distinctType === DistinctUserTypeEnum.National_Agency){
-            return 'Sub Type'
+    const NAs = computed( (): INa[] => $na.nas)
+    const CSOs = computed( (): ICSO[] => $cso.csos)
+    const POs = computed( (): IPO[] => $po.pos)
+    const BARTs = computed( (): IBART[] => $bart.barts)
+    const bloodTypes = computed( (): string[] => CONST_bloodTypes)
+
+    const subType = computed( () => $user.formData.type)
+
+
+    watch(userType, (val) => {
+        console.log('val', val)
+        if(!val) return 
+
+        $user.formData.na_id = undefined
+
+        if(val === DistinctUserTypeEnum.LGU){
+            console.log('type is LGU')
+            $user.formData.type = LGUs.value[0].id
+            return 
         }
 
-        return 'Sub-subtype'
+        if(val === DistinctUserTypeEnum.ACDV){
+            console.log('type is ACDV')
+            $user.formData.type = ACDVs.value[0].id
+            return
+        }
+
+        if(val === DistinctUserTypeEnum.National_Agency){
+            console.log('type is National_Agency')
+            $user.formData.type = UserTypeEnum.National_Agency
+            return 
+        }
+
+    })
+
+    watch(subType, (val) => {
+        if(!val) return 
+        
+        $user.formData.po_id = undefined
+        $user.formData.cso_id = undefined
+        $user.formData.bart_id = undefined
+        
     })
 
     // const onClickGender = (gender: GenderEnum) => {

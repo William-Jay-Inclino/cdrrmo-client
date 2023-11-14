@@ -1,16 +1,9 @@
 
 import { defineStore } from 'pinia'
 import { computed, onMounted, ref } from 'vue'
-// import { CONST_DispatchStatus, CONST_DistinctUserTypes, CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_UserSubTypeText, CONST_UserTypeText, CONST_UserlvlText, CONST_bloodTypes } from '@/common/constants';
-// import { userService } from './user.service'
-// import { NAService } from '@/na';
-// import { BARTService } from '@/bart';
-// import { CSOService } from '@/cso';
-// import { POService } from '@/po';
-import { DistinctUserTypeEnum, GenderEnum, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum, userService } from '.';
+import { GenderEnum, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum, userService } from '.';
 import { DispatchStatusEnum } from '../dispatch';
-import { CONST_bloodTypes } from '../common/constants';
-
+import { CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_UserTypes, CONST_bloodTypes } from '../common/constants';
 
 export const userStore = defineStore('user', () => {
 
@@ -32,13 +25,14 @@ export const userStore = defineStore('user', () => {
         dispatch_status: DispatchStatusEnum.Queue,
         type: UserTypeEnum.LGU_Casual,
 
-        bart_id: '',
-        cso_id: '',
-        po_id: '',
-        na_id: '',
+        bart_id: undefined,
+        cso_id: undefined,
+        po_id: undefined,
+        na_id: undefined,
 
         skills: [],
     }
+
     
     // state
     const _users = ref<IUser[]>([])
@@ -62,75 +56,14 @@ export const userStore = defineStore('user', () => {
     const users = computed( () => {
         return _users.value.map(i => {
             i.age = getAge(new Date(i.birth_date))
+            i.genderObj = CONST_Gender[i.gender]
+            i.userLevelObj = CONST_UserLevel[i.user_level]
+            i.userTypeObj = CONST_UserTypes[i.type]
+            i.userSubTypeObj = CONST_SubTypes[i.type]
+            i.statusObj = CONST_UserStatus[i.status]
             return i
         })
     })
-
-    // const genders = computed( (): ISingleSelect[] => constantToSingleSelect(CONST_Gender))
-    // const status = computed( (): ISingleSelect[] => constantToSingleSelect(CONST_UserStatus))
-    // const userTypes = computed( (): ISingleSelect[] => constantToSingleSelect(CONST_DistinctUserTypes))
-    // const userLevels = computed( (): ISingleSelect[] => {
-    //     const items = constantToSingleSelect(CONST_UserLevel)
-    //     return items
-    //     // return items.filter(i => i.id !== UserLevelEnum.Admin)
-    // })
-    // const bloodTypes = computed( (): string[] => CONST_bloodTypes)
-
-    // const userSubTypes = computed( (): ISingleSelect[] => {
-    //     const items = constantToSingleSelect(CONST_SubTypes)
-
-    //     // see reference types.ts -> UserTypeEnum
-    //     if(formData.value.distinctType === DistinctUserTypeEnum.LGU){
-    //         // LGU_Regular or LGU_Casual or LGU_Job_Order
-    //         return items.filter(i => i.id > 10 && i.id < 20) 
-    //     }
-    //     else if(formData.value.distinctType === DistinctUserTypeEnum.ACDV){
-    //         // ACDV_CSO or ACDV_PO or ACDV_BART or ACDV_INDIVIDUAL
-    //         return items.filter(i => i.id > 20 && i.id < 30) 
-    //     }
-    //     else if(formData.value.distinctType === DistinctUserTypeEnum.National_Agency){
-    //         // National_Agency
-    //         return items.filter(i => i.id > 30 && i.id < 40) 
-    //     }
-       
-    //     return []
-
-    // })
-
-    // const userSubSubTypes = computed( (): IPO[] | ICSO[] | IBART[] | INationalAgency[] | null => {
-
-    //     if(!formData.value.type) return null
-
-    //     if(formData.value.distinctType === DistinctUserTypeEnum.LGU) return []
-
-    //     if(formData.value.distinctType === DistinctUserTypeEnum.National_Agency){
-    //         return _nationalAgencies
-    //     }
-
-    //     if(formData.value.distinctType === DistinctUserTypeEnum.ACDV){
-
-    //         if(formData.value.type === UserTypeEnum.ACDV_CSO){
-    //             return _csos
-    //         }
-
-    //         if(formData.value.type === UserTypeEnum.ACDV_PO){
-    //             return _pos
-    //         }
-
-    //         if(formData.value.type === UserTypeEnum.ACDV_BART){
-    //             return _barts
-    //         }
-
-    //         if(formData.value.type === UserTypeEnum.ACDV_INDIVIDUAL){
-    //             return []
-    //         }
-    //     }
-
-    //     return []
-
-
-    // }) 
-
 
     
     // const formDataType = computed( (): UserTypeEnum => formData.value.type)
@@ -293,13 +226,6 @@ export const userStore = defineStore('user', () => {
     return {
         users,
         formData,
-        // genders,
-        // status,
-        // bloodTypes,
-        // userLevels,
-        // userTypes,
-        // userSubTypes,
-        // userSubSubTypes,
 
         setUsers,
         // getUsers,

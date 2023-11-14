@@ -76,20 +76,27 @@ const stepClassInitial = 'step-button text-center '
 const steps = ref<IStep[]>([
     {
         id: 1,
-        text: 'Info',
+        text: 'Basic Info',
         icon: 'fa-info',
         dataBsTarget: 'collapseOne',
         stepClass: stepClassInitial,
     },
     {
         id: 2,
+        text: 'Authentication',
+        icon: 'fa-lock',
+        dataBsTarget: 'collapseOne',
+        stepClass: stepClassInitial,
+    },
+    {
+        id: 3,
         text: 'Skills',
         icon: 'fa-medal',
         dataBsTarget: 'collapseTwo',
         stepClass: stepClassInitial,
     },
     {
-        id: 3,
+        id: 4,
         text: 'Finish',
         icon: 'fa-check-circle',
         dataBsTarget: 'collapseThree',
@@ -113,39 +120,30 @@ onMounted( () => {
 })
 
 const onClickStepBtn = (stepId: number) => {
+    console.log('onClickStepBtn()', stepId);
 
-    console.log('onClickStepBtn()', stepId)
+    const current = steps.value.find((i) => i.id === stepId);
 
-    const current = steps.value.find(i => i.id === stepId)
-
-    if(!current){
-        console.error('Undefined step', current)
-        return 
+    if (!current) {
+        console.error('Undefined step', current);
+        return;
     }
 
-    current.stepClass = stepClassInitial + 'collapsed'
+    current.stepClass = `${stepClassInitial}collapsed`;
 
-    if(current.id === 1){
-        steps.value[1].stepClass = stepClassInitial
-        steps.value[2].stepClass = stepClassInitial
-        progressVal.value = 0
-    }
+    steps.value.forEach((step, index) => {
+        if (index < stepId - 1) {
+            step.stepClass = `${stepClassInitial}done`;
+        } else if (index > stepId - 1) {
+            step.stepClass = stepClassInitial;
+        }
+    });
 
-    if(current.id === 2){
-        steps.value[0].stepClass = stepClassInitial + 'done'
-        steps.value[2].stepClass = stepClassInitial
-        progressVal.value = 50
-    }
+    progressVal.value = (stepId - 1) / (steps.value.length - 1) * 100;
 
-    if(current.id === 3){
-        steps.value[0].stepClass = stepClassInitial + 'done'
-        steps.value[1].stepClass = stepClassInitial + 'done'
-        progressVal.value = 100
-    }
+    emit('update-step', current.id);
+};
 
-    emit('update-step', current.id)
-
-}
 
 // const getStepClass = (thisStep: IStep) => {
 
