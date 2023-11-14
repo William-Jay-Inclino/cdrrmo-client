@@ -36,12 +36,7 @@
     </router-link>
 </li>
 
-<li class="nav-item" :class="{'active': routeName === routeNames.teams || routeName === routeNames.teamMembers}">
-    <router-link :to="{name: routeNames.teams}" class="nav-link">
-        <i class="fas fa-fw fa-sitemap"></i>
-        <span>Teams</span>
-    </router-link>
-</li>
+
 
 
 <!-- Divider -->
@@ -55,21 +50,28 @@
 <li class="nav-item" :class="{'active': routeName === routeNames.users}">
     <router-link :to="{name: routeNames.users}" class="nav-link">
         <i class="fas fa-fw fa-users"></i>
-        <span>Personnels</span>
+        <span>Personnel</span>
     </router-link>
 </li>
 
-<li class="nav-item" :class="{'active': routeName === routeNames.emergencies}">
+<li class="nav-item" :class="{'active': routeName === routeNames.teams || routeName === routeNames.teamMembers}">
+    <router-link :to="{name: routeNames.teams}" class="nav-link">
+        <i class="fas fa-fw fa-sitemap"></i>
+        <span>Team</span>
+    </router-link>
+</li>
+
+<li class="nav-item" :class="{'active': routeName === routeNames.emergencies || routeName === routeNames.emergenciesForm}">
     <router-link :to="{name: routeNames.emergencies}" class="nav-link">
         <i class="fas fa-fw fa-exclamation-triangle"></i>
-        <span>Emergencies</span>
+        <span>Emergency</span>
     </router-link>
 </li>
 
-<li class="nav-item" :class="{'active': routeName === routeNames.trainingSkills}">
+<li class="nav-item" :class="{'active': routeName === routeNames.trainingSkills || routeName === routeNames.trainingSkillsForm}">
     <router-link :to="{name: routeNames.trainingSkills}" class="nav-link">
         <i class="fas fa-fw fa-medal"></i>
-        <span>Training Skills</span>
+        <span>Training Skill</span>
     </router-link>
 </li>
 
@@ -81,28 +83,28 @@
     Organizations
 </div>
 
-<li class="nav-item" :class="{'active': routeName === routeNames.nationalAgencies}">
+<li class="nav-item" :class="{'active': routeName === routeNames.nationalAgencies || routeName === routeNames.nationalAgenciesForm}">
     <router-link :to="{name: routeNames.nationalAgencies}" class="nav-link">
         <i class="fas fa-fw fa-building"></i>
-        <span>National Agencies</span>
+        <span>National Agency</span>
     </router-link>
 </li>
 
-<li class="nav-item" :class="{'active': routeName === routeNames.csos}">
+<li class="nav-item" :class="{'active': routeName === routeNames.csos || routeName === routeNames.csosForm}">
     <router-link :to="{name: routeNames.csos}" class="nav-link">
         <i class="fas fa-fw fa-hands-helping"></i>
         <span>CSO</span>
     </router-link>
 </li>
 
-<li class="nav-item" :class="{'active': routeName === routeNames.pos}">
+<li class="nav-item" :class="{'active': routeName === routeNames.pos || routeName === routeNames.posForm}">
     <router-link :to="{name: routeNames.pos}" class="nav-link">
         <i class="fas fa-fw fa-users"></i>
         <span>PO</span>
     </router-link>
 </li>
 
-<li class="nav-item" :class="{'active': routeName === routeNames.barts}">
+<li class="nav-item" :class="{'active': routeName === routeNames.barts || routeName === routeNames.bartsForm}">
     <router-link :to="{name: routeNames.barts}" class="nav-link">
         <i class="fas fa-fw fa-home"></i>
         <span>BART</span>

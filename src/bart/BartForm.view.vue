@@ -3,7 +3,7 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">BART (Barangay Auxiliary Response Team) Module</h1>
+            <h1 class="h3 mb-0 text-gray-800">BART (Barangay Auxiliary Response Team) </h1>
         </div>
 
         <div class="row">
@@ -74,7 +74,7 @@ const toast = useToast();
 const $module = bartStore()
 const router = useRouter()
 
-const moduleLabel = 'Bart'
+const moduleLabel = 'BART'
 const errorMsg = ref('This field is required')
 
 const breadcrumbItems = ref([

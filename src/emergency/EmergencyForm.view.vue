@@ -3,7 +3,7 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">PO (People's Organization) </h1>
+            <h1 class="h3 mb-0 text-gray-800">Emergency</h1>
         </div>
 
         <div class="row">
@@ -67,25 +67,25 @@ import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Breadcrumbs from '../common/components/Breadcrumbs.vue'
 import { useToast } from "vue-toastification";
-import { poStore } from '.'
+import { emergencyStore } from '.'
 import { routeNames } from '../common';
 
 const toast = useToast();
-const $module = poStore()
+const $module = emergencyStore()
 const router = useRouter()
 
-const moduleLabel = 'Po'
+const moduleLabel = 'Emergency'
 const errorMsg = ref('This field is required')
 
 const breadcrumbItems = ref([
     {
-        text: 'PO List',
-        route: routeNames.pos,
+        text: 'Emergency List',
+        route: routeNames.emergencies,
         isActive: false,
     },
     {
-        text: 'PO Form',
-        route: routeNames.posForm,
+        text: 'Emergency Form',
+        route: routeNames.emergenciesForm,
         isActive: true,
     }
 ])
@@ -112,14 +112,14 @@ const onSubmit = async() => {
 
     $module.resetFormData()
     toast.success(moduleLabel + ' successfully saved!')
-    router.push({name: routeNames.pos})
+    router.push({name: routeNames.emergencies})
 
 }
 
 
 const onCancel = () => {
     $module.resetFormData()
-    router.push({name: routeNames.pos})
+    router.push({name: routeNames.emergencies})
 }
 
 </script>

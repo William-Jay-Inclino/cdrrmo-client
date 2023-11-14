@@ -52,6 +52,11 @@ const routes = [
         name: routeNames.csos,
         component: () => import('./cso/Cso.view.vue')
     },
+    {
+        path: '/csos/form',
+        name: routeNames.csosForm,
+        component: () => import('./cso/CsoForm.view.vue')
+    },
 
     // ================ po route ================ 
     {
@@ -83,12 +88,22 @@ const routes = [
         name: routeNames.nationalAgencies,
         component: () => import('./na/Na.view.vue')
     },
+    {
+        path: '/national-agencies/form',
+        name: routeNames.nationalAgenciesForm,
+        component: () => import('./na/NaForm.view.vue')
+    },
 
     // ================ emergency route ================ 
     {
         path: '/emergencies',
         name: routeNames.emergencies,
         component: () => import('./emergency/Emergency.view.vue')
+    },
+    {
+        path: '/emergencies/form',
+        name: routeNames.emergenciesForm,
+        component: () => import('./emergency/EmergencyForm.view.vue')
     },
 
     // ================ training skill route ================ 
