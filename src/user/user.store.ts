@@ -243,31 +243,33 @@ export const userStore = defineStore('user', () => {
         return true 
     }
 
-    // const saveUser = async(payload: IUser): Promise<IUser | null> => {
-    //     console.log('saveUser()', payload)
+    const saveUser = async(payload: IUser): Promise<IUser | null> => {
+        console.log(_store + 'saveUser()', payload)
 
-    //     payload.birth_date = new Date(payload.birth_date)
+        payload.birth_date = new Date(payload.birth_date)
 
-    //     if(payload.user_id.trim() !== ''){
-    //         console.log('update')
-    //         const updatedUser = await userService.updateUser(payload.user_id, payload)
-    //         console.log('updatedUser ', updatedUser)
-    //         return updatedUser
-    //     }
+        if(payload.id.trim() !== ''){
+            console.log(_store + 'updating')
+            const updatedUser = await userService.update({id: payload.id, data: payload})
+            console.log('updatedUser ', updatedUser)
+            return updatedUser
+        }
 
-    //     const createdUser = await userService.createUser(payload)
-    //     console.log('createdUser', createdUser)
+        const createdUser = await userService.create({data: payload})
+        console.log('createdUser', createdUser)
 
-    //     _users.value.unshift(createdUser)
+        if(createdUser){
+            _users.value.unshift(createdUser)
+        }
 
-    //     resetFormData()
+        resetFormData()
 
-    //     return createdUser
-    // }
+        return createdUser
+    }
 
-    // const resetFormData = () => {
-    //     formData.value = {..._formDataInitial}
-    // }
+    const resetFormData = () => {
+        formData.value = {..._formDataInitial}
+    }
 
 
     const getAge = (birthDate: Date): number => {
@@ -290,7 +292,7 @@ export const userStore = defineStore('user', () => {
         setFormDataAuth,
         isValidStep1,
         isValidStep3,
-        // saveUser,
+        saveUser,
     }
 })
 

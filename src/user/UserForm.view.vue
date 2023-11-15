@@ -72,9 +72,9 @@
     import Step3 from './components/FormStep3.vue'
     import Step4 from './components/FormStep4.vue'
     import { userStore } from '.';
-    // import { useToast } from "vue-toastification";
+    import { useToast } from "vue-toastification";
 
-    // const toast = useToast();
+    const toast = useToast();
     const router = useRouter()
     const $user = userStore()
 
@@ -133,27 +133,27 @@
     const onSubmitForm = async(action: number) => {
         console.log('onSubmitForm()', action)
 
-        // const userData = {...$user.formData}
+        const userData = {...$user.formData}
 
-        // validations here
+        const savedUser = await $user.saveUser(userData)
 
-        // const savedUser = await $user.saveUser(userData)
+        if(savedUser){
 
-        // if(savedUser){
+            if(action === 1){
 
-        //     if(action === 1){
+                $user.formCurrentStep = 1
 
-        //         currentStep.value = 1
+            }else if(action === 2){
 
-        //     }else if(action === 2){
+                router.push({name: routeNames.users})
 
-        //         router.push({name: routeNames.users})
-
-        //     }
+            }
 
 
-        //     toast.success("Personnel successfully added!");
-        // }
+            toast.success("Personnel successfully added!");
+        }else{
+            toast.error("Failed to save Personnel!")
+        }
     }
 
     const onUpdateStep = (step: number) => {
