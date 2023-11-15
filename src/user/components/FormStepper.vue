@@ -94,13 +94,18 @@ onMounted( () => {
 
 })
 
-const onClickStepBtn = (stepId: number) => {
+const onClickStepBtn = async(stepId: number) => {
     console.log('onClickStepBtn()', stepId);
 
     if(stepId !== 1){
-        console.log('stepId !== 1')
         if(!$user.isValidStep1()){
             return
+        }
+    }
+
+    if(stepId > 3){
+        if(!(await $user.isValidStep3())) {
+            return 
         }
     }
 

@@ -4,9 +4,27 @@
         <table class="table">
             <tbody>
                 <tr>
+                    <th>User Name</th>
+                    <td> {{ $user.formData.user_name }} </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th class="align-middle">Password</th>
+                    <td>
+                        <span v-if="!showPassword">
+                            <i v-for="_ in 8" class="fas fa-fw fa-circle fa-xs"></i>
+                        </span>
+                        <span v-else>
+                            {{ $user.formData.password }}
+                        </span>
+                        <button @click="showPassword = !showPassword" class="btn btn-outline-secondary btn-sm float-end" type="button">
+                            <i class="fas fa-fw" :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
                     <th>First Name</th>
                     <td> {{ $user.formData.first_name }} </td>
-                    <td></td>
                 </tr>
                 <tr>
                     <th>Last Name</th>
@@ -42,22 +60,25 @@
                 </tr>
                 <tr>
                     <th>Personnel Type</th>
-                    <!-- <td> {{ CONST_DistinctUserTypes[$user.formData.distinctType!].text }} </td> -->
+                    <td> {{ CONST_UserTypes[$user.formData.type].text }} </td>
                 </tr>
                 <tr>
                     <th>Personnel Subtype</th>
-                    <td> {{ CONST_SubTypes[$user.formData.type].text }} </td>
+                    <td v-if="$user.formData.type === UserTypeEnum.National_Agency"> {{ getNa($user.formData.na_id!) }} </td>
+                    <td v-else> {{ CONST_SubTypes[$user.formData.type].text }} </td>
                 </tr>
-                <tr v-if="false">
+                <tr v-if="showSubSubType">
                     <th>Personnel Sub-subType</th>
-                    <td> {{ 'subSubType' }} </td>
+                    <td v-if="$user.formData.type === UserTypeEnum.ACDV_BART"> {{ getBart($user.formData.bart_id!) }} </td>
+                    <td v-if="$user.formData.type === UserTypeEnum.ACDV_CSO"> {{ getCso($user.formData.cso_id!) }} </td>
+                    <td v-if="$user.formData.type === UserTypeEnum.ACDV_PO"> {{ getPo($user.formData.po_id!) }} </td>
                 </tr>
-                <!-- <tr v-if="$user.formData.personnelSkills">
-                    <th class="align-middle" :rowspan="$user.formData.personnelSkills.length + 1">Personnel Skills</th>
+                <tr v-if="$user.formData.skills.length > 0">
+                    <th class="align-middle" :rowspan="$user.formData.skills.length + 1">Personnel Skills</th>
                 </tr>
-                <tr v-for="skill in personnelSkills">
-                    <td>{{ skill.label }}</td>
-                </tr> -->
+                <tr v-for="skill in $user.formData.skills">
+                    <td>{{ getSkill(skill.training_skill_id) }}</td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -67,22 +88,37 @@
 
 <script setup lang="ts">
 
-import { CONST_Gender, CONST_UserLevel, CONST_UserStatus, CONST_SubTypes } from '../../common/constants';
-import { userStore } from '../../user';
-import { computed } from 'vue';
+import { CONST_Gender, CONST_UserLevel, CONST_UserStatus, CONST_SubTypes, CONST_UserTypes } from '../../common/constants';
+import { UserTypeEnum, userStore } from '../../user';
+import { computed, ref } from 'vue';
+import { INa, naStore } from '../../na';
+import { ICSO, csoStore } from '../../cso';
+import { IPO, poStore } from '../../po';
+import { IBART, bartStore } from '../../bart';
+import { ITrainingSkill, trainingSkillStore } from '../../training_skill';
 
 const $user = userStore()
+const $na = naStore()
+const $cso = csoStore()
+const $po = poStore()
+const $bart = bartStore()
+const $trainingSkill = trainingSkillStore()
 
-// const skills = trainingSkillService.getAllTrainingSkills()
+const showPassword = ref(false)
 
-// const subSubType = computed( () => {
-//     const x = $user.userSubSubTypes?.find(i => i.id === $user.formData.sub_type_id)
-//     if(x){
-//         return x.name
-//     }
-//     return null
-// })
+const NAs = computed( (): INa[] => $na.nas)
+const CSOs = computed( (): ICSO[] => $cso.csos)
+const POs = computed( (): IPO[] => $po.pos)
+const BARTs = computed( (): IBART[] => $bart.barts)
+const trainingSkills = computed( (): ITrainingSkill[] => $trainingSkill.trainingSkills )
 
+const showSubSubType = computed( () => {
+    return (
+        $user.formData.type === UserTypeEnum.ACDV_BART || 
+        $user.formData.type === UserTypeEnum.ACDV_CSO || 
+        $user.formData.type === UserTypeEnum.ACDV_PO 
+    )
+})
 
 const birthDate = computed ( () => {
     const dob = new Date($user.formData.birth_date);
@@ -91,4 +127,64 @@ const birthDate = computed ( () => {
     return dobFormat
 })
 
-</script>@/common/constants
+
+const getBart = (id: string) => {
+    const item = BARTs.value.find(i => i.id === id)
+
+    if(!item){
+        console.error('item not found')
+        return 
+    }
+
+    return item.name
+
+}
+
+const getPo = (id: string) => {
+    const item = POs.value.find(i => i.id === id)
+
+    if(!item){
+        console.error('item not found')
+        return 
+    }
+
+    return item.name
+
+}
+
+const getCso = (id: string) => {
+    const item = CSOs.value.find(i => i.id === id)
+
+    if(!item){
+        console.error('item not found')
+        return 
+    }
+
+    return item.name
+
+}
+
+const getNa = (id: string) => {
+    const item = NAs.value.find(i => i.id === id)
+
+    if(!item){
+        console.error('item not found')
+        return 
+    }
+
+    return item.name
+
+}
+
+const getSkill = (id: string) => {
+    const item = trainingSkills.value.find(i => i.id === id)
+
+    if(!item){
+        console.error('item not found')
+        return 
+    }
+
+    return item.name
+}
+
+</script>

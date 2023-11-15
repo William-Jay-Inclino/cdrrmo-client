@@ -110,14 +110,19 @@
         $user.formCurrentStep -= 1
     }
 
-    const onClickNext = () => {
+    const onClickNext = async() => {
 
         console.log('onClickNext()')
         console.log('currentStep.value', currentStep.value)
 
         if(currentStep.value === 1){
-            console.log('currentStep is 1')
             if(!$user.isValidStep1()){
+                return 
+            }
+        }
+
+        if(currentStep.value === 3){
+            if(!(await $user.isValidStep3())) {
                 return 
             }
         }

@@ -90,15 +90,23 @@ class UserService{
 
     }
 
-    // getAge(birthDate: Date) :number{
-    //     const today = new Date();
-    //     let age = today.getFullYear() - birthDate.getFullYear();
-    //     const m = today.getMonth() - birthDate.getMonth();
-    //     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-    //         age--;
-    //     }
-    //     return age;
-    // }
+    async isUsernameTaken(user_name: string): Promise<boolean>{
+        console.log(this.service + 'checkUsernameValidity()', user_name)
+
+		try {
+			const response = await config.api.post(this.endpoint + 'check-username', {user_name});
+			console.log({response})
+            if(response.status === 200){
+                return response.data['taken']
+            }else{
+                console.error('Error: ', response)
+            }
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return true 
+    }
 
 }
 

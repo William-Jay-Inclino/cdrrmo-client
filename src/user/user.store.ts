@@ -12,18 +12,18 @@ export const userStore = defineStore('user', () => {
 
     const _formDataInitial: IUser = {
         id: '',
-        user_name: '',
-        user_level: UserLevelEnum.Field_Operator,
-        password: '',
-        last_name: '',
-        first_name: '',
-        gender: GenderEnum.Male,
-        address: '',
+        user_name: '', // ok
+        user_level: UserLevelEnum.Field_Operator, // ok
+        password: '', // ok
+        last_name: '', // ok
+        first_name: '', // ok
+        gender: GenderEnum.Male, // ok
+        address: '', // ok
         // @ts-ignore
-        birth_date: undefined,
-        contact_no: '',
-        blood_type: CONST_bloodTypes[0],
-        status: UserStatusEnum.Active,
+        birth_date: undefined, // ok
+        contact_no: '', // ok
+        blood_type: CONST_bloodTypes[0], // ok
+        status: UserStatusEnum.Active, // ok
         type: UserTypeEnum.LGU_Casual,
         
         dispatch_status: undefined,
@@ -53,6 +53,8 @@ export const userStore = defineStore('user', () => {
         cso: false,
         po: false,
         na: false,
+
+        isUsernameTaken: false,
     }
 
     const formCurrentStep = ref(1)
@@ -102,6 +104,10 @@ export const userStore = defineStore('user', () => {
     watch(formCurrentStep, (val: number) => {
         console.log(_store + 'watching formCurrentStep...', val)
         if(val === 3){
+
+            if(formData.value.user_name.trim() !== '') return 
+
+            // only populate username if it's empty
             const username = formData.value.first_name + '.' + formData.value.last_name
             const password = username + faker.number.int({min: 100, max: 999})
             setFormDataAuth({username, password})
@@ -205,6 +211,29 @@ export const userStore = defineStore('user', () => {
         return true 
     }
 
+    const isValidStep3 = async(): Promise<boolean> => {
+        console.log(_store + 'isValidStep3()')
+
+        formErrors.value.user_name = false 
+        formErrors.value.isUsernameTaken = false
+
+        if(formData.value.user_name.trim() === ''){
+            formErrors.value.user_name = true 
+            return false
+        }
+
+        const isUsernameTaken = await userService.isUsernameTaken(formData.value.user_name)
+
+        if(isUsernameTaken) {
+            formErrors.value.isUsernameTaken = true
+            return false
+        }
+
+        formErrors.value.isUsernameTaken = false
+
+        return true 
+    }
+
     // const saveUser = async(payload: IUser): Promise<IUser | null> => {
     //     console.log('saveUser()', payload)
 
@@ -251,6 +280,7 @@ export const userStore = defineStore('user', () => {
         setUsers,
         setFormDataAuth,
         isValidStep1,
+        isValidStep3,
         // saveUser,
     }
 })
