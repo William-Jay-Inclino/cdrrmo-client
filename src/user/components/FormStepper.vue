@@ -83,16 +83,16 @@ const steps = ref<IStep[]>([
     },
     {
         id: 2,
-        text: 'Authentication',
-        icon: 'fa-lock',
-        dataBsTarget: 'collapseOne',
+        text: 'Skills',
+        icon: 'fa-medal',
+        dataBsTarget: 'collapseTwo',
         stepClass: stepClassInitial,
     },
     {
         id: 3,
-        text: 'Skills',
-        icon: 'fa-medal',
-        dataBsTarget: 'collapseTwo',
+        text: 'Authentication',
+        icon: 'fa-lock',
+        dataBsTarget: 'collapseOne',
         stepClass: stepClassInitial,
     },
     {

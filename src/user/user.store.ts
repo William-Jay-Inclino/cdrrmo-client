@@ -51,6 +51,12 @@ export const userStore = defineStore('user', () => {
         _users.value = items 
     }
 
+    const setFormDataAuth = (payload: {username: string, password: string }) => {
+        console.log('setFormDataAuth()', payload)
+        formData.value.user_name = payload.username
+        formData.value.password = payload.password
+    }
+
     // getters 
 
     const users = computed( () => {
@@ -228,6 +234,7 @@ export const userStore = defineStore('user', () => {
         formData,
 
         setUsers,
+        setFormDataAuth,
         // getUsers,
         // addSkillInFormData,
         // removeSkillInFormData,

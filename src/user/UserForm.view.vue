@@ -31,7 +31,8 @@
                             <div class="card-body">
                                 <Step1 v-show="currentStep === 1" />
                                 <Step2 v-show="currentStep === 2" />
-                                <!-- <Step3 v-show="currentStep === 3" /> -->
+                                <Step3 v-show="currentStep === 3" />
+                                <Step4 v-show="currentStep === 4" />
                             </div>
                         </div>
                     </div>
@@ -43,9 +44,9 @@
                         <div class="justify-content-between">
                             <button v-show="currentStep === 1" @click="onClickCancel" class="btn btn-dark">Cancel</button>
                             <button v-if="currentStep > 1" @click="onClickBack" class="btn btn-dark">Back</button>
-                            <button v-if="currentStep < 3" @click="onClickNext" class="btn btn-primary float-end">Next</button>
+                            <button v-if="currentStep < 4" @click="onClickNext" class="btn btn-primary float-end">Next</button>
 
-                            <div v-if="currentStep === 3" class="float-end">
+                            <div v-if="currentStep === 4" class="float-end">
                                 <button @click="onSubmitForm(1)" class="btn btn-success">Submit and Add Again</button>
                                 <button @click="onSubmitForm(2)" class="btn btn-primary ml-2">Submit and Finish</button>
                             </div>
@@ -61,19 +62,22 @@
 
 
 <script setup lang="ts">
-    import { computed, ref } from 'vue';
+    import { computed, ref, watch } from 'vue';
     import Breadcrumbs from '../common/components/Breadcrumbs.vue'
     import { routeNames } from '../common/constants';
     import { useRouter } from 'vue-router';
     import FormStepper from './components/FormStepper.vue'
     import Step1 from './components/FormStep1.vue'
     import Step2 from './components/FormStep2.vue'
-    // import { userStore } from '.';
+    import Step3 from './components/FormStep3.vue'
+    import Step4 from './components/FormStep4.vue'
+    import { userStore } from '.';
+import { faker } from '@faker-js/faker';
     // import { useToast } from "vue-toastification";
 
     // const toast = useToast();
     const router = useRouter()
-    // const $user = userStore()
+    const $user = userStore()
 
     const currentStep = ref(1)
     
@@ -93,11 +97,22 @@
     const formHeader = computed( () => {
         
         if(currentStep.value === 1) return 'Step 1 - Basic Information'
-        if(currentStep.value === 2) return 'Step 2 - Authentication'
-        if(currentStep.value === 3) return 'Step 3 - Training Skills'
+        if(currentStep.value === 2) return 'Step 3 - Training Skills'
+        if(currentStep.value === 3) return 'Step 2 - Authentication'
         if(currentStep.value === 4) return 'Step 3 - Final Confirmation: Ready to Submit?'
 
     })
+
+
+    watch(currentStep, (val) => {
+        console.log('watching currentStep', val)
+        if(val === 3){
+            const username = $user.formData.first_name + '.' + $user.formData.last_name
+            const password = username + faker.number.int({min: 100, max: 999})
+            $user.setFormDataAuth({username, password})
+        }
+    })
+
 
     const onClickCancel = () => {
         router.push({name: routeNames.users})

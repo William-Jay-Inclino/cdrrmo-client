@@ -42,7 +42,7 @@
                 </tr>
                 <tr>
                     <th>Personnel Type</th>
-                    <td> {{ CONST_DistinctUserTypes[$user.formData.distinctType!].text }} </td>
+                    <!-- <td> {{ CONST_DistinctUserTypes[$user.formData.distinctType!].text }} </td> -->
                 </tr>
                 <tr>
                     <th>Personnel Subtype</th>
@@ -52,12 +52,12 @@
                     <th>Personnel Sub-subType</th>
                     <td> {{ 'subSubType' }} </td>
                 </tr>
-                <tr v-if="$user.formData.personnelSkills">
+                <!-- <tr v-if="$user.formData.personnelSkills">
                     <th class="align-middle" :rowspan="$user.formData.personnelSkills.length + 1">Personnel Skills</th>
                 </tr>
                 <tr v-for="skill in personnelSkills">
                     <td>{{ skill.label }}</td>
-                </tr>
+                </tr> -->
             </tbody>
         </table>
     </div>
@@ -67,14 +67,13 @@
 
 <script setup lang="ts">
 
-import { CONST_DistinctUserTypes, CONST_Gender, CONST_UserLevel, CONST_UserStatus, CONST_SubTypes } from '../../common/constants';
-import { trainingSkillService } from '../../training_skill';
+import { CONST_Gender, CONST_UserLevel, CONST_UserStatus, CONST_SubTypes } from '../../common/constants';
 import { userStore } from '../../user';
 import { computed } from 'vue';
 
 const $user = userStore()
 
-const skills = trainingSkillService.getAllTrainingSkills()
+// const skills = trainingSkillService.getAllTrainingSkills()
 
 // const subSubType = computed( () => {
 //     const x = $user.userSubSubTypes?.find(i => i.id === $user.formData.sub_type_id)
@@ -84,23 +83,6 @@ const skills = trainingSkillService.getAllTrainingSkills()
 //     return null
 // })
 
-const personnelSkills = computed( () => {
-    const x: {id: string, label: string}[] = []
-
-    $user.formData.personnelSkills?.forEach(i => {
-
-        const j = skills.find(k => k.training_id === i.training_id)
-        if(j){
-            x.push({
-                id: i.training_id,
-                label: j.description,
-            })
-        }
-    })
-
-    return x
-
-})
 
 const birthDate = computed ( () => {
     const dob = new Date($user.formData.birth_date);

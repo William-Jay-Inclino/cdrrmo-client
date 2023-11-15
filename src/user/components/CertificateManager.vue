@@ -1,15 +1,15 @@
 <template>
 
-    <div v-show="false">
-        <div class="row">
+    <div v-show="show">
+        <div class="row" v-for="certificate in certificates">
             <div class="col">
                 <div class="input-group">
                     <div class="custom-file">
-                        <input :value="'certificate.src'" type="file" class="custom-file-input" id="inputGroupFile04">
+                        <input :value="certificate.certificateUrl" type="file" class="custom-file-input" id="inputGroupFile04">
                         <label class="custom-file-label" for="inputGroupFile04">Choose file </label>
                     </div>
                     <div class="input-group-append">
-                        <button @click="() => console.log('onClickDelCert')" class="btn btn-outline-danger" type="button">
+                        <button @click="onClickDelCert(certificate.certificateUrl)" class="btn btn-outline-danger" type="button">
                             <i class="fas fa-fw fa-trash"></i>
                         </button>
                     </div>
@@ -18,7 +18,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <button @click="() => console.log('onClickDelCert')" class="btn btn-light btn-sm">
+                <button @click="onClickAddCert" class="btn btn-light btn-sm">
                     <i class="fas fa-fw fa-plus text-primary"></i>
                 </button>
             </div>
@@ -29,27 +29,67 @@
 
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import { ISkillCertificate, userStore } from '..';
 
-// import { ICompCertificate } from '@/modules/training_skill';
-// import { faker } from '@faker-js/faker';
+const props = defineProps<{
+    skillId: string,
+    show: boolean,
+}>()
 
-// const emit = defineEmits(['add-cert', 'del-cert'])
+const $user = userStore()
 
-// const props = defineProps<{
-//     id: string,
-//     certificates: ICompCertificate[],
-//     show: boolean,
-// }>()
+const certificates = computed( () => {
+    const userSkill = $user.formData.skills.find(i => i.training_skill_id === props.skillId)
 
-// const onClickAddCert = () => {
-//     console.log('onClickAddCert()')
-//     emit('add-cert', {id: props.id, certificate: {id: faker.string.uuid(), src: ''} })
-// }
+    if(userSkill){
+        return userSkill.SkillCertificate
+    }
 
-// const onClickDelCert = (id: string) => {
-//     console.log('onClickDelCert()')
-//     emit('del-cert', {id: props.id, certificateId: id })
-// }
+    return []
+
+})
+
+const onClickAddCert = () => {
+    console.log('onClickAddCert()')
+    const userSkillIndx = $user.formData.skills.findIndex(i => i.training_skill_id === props.skillId)
+
+    if(userSkillIndx === -1){
+        console.error('user skill not found')
+        return 
+    }
+
+    const userSkill = $user.formData.skills[userSkillIndx]
+    const skillCert = {} as ISkillCertificate
+    skillCert.id = ''
+    skillCert.user_skill_id = ''
+    skillCert.certificateUrl = ''
+    userSkill.SkillCertificate.push(skillCert)
+
+}
+
+const onClickDelCert = (certificateUrl: string) => {
+    console.log('onClickDelCert()', certificateUrl)
+
+    const userSkillIndx = $user.formData.skills.findIndex(i => i.training_skill_id === props.skillId)
+
+    if(userSkillIndx === -1){
+        console.error('user skill not found')
+        return 
+    }
+
+    const userSkill = $user.formData.skills[userSkillIndx]
+
+    const skillCertIndx = userSkill.SkillCertificate.findIndex(i => i.certificateUrl === certificateUrl)
+
+    if(skillCertIndx === -1){
+        console.error('certificate not found')
+        return 
+    }
+
+    userSkill.SkillCertificate.splice(skillCertIndx, 1)
+
+}
 
 
 </script>
