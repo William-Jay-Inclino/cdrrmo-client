@@ -126,7 +126,7 @@
 
         <div class="form-group">
             <label>Personnel Type</label>
-            <select class="form-control" v-model="userType">
+            <select class="form-control" v-model="$user.formUserType">
                 <option :value="i.id" :key="i.id" v-for="i in userTypes">
                     {{ i.text }}
                 </option>
@@ -145,7 +145,7 @@
             </select>
 
             <select class="form-control"  v-model="$user.formData.na_id" v-else-if="userType === DistinctUserTypeEnum.National_Agency">
-                <option v-for="i in NAs" :key="i.id" :value="i.id"> {{ i.name }} </option>
+                <option v-for="i in $user.NAs" :key="i.id" :value="i.id"> {{ i.name }} </option>
             </select>
 
             <small class="form-text text-danger" v-if="$user.formErrors.type"> {{ errorMsg }} </small>
@@ -156,13 +156,13 @@
         <div class="form-group" v-if="userType === DistinctUserTypeEnum.ACDV">
             <label v-if="$user.formData.type && $user.formData.type !== UserTypeEnum.ACDV_INDIVIDUAL"> Personnel Sub-subtype</label>
             <select v-model="$user.formData.bart_id" class="form-control" v-if="$user.formData.type === UserTypeEnum.ACDV_BART">
-                <option :value="i.id" :key="i.id" v-for="i in BARTs"> {{ i.name }} </option>
+                <option :value="i.id" :key="i.id" v-for="i in $user.BARTs"> {{ i.name }} </option>
             </select>
             <select v-model="$user.formData.po_id" class="form-control" v-if="$user.formData.type === UserTypeEnum.ACDV_PO">
-                <option :value="i.id" :key="i.id" v-for="i in POs"> {{ i.name }} </option>
+                <option :value="i.id" :key="i.id" v-for="i in $user.POs"> {{ i.name }} </option>
             </select>
             <select v-model="$user.formData.cso_id" class="form-control" v-if="$user.formData.type === UserTypeEnum.ACDV_CSO">
-                <option :value="i.id" :key="i.id" v-for="i in CSOs"> {{ i.name }} </option>
+                <option :value="i.id" :key="i.id" v-for="i in $user.CSOs"> {{ i.name }} </option>
             </select>
 
             <small class="form-text text-danger" v-if="$user.formErrors.bart"> {{ errorMsg }} </small>
@@ -181,16 +181,8 @@ import { computed, ref, watch } from 'vue';
 import { UserLevelEnum, UserStatusEnum, userStore } from '../'
 import { DistinctUserTypeEnum, UserTypeEnum, GenderEnum } from '../'
 import { CONST_DistinctUserTypes, CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_bloodTypes } from '../../common';
-import { INa, naStore } from '../../na';
-import { ICSO, csoStore } from '../../cso';
-import { IPO, poStore } from '../../po';
-import { IBART, bartStore } from '../../bart';
 
 const $user = userStore()
-const $na = naStore()
-const $cso = csoStore()
-const $po = poStore()
-const $bart = bartStore()
 
 const errorMsg = ref('This field is required')
 
@@ -206,8 +198,6 @@ const userLevels = ref([
     CONST_UserLevel[UserLevelEnum.Field_Operator],
     CONST_UserLevel[UserLevelEnum.Team_Leader],
 ])
-
-const userType = ref(userTypes.value[0].id)
 
 
 const LGUs = computed( (): {id: UserTypeEnum, text: string, color: string}[] => {
@@ -226,37 +216,26 @@ const ACDVs = computed( (): {id: UserTypeEnum, text: string, color: string}[] =>
     arr.push(CONST_SubTypes[UserTypeEnum.ACDV_INDIVIDUAL])
     return arr
 })
-
-const NAs = computed( (): INa[] => $na.nas)
-const CSOs = computed( (): ICSO[] => $cso.csos)
-const POs = computed( (): IPO[] => $po.pos)
-const BARTs = computed( (): IBART[] => $bart.barts)
 const bloodTypes = computed( (): string[] => CONST_bloodTypes)
 
 const subType = computed( () => $user.formData.type)
-
+const userType = computed( () => $user.formUserType)
 
 watch(userType, (val) => {
     console.log('val', val)
     if(!val) return 
 
-    $user.formData.na_id = undefined
+    // $user.formData.na_id = undefined
 
-    if(val === DistinctUserTypeEnum.LGU){
-        console.log('type is LGU')
-        $user.formData.type = LGUs.value[0].id
+    if(val === DistinctUserTypeEnum.LGU || val === DistinctUserTypeEnum.ACDV){
+        // @ts-ignore
+        $user.formData.type = $user.formData.type || undefined
         return 
     }
 
-    if(val === DistinctUserTypeEnum.ACDV){
-        console.log('type is ACDV')
-        $user.formData.type = ACDVs.value[0].id
-        return
-    }
-
     if(val === DistinctUserTypeEnum.National_Agency){
-        console.log('type is National_Agency')
         $user.formData.type = UserTypeEnum.National_Agency
+        $user.formData.na_id = $user.formData.na_id || undefined
         return 
     }
 
@@ -265,9 +244,9 @@ watch(userType, (val) => {
 watch(subType, (val) => {
     if(!val) return 
     
-    $user.formData.po_id = undefined
-    $user.formData.cso_id = undefined
-    $user.formData.bart_id = undefined
+    $user.formData.po_id = $user.formData.po_id || undefined
+    $user.formData.cso_id = $user.formData.cso_id || undefined
+    $user.formData.bart_id = $user.formData.bart_id || undefined
 
     // remove bart field error when subtype updates that is not national agency 
     if(val !== UserTypeEnum.National_Agency){

@@ -1,14 +1,25 @@
 
 import { defineStore } from 'pinia'
 import { computed, onMounted, ref, watch } from 'vue'
-import { GenderEnum, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum, userService } from '.';
+import { DistinctUserTypeEnum, GenderEnum, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum, userService } from '.';
 import { CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_UserTypes, CONST_bloodTypes } from '../common/constants';
 import { faker } from '@faker-js/faker';
-import { isValidDate, isValidPhoneNumber } from '../common/helpers';
+import { getAge, isValidDate, isValidPhoneNumber } from '../common/helpers';
+import { INa, naStore } from '../na';
+import { ICSO, csoStore } from '../cso';
+import { IPO, poStore } from '../po';
+import { IBART, bartStore } from '../bart';
 
 export const userStore = defineStore('user', () => {
 
+    // ============================== START STATE ============================== 
+
     const _store = 'userStore: '
+
+    const $na = naStore()
+    const $cso = csoStore()
+    const $po = poStore()
+    const $bart = bartStore()
 
     const _formDataInitial: IUser = {
         id: '',
@@ -58,21 +69,41 @@ export const userStore = defineStore('user', () => {
         isInvalidContactNo: false,
     }
 
-    const formCurrentStep = ref(1)
+    const _formCurrentStepInitial = 1
+    const _formUserTypeInitial = DistinctUserTypeEnum.LGU
+
 
     
-    // state
+    
     const _users = ref<IUser[]>([])
     const formData = ref<IUser>({..._formDataInitial})
     const formErrors = ref({..._formErrorsInitial})
+    const formUserType = ref<DistinctUserTypeEnum>(_formUserTypeInitial)
+    const formCurrentStep = ref(_formCurrentStepInitial)
+
+    // ============================== END STATE ============================== 
+
+
+
+
+
+    // ============================== START LIFECYCLE HOOKS ============================== 
 
     onMounted( async() => {
         console.log(_store + 'onMounted()')
         const items = await userService.findAll()
         setUsers(items)
     })
+
+    // ============================== END LIFECYCLE HOOKS ============================== 
     
-    // setters 
+
+
+
+
+
+
+    // ============================== START SETTERS ============================== 
 
     const setUsers = (items: IUser[]) => {
         console.log(_store + 'setUsers()', items)
@@ -85,7 +116,27 @@ export const userStore = defineStore('user', () => {
         formData.value.password = payload.password
     }
 
-    // getters 
+    const setFormData = (payload: {data: IUser}) => {
+        console.log(_store + 'setFormData()', payload)
+        formData.value = payload.data
+    }
+
+    // ============================== END SETTERS ============================== 
+
+
+
+
+
+
+
+    // ============================== START GETTERS ============================== 
+
+    const formIsEditMode = computed( (): boolean => {
+        if(formData.value.id && formData.value.id.trim() !== ''){
+            return true 
+        }
+        return false 
+    })
 
     const users = computed( () => {
         return _users.value.map(i => {
@@ -99,8 +150,19 @@ export const userStore = defineStore('user', () => {
         })
     })
 
+    const NAs = computed( (): INa[] => $na.nas)
+    const CSOs = computed( (): ICSO[] => $cso.csos)
+    const POs = computed( (): IPO[] => $po.pos)
+    const BARTs = computed( (): IBART[] => $bart.barts)
 
-    // watchers 
+    // ============================== END GETTERS ============================== 
+
+
+
+
+
+
+    // ============================== START WATCHERS ============================== 
 
     watch(formCurrentStep, (val: number) => {
         console.log(_store + 'watching formCurrentStep...', val)
@@ -119,6 +181,51 @@ export const userStore = defineStore('user', () => {
         }
     })
     
+    // ============================== END WATCHERS ============================== 
+
+
+
+
+
+
+    // ============================== START METHODS ============================== 
+
+    const initUpdateFormData = async(id: string) => {
+        console.log(_store + 'initUpdateFormData()', id)
+        const user = await userService.findOne(id)
+        console.log('user', {...user})
+        if(user){
+
+            const d = new Date(user.birth_date)
+            const formattedDate = d.toISOString().split('T')[0];
+
+            // @ts-ignore
+            user.birth_date = formattedDate
+
+            if(
+                user.type === UserTypeEnum.LGU_Casual ||
+                user.type === UserTypeEnum.LGU_Job_Order ||
+                user.type === UserTypeEnum.LGU_Regular 
+            ){
+                formUserType.value = DistinctUserTypeEnum.LGU
+            }
+
+            else if(
+                user.type === UserTypeEnum.ACDV_BART || 
+                user.type === UserTypeEnum.ACDV_CSO || 
+                user.type === UserTypeEnum.ACDV_PO || 
+                user.type === UserTypeEnum.ACDV_INDIVIDUAL  
+            ){
+                formUserType.value = DistinctUserTypeEnum.ACDV
+            }
+
+            else if(user.type === UserTypeEnum.National_Agency){
+                formUserType.value = DistinctUserTypeEnum.National_Agency
+            }
+
+            setFormData({data: user})
+        }
+    }
 
     const isValidStep1 = (): boolean => {
         console.log(_store + 'isValidStep1()')
@@ -268,31 +375,37 @@ export const userStore = defineStore('user', () => {
     }
 
     const resetFormData = () => {
+        console.log(_store + 'resetFormData()')
         formData.value = {..._formDataInitial}
+        formErrors.value = {..._formErrorsInitial}
+        formCurrentStep.value = _formCurrentStepInitial
+        formUserType.value = _formUserTypeInitial
     }
 
 
-    const getAge = (birthDate: Date): number => {
-        const today = new Date();
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const m = today.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-        return age;
-    }
+
+    // ============================== END METHODS ============================== 
+
   
     return {
         users,
         formData,
         formErrors,
         formCurrentStep,
+        formUserType,
+        formIsEditMode,
+        NAs,
+        POs,
+        BARTs,
+        CSOs,
 
+        initUpdateFormData,
         setUsers,
         setFormDataAuth,
         isValidStep1,
         isValidStep3,
         saveUser,
+        resetFormData,
     }
 })
 

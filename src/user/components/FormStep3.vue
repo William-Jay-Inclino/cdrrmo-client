@@ -1,6 +1,7 @@
 <template>
 
-    <div>
+    <!-- use <form> tag to remove console warning [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq)  -->
+    <form>
 
         <div class="form-group">
             <label>User Name</label>
@@ -22,7 +23,7 @@
         </div>
 
 
-    </div>
+    </form>
 
 </template>
 

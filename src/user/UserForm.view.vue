@@ -31,8 +31,8 @@
                             <div class="card-body">
                                 <Step1 v-show="currentStep === 1" />
                                 <Step2 v-show="currentStep === 2" />
-                                <Step3 v-show="currentStep === 3" />
-                                <Step4 v-show="currentStep === 4" />
+                                <Step3 v-if="currentStep === 3" />
+                                <Step4  v-if="currentStep === 4" />
                             </div>
                         </div>
                     </div>
@@ -62,10 +62,13 @@
 
 
 <script setup lang="ts">
-    import { computed, ref } from 'vue';
+
+    // ========================== START DEPENDENCIES ========================== 
+
+    import { computed, onMounted, ref } from 'vue';
     import Breadcrumbs from '../common/components/Breadcrumbs.vue'
     import { routeNames } from '../common/constants';
-    import { useRouter } from 'vue-router';
+    import { useRouter, onBeforeRouteLeave } from 'vue-router';
     import FormStepper from './components/FormStepper.vue'
     import Step1 from './components/FormStep1.vue'
     import Step2 from './components/FormStep2.vue'
@@ -73,6 +76,15 @@
     import Step4 from './components/FormStep4.vue'
     import { userStore } from '.';
     import { useToast } from "vue-toastification";
+
+    // ========================== END DEPENDENCIES ========================== 
+
+
+
+
+
+
+    // ========================== START STATE ========================== 
 
     const toast = useToast();
     const router = useRouter()
@@ -91,17 +103,63 @@
         }
     ])
 
+    // ========================== END STATE ========================== 
+
+
+
+
+
+    
+    // ========================== START LIFECYCLE HOOKS ========================== 
+    
+    onBeforeRouteLeave( (to: any, from: any, next: any) => {
+        console.log('onBeforeRouteLeave()')
+        console.log({to})
+        console.log({from})
+        $user.resetFormData()
+
+        next()
+    })
+
+    onMounted( async() => {
+        const query = router.currentRoute.value.query
+
+        if(query.id){
+            await $user.initUpdateFormData(query.id as string)
+        }
+    })
+
+
+
+
+    // ========================== END LIFECYCLE HOOKS ========================== 
+
+
+
+
+
+
+    // ========================== START COMPUTED ========================== 
+
     const currentStep = computed( () => $user.formCurrentStep)
 
     const formHeader = computed( () => {
         
         if(currentStep.value === 1) return 'Step 1 - Basic Information'
-        if(currentStep.value === 2) return 'Step 3 - Training Skills'
-        if(currentStep.value === 3) return 'Step 2 - Authentication'
-        if(currentStep.value === 4) return 'Step 3 - Final Confirmation: Ready to Submit?'
+        if(currentStep.value === 2) return 'Step 2 - Training Skills'
+        if(currentStep.value === 3) return 'Step 3 - Authentication'
+        if(currentStep.value === 4) return 'Step 4 - Final Confirmation: Ready to Submit?'
 
     })
 
+    // ========================== END COMPUTED ========================== 
+
+
+
+
+
+
+    // ========================== START METHODS ========================== 
     const onClickCancel = () => {
         router.push({name: routeNames.users})
     }
@@ -139,11 +197,9 @@
 
         if(savedUser){
 
-            if(action === 1){
+            $user.formCurrentStep = 1
 
-                $user.formCurrentStep = 1
-
-            }else if(action === 2){
+            if(action === 2){
 
                 router.push({name: routeNames.users})
 
@@ -160,6 +216,13 @@
         console.log('onUpdateStep()', step)
         $user.formCurrentStep = step
     }
+
+    // ========================== END METHODS ========================== 
+
+
+
+
+
 
 </script>
 

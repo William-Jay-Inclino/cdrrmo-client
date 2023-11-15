@@ -30,7 +30,7 @@ class UserService{
 			const response = await config.api.get(this.endpoint + id);
 			console.log({response})
             if(response.status === 200){
-                return response.data
+                return {...response.data}
             }
             console.error('Error: ', response)
 		} catch (error) {

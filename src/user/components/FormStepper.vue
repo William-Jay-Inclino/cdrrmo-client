@@ -79,8 +79,6 @@ const steps = ref<IStep[]>([
     }
 ])
 
-// aria expanded = true if same step
-
 
 const currentStep = computed( () => props.currentStep)
 

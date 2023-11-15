@@ -128,7 +128,8 @@ const birthDate = computed ( () => {
 })
 
 
-const getBart = (id: string) => {
+const getBart = (id?: string) => {
+    if(!id) return 
     const item = BARTs.value.find(i => i.id === id)
 
     if(!item){
@@ -140,7 +141,8 @@ const getBart = (id: string) => {
 
 }
 
-const getPo = (id: string) => {
+const getPo = (id?: string) => {
+    if(!id) return 
     const item = POs.value.find(i => i.id === id)
 
     if(!item){
@@ -152,7 +154,8 @@ const getPo = (id: string) => {
 
 }
 
-const getCso = (id: string) => {
+const getCso = (id?: string) => {
+    if(!id) return 
     const item = CSOs.value.find(i => i.id === id)
 
     if(!item){
@@ -164,7 +167,8 @@ const getCso = (id: string) => {
 
 }
 
-const getNa = (id: string) => {
+const getNa = (id?: string) => {
+    if(!id) return 
     const item = NAs.value.find(i => i.id === id)
 
     if(!item){
@@ -177,6 +181,7 @@ const getNa = (id: string) => {
 }
 
 const getSkill = (id: string) => {
+    if(!id) return 
     const item = trainingSkills.value.find(i => i.id === id)
 
     if(!item){

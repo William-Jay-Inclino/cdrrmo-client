@@ -40,7 +40,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="user in $userStore.users">
+                                    <tr v-for="user in $user.users">
                                         <td> {{ user.first_name + ' ' + user.last_name }} </td>
                                         <td> {{ user.address }} </td>
                                         <td> {{ user.age }} </td>
@@ -79,16 +79,21 @@
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                                     aria-labelledby="dropdownMenuLink">
-                                                    <a class="dropdown-item" href="#">
+                                                    <a @click="onClickUpdate(user)" class="dropdown-item" href="javascript:void(0)">
                                                         <i class="fas fa-fw fa-pencil-alt text-primary"></i>
-                                                        <span class="ml-2">Update</span>
+                                                        <span class="ml-2">Update Info</span>
                                                     </a>
                                                     <div class="dropdown-divider"></div>
                                                     <a class="dropdown-item" href="#">
                                                         <i class="fas fa-fw fa-eye text-info"></i>
-                                                        <span class="ml-2">View Skills</span>
+                                                        <span class="ml-2">See Profile</span>
                                                     </a>
                                                     <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">
+                                                        <i class="fas fa-fw fa-lock text-warning"></i>
+                                                        <span class="ml-2">Reset Password</span>
+                                                    </a>
+                                                    <!-- <div class="dropdown-divider"></div> -->
                                                     <!-- <a class="dropdown-item" href="#">
                                                         <i class="fas fa-fw fa-archive text-danger"></i>
                                                         <span class="ml-2">Archive</span>
@@ -111,11 +116,18 @@
 
 <script setup lang="ts">
     
-    import { userStore } from '.'
-    import { routeNames } from '../common/constants'
+import { IUser, userStore } from '.'
+import { routeNames } from '../common/constants'
+import { useRouter } from 'vue-router';
 
-    const $userStore = userStore()
+const $user = userStore()
+const router = useRouter()
 
-    console.log('$userStore', $userStore)
+console.log('$userStore', $user)
+
+const onClickUpdate = (data: IUser) => {
+    console.log('onClickUpdate()', data)
+    router.push({name: routeNames.userForm, query: {id: data.id}})
+}
 
 </script>
