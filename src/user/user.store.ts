@@ -109,8 +109,12 @@ export const userStore = defineStore('user', () => {
             if(formData.value.user_name.trim() !== '') return 
 
             // only populate username if it's empty
-            const username = formData.value.first_name + '.' + formData.value.last_name
-            const password = username + faker.number.int({min: 100, max: 999})
+            const username = (formData.value.first_name + '.' + formData.value.last_name).replace(/\s/g, '');
+            const password = (username + faker.number.int({min: 100, max: 999})).replace(/\s/g, '');
+            
+
+            console.log('username', username)
+            console.log('password', password)
             setFormDataAuth({username, password})
         }
     })
