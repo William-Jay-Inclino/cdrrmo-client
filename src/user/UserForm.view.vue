@@ -62,7 +62,7 @@
 
 
 <script setup lang="ts">
-    import { computed, ref, watch } from 'vue';
+    import { computed, ref } from 'vue';
     import Breadcrumbs from '../common/components/Breadcrumbs.vue'
     import { routeNames } from '../common/constants';
     import { useRouter } from 'vue-router';
@@ -72,15 +72,12 @@
     import Step3 from './components/FormStep3.vue'
     import Step4 from './components/FormStep4.vue'
     import { userStore } from '.';
-import { faker } from '@faker-js/faker';
     // import { useToast } from "vue-toastification";
 
     // const toast = useToast();
     const router = useRouter()
     const $user = userStore()
 
-    const currentStep = ref(1)
-    
     const breadcrumbItems = ref([
         {
             text: 'Personnel List',
@@ -94,6 +91,8 @@ import { faker } from '@faker-js/faker';
         }
     ])
 
+    const currentStep = computed( () => $user.formCurrentStep)
+
     const formHeader = computed( () => {
         
         if(currentStep.value === 1) return 'Step 1 - Basic Information'
@@ -103,27 +102,27 @@ import { faker } from '@faker-js/faker';
 
     })
 
-
-    watch(currentStep, (val) => {
-        console.log('watching currentStep', val)
-        if(val === 3){
-            const username = $user.formData.first_name + '.' + $user.formData.last_name
-            const password = username + faker.number.int({min: 100, max: 999})
-            $user.setFormDataAuth({username, password})
-        }
-    })
-
-
     const onClickCancel = () => {
         router.push({name: routeNames.users})
     }
 
     const onClickBack = () => {
-        currentStep.value -= 1
+        $user.formCurrentStep -= 1
     }
 
     const onClickNext = () => {
-        currentStep.value += 1
+
+        console.log('onClickNext()')
+        console.log('currentStep.value', currentStep.value)
+
+        if(currentStep.value === 1){
+            console.log('currentStep is 1')
+            if(!$user.isValidStep1()){
+                return 
+            }
+        }
+
+        $user.formCurrentStep += 1
     }
 
     const onSubmitForm = async(action: number) => {
@@ -154,7 +153,7 @@ import { faker } from '@faker-js/faker';
 
     const onUpdateStep = (step: number) => {
         console.log('onUpdateStep()', step)
-        currentStep.value = step
+        $user.formCurrentStep = step
     }
 
 </script>

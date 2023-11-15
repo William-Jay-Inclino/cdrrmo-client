@@ -7,10 +7,12 @@
                 <div class="col">
                     <label>First Name</label>
                     <input v-model="$user.formData.first_name" type="text" class="form-control">
+                    <small class="form-text text-danger" v-if="$user.formErrors.first_name"> {{ errorMsg }} </small>
                 </div>
                 <div class="col">
                     <label>Last Name</label>
                     <input v-model="$user.formData.last_name" type="text" class="form-control">
+                    <small class="form-text text-danger" v-if="$user.formErrors.last_name"> {{ errorMsg }} </small>
                 </div>
             </div>
         </div>
@@ -42,15 +44,18 @@
                     </div>
                 </div>
             </div>
+            <small class="form-text text-danger" v-if="$user.formErrors.gender"> {{ errorMsg }} </small>
         </div>
 
         <div class="form-group">
             <label>Address</label>
             <textarea v-model="$user.formData.address" class="form-control" rows="3"></textarea>
+            <small class="form-text text-danger" v-if="$user.formErrors.address"> {{ errorMsg }} </small>
         </div>
         <div class="form-group">
             <label>Birth Date</label>
             <input v-model="$user.formData.birth_date" type="date" class="form-control">
+            <small class="form-text text-danger" v-if="$user.formErrors.birth_date"> {{ errorMsg }} </small>
         </div>
         <div class="form-group">
             <label>Contact Number</label>
@@ -58,6 +63,7 @@
                 <span class="input-group-text" id="basic-addon1">+639</span>
                 <input v-model="$user.formData.contact_no" type="text" class="form-control" placeholder="###-###-###" aria-describedby="basic-addon1">
             </div>
+            <small class="form-text text-danger" v-if="$user.formErrors.contact_no"> {{ errorMsg }} </small>
         </div>
         <div class="form-group">
             <label>Blood Type</label>
@@ -66,6 +72,7 @@
                     {{ i }}
                 </option>
             </select>
+            <small class="form-text text-danger" v-if="$user.formErrors.blood_type"> {{ errorMsg }} </small>
         </div>
 
         <div class="form-group">
@@ -96,6 +103,7 @@
                     </div>
                 </div>
             </div>
+            <small class="form-text text-danger" v-if="$user.formErrors.status"> {{ errorMsg }} </small>
         </div>
 
 
@@ -106,6 +114,7 @@
                     {{ i.text }}
                 </option>
             </select>
+            <small class="form-text text-danger" v-if="$user.formErrors.user_level"> {{ errorMsg }} </small>
         </div>
 
         <div class="form-group">
@@ -132,6 +141,8 @@
                 <option v-for="i in NAs" :key="i.id" :value="i.id"> {{ i.name }} </option>
             </select>
 
+            <small class="form-text text-danger" v-if="$user.formErrors.type"> {{ errorMsg }} </small>
+            <small class="form-text text-danger" v-if="$user.formErrors.na"> {{ errorMsg }} </small>
 
         </div>
 
@@ -146,6 +157,10 @@
             <select v-model="$user.formData.cso_id" class="form-control" v-if="$user.formData.type === UserTypeEnum.ACDV_CSO">
                 <option :value="i.id" :key="i.id" v-for="i in CSOs"> {{ i.name }} </option>
             </select>
+
+            <small class="form-text text-danger" v-if="$user.formErrors.bart"> {{ errorMsg }} </small>
+            <small class="form-text text-danger" v-if="$user.formErrors.po"> {{ errorMsg }} </small>
+            <small class="form-text text-danger" v-if="$user.formErrors.cso"> {{ errorMsg }} </small>
         </div>
 
 
@@ -164,98 +179,96 @@ import { ICSO, csoStore } from '../../cso';
 import { IPO, poStore } from '../../po';
 import { IBART, bartStore } from '../../bart';
 
-    const $user = userStore()
-    const $na = naStore()
-    const $cso = csoStore()
-    const $po = poStore()
-    const $bart = bartStore()
+const $user = userStore()
+const $na = naStore()
+const $cso = csoStore()
+const $po = poStore()
+const $bart = bartStore()
 
-    const userTypes = ref([
-        CONST_DistinctUserTypes[DistinctUserTypeEnum.LGU],
-        CONST_DistinctUserTypes[DistinctUserTypeEnum.ACDV],
-        CONST_DistinctUserTypes[DistinctUserTypeEnum.National_Agency]
-    ])
+const errorMsg = ref('This field is required')
+
+const userTypes = ref([
+    CONST_DistinctUserTypes[DistinctUserTypeEnum.LGU],
+    CONST_DistinctUserTypes[DistinctUserTypeEnum.ACDV],
+    CONST_DistinctUserTypes[DistinctUserTypeEnum.National_Agency]
+])
+
+const userLevels = ref([
+    CONST_UserLevel[UserLevelEnum.Admin],
+    CONST_UserLevel[UserLevelEnum.Dispatcher],
+    CONST_UserLevel[UserLevelEnum.Field_Operator],
+    CONST_UserLevel[UserLevelEnum.Team_Leader],
+])
+
+const userType = ref(userTypes.value[0].id)
+
+
+const LGUs = computed( (): {id: UserTypeEnum, text: string, color: string}[] => {
+    const arr = []
+    arr.push(CONST_SubTypes[UserTypeEnum.LGU_Casual])
+    arr.push(CONST_SubTypes[UserTypeEnum.LGU_Regular])
+    arr.push(CONST_SubTypes[UserTypeEnum.LGU_Job_Order])
+    return arr
+})
+
+const ACDVs = computed( (): {id: UserTypeEnum, text: string, color: string}[] => {
+    const arr = []
+    arr.push(CONST_SubTypes[UserTypeEnum.ACDV_BART])
+    arr.push(CONST_SubTypes[UserTypeEnum.ACDV_CSO])
+    arr.push(CONST_SubTypes[UserTypeEnum.ACDV_PO])
+    arr.push(CONST_SubTypes[UserTypeEnum.ACDV_INDIVIDUAL])
+    return arr
+})
+
+const NAs = computed( (): INa[] => $na.nas)
+const CSOs = computed( (): ICSO[] => $cso.csos)
+const POs = computed( (): IPO[] => $po.pos)
+const BARTs = computed( (): IBART[] => $bart.barts)
+const bloodTypes = computed( (): string[] => CONST_bloodTypes)
+
+const subType = computed( () => $user.formData.type)
+
+
+watch(userType, (val) => {
+    console.log('val', val)
+    if(!val) return 
+
+    $user.formData.na_id = undefined
+
+    if(val === DistinctUserTypeEnum.LGU){
+        console.log('type is LGU')
+        $user.formData.type = LGUs.value[0].id
+        return 
+    }
+
+    if(val === DistinctUserTypeEnum.ACDV){
+        console.log('type is ACDV')
+        $user.formData.type = ACDVs.value[0].id
+        return
+    }
+
+    if(val === DistinctUserTypeEnum.National_Agency){
+        console.log('type is National_Agency')
+        $user.formData.type = UserTypeEnum.National_Agency
+        return 
+    }
+
+})
+
+watch(subType, (val) => {
+    if(!val) return 
     
-    const userLevels = ref([
-        CONST_UserLevel[UserLevelEnum.Admin],
-        CONST_UserLevel[UserLevelEnum.Dispatcher],
-        CONST_UserLevel[UserLevelEnum.Field_Operator],
-        CONST_UserLevel[UserLevelEnum.Team_Leader],
-    ])
+    $user.formData.po_id = undefined
+    $user.formData.cso_id = undefined
+    $user.formData.bart_id = undefined
 
-    const userType = ref(userTypes.value[0].id)
-
-
-    const LGUs = computed( (): {id: UserTypeEnum, text: string, color: string}[] => {
-        const arr = []
-        arr.push(CONST_SubTypes[UserTypeEnum.LGU_Casual])
-        arr.push(CONST_SubTypes[UserTypeEnum.LGU_Regular])
-        arr.push(CONST_SubTypes[UserTypeEnum.LGU_Job_Order])
-        return arr
-    })
-
-    const ACDVs = computed( (): {id: UserTypeEnum, text: string, color: string}[] => {
-        const arr = []
-        arr.push(CONST_SubTypes[UserTypeEnum.ACDV_BART])
-        arr.push(CONST_SubTypes[UserTypeEnum.ACDV_CSO])
-        arr.push(CONST_SubTypes[UserTypeEnum.ACDV_PO])
-        arr.push(CONST_SubTypes[UserTypeEnum.ACDV_INDIVIDUAL])
-        return arr
-    })
-
-    const NAs = computed( (): INa[] => $na.nas)
-    const CSOs = computed( (): ICSO[] => $cso.csos)
-    const POs = computed( (): IPO[] => $po.pos)
-    const BARTs = computed( (): IBART[] => $bart.barts)
-    const bloodTypes = computed( (): string[] => CONST_bloodTypes)
-
-    const subType = computed( () => $user.formData.type)
-
-
-    watch(userType, (val) => {
-        console.log('val', val)
-        if(!val) return 
-
-        $user.formData.na_id = undefined
-
-        if(val === DistinctUserTypeEnum.LGU){
-            console.log('type is LGU')
-            $user.formData.type = LGUs.value[0].id
-            return 
-        }
-
-        if(val === DistinctUserTypeEnum.ACDV){
-            console.log('type is ACDV')
-            $user.formData.type = ACDVs.value[0].id
-            return
-        }
-
-        if(val === DistinctUserTypeEnum.National_Agency){
-            console.log('type is National_Agency')
-            $user.formData.type = UserTypeEnum.National_Agency
-            return 
-        }
-
-    })
-
-    watch(subType, (val) => {
-        if(!val) return 
-        
-        $user.formData.po_id = undefined
-        $user.formData.cso_id = undefined
-        $user.formData.bart_id = undefined
-        
-    })
-
-    // const onClickGender = (gender: GenderEnum) => {
-    //     $user.formData.gender = gender
-    // }
-
-    // const onClickStatus = (status: UserStatusEnum) => {
-    //     console.log('onClickStatus()', status)
-    //     $user.formData.status = status
-    // }
+    // remove bart field error when subtype updates that is not national agency 
+    if(val !== UserTypeEnum.National_Agency){
+        $user.formErrors.na = false 
+    }
+    
+})
 
 
 
-</script>@/common/types/types
+</script>

@@ -24,3 +24,12 @@
 
 //     return items
 // }
+
+
+export function isValidDate(dateString: any): boolean {
+    // Parse the input date string
+    const parsedDate = new Date(dateString);
+  
+    // Check if the parsed date is a valid date and the input string is not NaN
+    return !isNaN(parsedDate.getTime()) && parsedDate.toString() !== 'Invalid Date';
+  }

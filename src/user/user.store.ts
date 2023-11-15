@@ -1,9 +1,10 @@
 
 import { defineStore } from 'pinia'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { GenderEnum, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum, userService } from '.';
-import { DispatchStatusEnum } from '../dispatch';
 import { CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_UserTypes, CONST_bloodTypes } from '../common/constants';
+import { faker } from '@faker-js/faker';
+import { isValidDate } from '../common/helpers';
 
 export const userStore = defineStore('user', () => {
 
@@ -18,13 +19,14 @@ export const userStore = defineStore('user', () => {
         first_name: '',
         gender: GenderEnum.Male,
         address: '',
-        birth_date: new Date(),
+        // @ts-ignore
+        birth_date: undefined,
         contact_no: '',
         blood_type: CONST_bloodTypes[0],
         status: UserStatusEnum.Active,
-        dispatch_status: DispatchStatusEnum.Queue,
         type: UserTypeEnum.LGU_Casual,
-
+        
+        dispatch_status: undefined,
         bart_id: undefined,
         cso_id: undefined,
         po_id: undefined,
@@ -32,11 +34,34 @@ export const userStore = defineStore('user', () => {
 
         skills: [],
     }
+    
+    const _formErrorsInitial = {
+        user_name: false,
+        user_level: false,
+        password: false,
+        last_name: false,
+        first_name: false,
+        gender: false,
+        address: false,
+        birth_date: false,
+        contact_no: false,
+        blood_type: false,
+        status: false,
+        type: false,
+
+        bart: false,
+        cso: false,
+        po: false,
+        na: false,
+    }
+
+    const formCurrentStep = ref(1)
 
     
     // state
     const _users = ref<IUser[]>([])
     const formData = ref<IUser>({..._formDataInitial})
+    const formErrors = ref({..._formErrorsInitial})
 
     onMounted( async() => {
         console.log(_store + 'onMounted()')
@@ -61,7 +86,7 @@ export const userStore = defineStore('user', () => {
 
     const users = computed( () => {
         return _users.value.map(i => {
-            i.age = getAge(new Date(i.birth_date))
+            i.age = getAge(new Date(i.birth_date!))
             i.genderObj = CONST_Gender[i.gender]
             i.userLevelObj = CONST_UserLevel[i.user_level]
             i.userTypeObj = CONST_UserTypes[i.type]
@@ -71,126 +96,114 @@ export const userStore = defineStore('user', () => {
         })
     })
 
+
+    // watchers 
+
+    watch(formCurrentStep, (val: number) => {
+        console.log(_store + 'watching formCurrentStep...', val)
+        if(val === 3){
+            const username = formData.value.first_name + '.' + formData.value.last_name
+            const password = username + faker.number.int({min: 100, max: 999})
+            setFormDataAuth({username, password})
+        }
+    })
     
-    // const formDataType = computed( (): UserTypeEnum => formData.value.type)
-    // const formDataDistinctType = computed( (): DistinctUserTypeEnum | undefined => formData.value.distinctType)
 
-    // watch(formDataDistinctType, (val) => {
-    //     if(!val) return 
+    const isValidStep1 = (): boolean => {
+        console.log(_store + 'isValidStep1()')
 
-    //     if(val === DistinctUserTypeEnum.LGU){
-    //         formData.value.type = UserTypeEnum.LGU_Regular
-    //     }
-    //     else if(val === DistinctUserTypeEnum.ACDV){
-    //         formData.value.type = UserTypeEnum.ACDV_CSO
-    //     }
-    //     else if(val === DistinctUserTypeEnum.National_Agency){
-    //         formData.value.type = UserTypeEnum.National_Agency
-    //     }
-    // })
+        formErrors.value = {..._formErrorsInitial}
 
-    // // update sub_type_id if LGU since it's not updated automatically in form
-    // watch(formDataType, (val) => {
-    //     if(!val) return 
+        if(!formData.value.user_level){
+            formErrors.value.user_level = true
+        }
 
-    //     formData.value.sub_type_id = '' // reset
+        if(formData.value.last_name.trim() === ''){
+            formErrors.value.last_name = true
+        }
 
-    //     if(formData.value.distinctType !== DistinctUserTypeEnum.LGU) return 
+        if(formData.value.first_name.trim() === ''){
+            formErrors.value.first_name = true
+        }
 
-    //     console.log('watching formDataType...')
+        if(!formData.value.gender){
+            formErrors.value.gender = true
+        }
 
-    //     if(val === UserTypeEnum.LGU_Casual){
-    //         formData.value.sub_type_id = UserTypeEnum.LGU_Casual.toString()
-    //     }
-    //     else if(val === UserTypeEnum.LGU_Job_Order){
-    //         formData.value.sub_type_id = UserTypeEnum.LGU_Job_Order.toString()
-    //     }
-    //     else if(val === UserTypeEnum.LGU_Regular){
-    //         formData.value.sub_type_id = UserTypeEnum.LGU_Regular.toString()
-    //     }
-    // })
+        if(formData.value.address.trim() === ''){
+            formErrors.value.address = true
+        }
 
-    // // methods
-    // const getUsers = () => {
-    //     return userService.getAllUsers()
-    // }
+        if(!(isValidDate(formData.value.birth_date))){
+            formErrors.value.birth_date = true
+        }
 
-    // const addSkillInFormData = (skill: IPersonnelSkill) => {
-    //     console.log('addSkillInFormData()', skill)
-    //     if(!formData.value.personnelSkills){
-    //         formData.value.personnelSkills = []
-    //     }
-    //     formData.value.personnelSkills.push(skill)
-    // }
+        if(formData.value.contact_no.trim() === ''){
+            formErrors.value.contact_no = true
+        }
 
-    // const removeSkillInFormData = (training_id: string) => {
+        if(!formData.value.blood_type){
+            formErrors.value.blood_type = true
+        }
 
-    //     if(!formData.value.personnelSkills) return 
+        if(!formData.value.status){
+            formErrors.value.status = true
+        }
 
-    //     console.log('removeSkillInFormData()', training_id)
+        if(!formData.value.type){
+            formErrors.value.type = true
+        }
 
-    //     const indx = formData.value.personnelSkills?.findIndex(i => i.training_id === training_id)
 
-    //     if(indx === -1){
-    //         console.error('training_id not found in formData.personnelSkills')
-    //         return 
-    //     }
+        if(formData.value.type === UserTypeEnum.National_Agency){
 
-    //     formData.value.personnelSkills.splice(indx, 1)
-    // }
 
-    // const addCertificateInSkill = (trainingId: string, src: string) => {
-    //     if(!formData.value.personnelSkills) return 
+            if(!formData.value.na_id){
+                formErrors.value.na = true
+            }
 
-    //     console.log('addCertificateInSkill()', trainingId, src)
-    //     const skill = formData.value.personnelSkills.find(i => i.training_id === trainingId)
+        }
 
-    //     if(!skill){
-    //         console.error('skill not found in personelSkills')
-    //         return 
-    //     }
+        const isACDV = 
+        (
+            formData.value.type === UserTypeEnum.ACDV_BART || 
+            formData.value.type === UserTypeEnum.ACDV_CSO ||
+            formData.value.type === UserTypeEnum.ACDV_INDIVIDUAL ||
+            formData.value.type === UserTypeEnum.ACDV_PO
+        )
 
-    //     if(!skill.certificates){
-    //         skill.certificates = []
-    //     }
+        if(formData.value.type && isACDV){
 
-    //     const isExist = skill.certificates.find(i => i === src)
+            if(formData.value.type === UserTypeEnum.ACDV_BART){
+                if(!formData.value.bart_id){
+                    formErrors.value.bart = true
+                }
+            }
 
-    //     if(isExist){
-    //         console.error('certificate already exist')
-    //         return 
-    //     }
+            if(formData.value.type === UserTypeEnum.ACDV_CSO){
+                if(!formData.value.cso_id){
+                    formErrors.value.cso = true
+                }
 
-    //     skill.certificates.push(src)
+            }
 
-    // }
+            if(formData.value.type === UserTypeEnum.ACDV_PO){
+                if(!formData.value.po_id){
+                    formErrors.value.po = true
+                }
+            }
 
-    // const delCertificateInSkill = (trainingId: string, src: string) => {
-    //     if(!formData.value.personnelSkills) return 
+        }
 
-    //     console.log('delCertificateInSkill()', trainingId, src)
-    //     const skill = formData.value.personnelSkills.find(i => i.training_id === trainingId)
 
-    //     if(!skill){
-    //         console.error('skill not found in personelSkills')
-    //         return 
-    //     }
+        const hasError = Object.values(formErrors.value).includes(true);
 
-    //     if(!skill.certificates){
-    //         console.error('skill.certificates is undefined')
-    //         return 
-    //     }
+        if(hasError){
+            return false 
+        }
 
-    //     const indx = skill.certificates.findIndex(i => i === src)
-
-    //     if(indx === -1){
-    //         console.error('certificate not found in skill.certificates')
-    //         return 
-    //     }
-
-    //     skill.certificates.splice(indx, 1)
-
-    // }
+        return true 
+    }
 
     // const saveUser = async(payload: IUser): Promise<IUser | null> => {
     //     console.log('saveUser()', payload)
@@ -232,14 +245,12 @@ export const userStore = defineStore('user', () => {
     return {
         users,
         formData,
+        formErrors,
+        formCurrentStep,
 
         setUsers,
         setFormDataAuth,
-        // getUsers,
-        // addSkillInFormData,
-        // removeSkillInFormData,
-        // addCertificateInSkill,
-        // delCertificateInSkill,
+        isValidStep1,
         // saveUser,
     }
 })

@@ -16,7 +16,7 @@ export interface IUser {
     first_name: string
     gender: GenderEnum 
     address: string 
-    birth_date: Date 
+    birth_date: Date
     contact_no: string 
     blood_type: string 
     status: UserStatusEnum 
