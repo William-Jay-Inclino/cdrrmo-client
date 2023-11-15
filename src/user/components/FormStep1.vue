@@ -60,10 +60,17 @@
         <div class="form-group">
             <label>Contact Number</label>
             <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">+639</span>
-                <input v-model="$user.formData.contact_no" type="text" class="form-control" placeholder="###-###-###" aria-describedby="basic-addon1">
+                <span class="input-group-text" id="basic-addon1">+63</span>
+                <input
+                  v-model="$user.formData.contact_no"
+                  type="text"
+                  class="form-control"
+                  aria-describedby="basic-addon1"
+                  maxlength="10"
+                  @input="() => $user.formData.contact_no = $user.formData.contact_no.replace(/\D/g, '')">
             </div>
             <small class="form-text text-danger" v-if="$user.formErrors.contact_no"> {{ errorMsg }} </small>
+            <small class="form-text text-danger" v-else-if="$user.formErrors.isInvalidContactNo"> Contact number is invalid </small>
         </div>
         <div class="form-group">
             <label>Blood Type</label>

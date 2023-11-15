@@ -4,7 +4,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { GenderEnum, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum, userService } from '.';
 import { CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_UserTypes, CONST_bloodTypes } from '../common/constants';
 import { faker } from '@faker-js/faker';
-import { isValidDate } from '../common/helpers';
+import { isValidDate, isValidPhoneNumber } from '../common/helpers';
 
 export const userStore = defineStore('user', () => {
 
@@ -55,6 +55,7 @@ export const userStore = defineStore('user', () => {
         na: false,
 
         isUsernameTaken: false,
+        isInvalidContactNo: false,
     }
 
     const formCurrentStep = ref(1)
@@ -146,6 +147,10 @@ export const userStore = defineStore('user', () => {
 
         if(formData.value.contact_no.trim() === ''){
             formErrors.value.contact_no = true
+        }else{
+            if (!isValidPhoneNumber('63' + formData.value.contact_no)) {
+                formErrors.value.isInvalidContactNo = true;
+            }
         }
 
         if(!formData.value.blood_type){
