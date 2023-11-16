@@ -8,7 +8,7 @@
                     <td> {{ $user.formData.user_name }} </td>
                     <td></td>
                 </tr>
-                <tr>
+                <tr v-if="!$user.formIsEditMode">
                     <th class="align-middle">Password</th>
                     <td>
                         <span v-if="!showPassword">

@@ -181,6 +181,7 @@ import { computed, ref, watch } from 'vue';
 import { UserLevelEnum, UserStatusEnum, userStore } from '../'
 import { DistinctUserTypeEnum, UserTypeEnum, GenderEnum } from '../'
 import { CONST_DistinctUserTypes, CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_bloodTypes } from '../../common';
+import { isUserLGU, isUserACDV } from '../../common';
 
 const $user = userStore()
 
@@ -225,17 +226,18 @@ watch(userType, (val) => {
     console.log('val', val)
     if(!val) return 
 
-    // $user.formData.na_id = undefined
-
-    if(val === DistinctUserTypeEnum.LGU || val === DistinctUserTypeEnum.ACDV){
-        // @ts-ignore
-        $user.formData.type = $user.formData.type || undefined
+    if(val === DistinctUserTypeEnum.LGU && !isUserLGU($user.formData.type)){
+        $user.formData.type = LGUs.value[0].id
         return 
+    }
+
+    if(val === DistinctUserTypeEnum.ACDV && !isUserACDV($user.formData.type)){
+        $user.formData.type = ACDVs.value[0].id
     }
 
     if(val === DistinctUserTypeEnum.National_Agency){
         $user.formData.type = UserTypeEnum.National_Agency
-        $user.formData.na_id = $user.formData.na_id || undefined
+        $user.formData.na_id = null
         return 
     }
 
@@ -243,13 +245,35 @@ watch(userType, (val) => {
 
 watch(subType, (val) => {
     if(!val) return 
-    
-    $user.formData.po_id = $user.formData.po_id || undefined
-    $user.formData.cso_id = $user.formData.cso_id || undefined
-    $user.formData.bart_id = $user.formData.bart_id || undefined
 
-    // remove bart field error when subtype updates that is not national agency 
+    if(!isUserACDV(val)){
+        $user.formData.po_id = null
+        $user.formData.cso_id = null
+        $user.formData.bart_id = null
+    }else{
+
+        if(val === UserTypeEnum.ACDV_BART){
+            $user.formData.po_id = null
+            $user.formData.cso_id = null
+        } 
+        else if(val === UserTypeEnum.ACDV_CSO){
+            $user.formData.po_id = null
+            $user.formData.bart_id = null
+        }
+        else if(val === UserTypeEnum.ACDV_PO){
+            $user.formData.cso_id = null
+            $user.formData.bart_id = null
+        }
+        else if(val === UserTypeEnum.ACDV_INDIVIDUAL){
+            $user.formData.po_id = null
+            $user.formData.cso_id = null
+            $user.formData.bart_id = null
+        }
+
+    }
+    
     if(val !== UserTypeEnum.National_Agency){
+        $user.formData.na_id = null
         $user.formErrors.na = false 
     }
     

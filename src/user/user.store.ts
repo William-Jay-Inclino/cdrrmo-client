@@ -4,7 +4,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { DistinctUserTypeEnum, GenderEnum, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum, userService } from '.';
 import { CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_UserTypes, CONST_bloodTypes } from '../common/constants';
 import { faker } from '@faker-js/faker';
-import { getAge, isValidDate, isValidPhoneNumber } from '../common/helpers';
+import { getAge, isValidDate, isValidPhoneNumber } from '../common';
 import { INa, naStore } from '../na';
 import { ICSO, csoStore } from '../cso';
 import { IPO, poStore } from '../po';
@@ -38,10 +38,10 @@ export const userStore = defineStore('user', () => {
         type: UserTypeEnum.LGU_Casual,
         
         dispatch_status: undefined,
-        bart_id: undefined,
-        cso_id: undefined,
-        po_id: undefined,
-        na_id: undefined,
+        bart_id: null,
+        cso_id: null,
+        po_id: null,
+        na_id: null,
 
         skills: [],
     }
@@ -140,13 +140,19 @@ export const userStore = defineStore('user', () => {
 
     const users = computed( () => {
         return _users.value.map(i => {
-            i.age = getAge(new Date(i.birth_date!))
-            i.genderObj = CONST_Gender[i.gender]
-            i.userLevelObj = CONST_UserLevel[i.user_level]
-            i.userTypeObj = CONST_UserTypes[i.type]
-            i.userSubTypeObj = CONST_SubTypes[i.type]
-            i.statusObj = CONST_UserStatus[i.status]
-            return i
+
+            // Create a copy of the object without the password_hash field
+            // @ts-ignore
+            const { password_hash, ...userWithoutPassword } = i;
+
+            // Add additional properties or modify existing ones
+            userWithoutPassword.age = getAge(new Date(i.birth_date!));
+            userWithoutPassword.genderObj = CONST_Gender[i.gender];
+            userWithoutPassword.userLevelObj = CONST_UserLevel[i.user_level];
+            userWithoutPassword.userTypeObj = CONST_UserTypes[i.type];
+            userWithoutPassword.userSubTypeObj = CONST_SubTypes[i.type];
+            userWithoutPassword.statusObj = CONST_UserStatus[i.status];
+            return userWithoutPassword
         })
     })
 
@@ -330,6 +336,11 @@ export const userStore = defineStore('user', () => {
     const isValidStep3 = async(): Promise<boolean> => {
         console.log(_store + 'isValidStep3()')
 
+        // no validation if edit mode
+        if(formIsEditMode.value){
+            return true  
+        }
+
         formErrors.value.user_name = false 
         formErrors.value.isUsernameTaken = false
 
@@ -359,9 +370,21 @@ export const userStore = defineStore('user', () => {
             console.log(_store + 'updating')
             const updatedUser = await userService.update({id: payload.id, data: payload})
             console.log('updatedUser ', updatedUser)
+
+            if(updatedUser){
+                const indx = _users.value.findIndex(i => i.id === updatedUser.id)
+
+                if(indx !== -1){
+                    _users.value[indx] = {...updatedUser}
+                }
+
+            }
+            
             return updatedUser
+
         }
 
+        console.log(_store + 'adding')
         const createdUser = await userService.create({data: payload})
         console.log('createdUser', createdUser)
 

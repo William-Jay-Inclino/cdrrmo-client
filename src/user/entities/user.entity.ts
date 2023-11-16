@@ -23,10 +23,10 @@ export interface IUser {
     dispatch_status?: DispatchStatusEnum 
     type: UserTypeEnum
 
-    bart_id?: string
-    cso_id?: string 
-    po_id?: string 
-    na_id?: string 
+    bart_id?: string | null
+    cso_id?: string | null 
+    po_id?: string | null 
+    na_id?: string | null 
 
     Bart?: IBART
     Cso?: ICSO 

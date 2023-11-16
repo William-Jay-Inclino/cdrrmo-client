@@ -1,5 +1,7 @@
 // import { ISingleSelect } from "@/common/types/forms"
 
+import { UserTypeEnum } from "../user";
+
 // export const getEnumKey = (p: {enumVal: number, enumType: any}) :string => {
 //     let enumKey = Object.keys(p.enumType)[Object.values(p.enumType).indexOf(p.enumVal)]
 //     return enumKey
@@ -80,6 +82,21 @@ export const getAge = (birthDate: Date): number => {
     return age;
 }
 
+
+export const isUserLGU = (type: UserTypeEnum): boolean => {
+    if(type === UserTypeEnum.LGU_Casual || type === UserTypeEnum.LGU_Job_Order || type === UserTypeEnum.LGU_Regular){
+        return true 
+    }
+    return false
+}
+
+
+export const isUserACDV = (type: UserTypeEnum): boolean => {
+    if(type === UserTypeEnum.ACDV_BART || type === UserTypeEnum.ACDV_CSO || type === UserTypeEnum.ACDV_PO || type === UserTypeEnum.ACDV_INDIVIDUAL){
+        return true 
+    }
+    return false
+}
 
 
 

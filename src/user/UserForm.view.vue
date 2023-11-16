@@ -47,8 +47,13 @@
                             <button v-if="currentStep < 4" @click="onClickNext" class="btn btn-primary float-end">Next</button>
 
                             <div v-if="currentStep === 4" class="float-end">
-                                <button @click="onSubmitForm(1)" class="btn btn-success">Submit and Add Again</button>
-                                <button @click="onSubmitForm(2)" class="btn btn-primary ml-2">Submit and Finish</button>
+                                <div v-if="!$user.formIsEditMode">
+                                    <button @click="onSubmitForm(1)" class="btn btn-success">Submit and Add Again</button>
+                                    <button @click="onSubmitForm(2)" class="btn btn-primary ml-2">Submit and Finish</button>
+                                </div>
+                                <div v-else>
+                                    <button @click="onSubmitForm(2)" class="btn btn-primary ml-2">Update</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -205,8 +210,8 @@
 
             }
 
-
-            toast.success("Personnel successfully added!");
+            const msg = $user.formIsEditMode ? 'updated!' : 'added!'
+            toast.success("Personnel successfully " + msg);
         }else{
             toast.error("Failed to save Personnel!")
         }

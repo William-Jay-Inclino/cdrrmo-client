@@ -5,12 +5,12 @@
 
         <div class="form-group">
             <label>User Name</label>
-            <input type="text" v-model="$user.formData.user_name" class="form-control" autocomplete="off">
+            <input type="text" v-model="$user.formData.user_name" class="form-control" autocomplete="off" :disabled="$user.formIsEditMode">
             <small class="form-text text-danger" v-if="$user.formErrors.user_name"> This field is required </small>
             <small class="form-text text-danger" v-if="$user.formErrors.isUsernameTaken"> Username already taken </small>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" v-if="!$user.formIsEditMode">
             <label>Password</label>
             <div class="input-group">
                 <input :type="showPassword ? 'text' : 'password'" v-model="$user.formData.password" class="form-control" autocomplete="off">
