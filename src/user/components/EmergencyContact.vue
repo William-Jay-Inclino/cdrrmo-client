@@ -2,7 +2,7 @@
     <div>
         <div class="form-group">
             <div class="d-flex justify-content-between align-items-center">
-                <label class="mr-2">Emergency Contact Person/s</label>
+                <label class="mr-2">Emergency Contact</label>
                 <button @click="addEmergencyContact()" class="btn btn-outline-info btn-sm">
                     <i class="fas fa-fw fa-user-plus"></i>
                     <span class="ml-1">Add</span>

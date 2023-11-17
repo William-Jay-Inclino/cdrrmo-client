@@ -73,8 +73,18 @@
                     <td v-if="$user.formData.type === UserTypeEnum.ACDV_CSO"> {{ getCso($user.formData.cso_id!) }} </td>
                     <td v-if="$user.formData.type === UserTypeEnum.ACDV_PO"> {{ getPo($user.formData.po_id!) }} </td>
                 </tr>
+
+                <tr v-if="$user.formData.emergencyContacts && $user.formData.emergencyContacts.length > 0">
+                    <th class="align-middle" :rowspan="$user.formData.emergencyContacts.length + 1">Emergency Contact</th>
+                </tr>
+                <tr v-for="ec in $user.formData.emergencyContacts">
+                    <td>
+                        {{ ec.name }}  ({{ ec.relationship }}) +63{{ ec.mobile }} 
+                    </td>
+                </tr>
+
                 <tr v-if="$user.formData.skills.length > 0">
-                    <th class="align-middle" :rowspan="$user.formData.skills.length + 1">Personnel Skills</th>
+                    <th class="align-middle" :rowspan="$user.formData.skills.length + 1">Personnel Skill</th>
                 </tr>
                 <tr v-for="skill in $user.formData.skills">
                     <td>{{ getSkill(skill.training_skill_id) }}</td>
