@@ -23,6 +23,8 @@ export interface IUser {
     dispatch_status?: DispatchStatusEnum 
     type: UserTypeEnum
 
+    emergencyContacts?: IEmergencyContact[]
+
     bart_id?: string | null
     cso_id?: string | null 
     po_id?: string | null 
@@ -36,6 +38,7 @@ export interface IUser {
     teamMembers?: ITeamMember[]
     teamLeader?: ITeam
     skills: IUserSkill[]
+    
      
     // end
 
@@ -72,6 +75,20 @@ export interface IUser {
     
 }
 
+export interface IEmergencyContact{
+    id: string
+    user: IUser
+    user_id: string
+    name: string
+    relationship: string
+    mobile: string
+
+    // set programmatically 
+    errorName: boolean
+    errorRelationship: boolean
+    errorMobile: boolean 
+    errorInvalidMobile: boolean
+}
 
 
 export interface IUserSkill{

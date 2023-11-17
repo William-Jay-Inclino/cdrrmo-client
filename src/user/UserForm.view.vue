@@ -13,13 +13,13 @@
         </div>
 
         <div class="row justify-content-center">
-            <div class="col-6">
+            <div class="col-lg-6 col-md-9 col-sm-12">
                 <FormStepper @update-step="onUpdateStep" :current-step="currentStep" />
             </div>
         </div>
 
         <div class="row justify-content-center">
-            <div class="col-5">
+            <div class="col-lg-6 col-md-9 col-sm-12">
 
                 <div class="row">
                     <div class="col">

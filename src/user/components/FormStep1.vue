@@ -169,6 +169,10 @@
             <small class="form-text text-danger" v-if="$user.formErrors.po"> {{ errorMsg }} </small>
             <small class="form-text text-danger" v-if="$user.formErrors.cso"> {{ errorMsg }} </small>
         </div>
+        
+        <hr>
+
+        <EmergencyContact />
 
 
     </div>
@@ -182,10 +186,12 @@ import { UserLevelEnum, UserStatusEnum, userStore } from '../'
 import { DistinctUserTypeEnum, UserTypeEnum, GenderEnum } from '../'
 import { CONST_DistinctUserTypes, CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_bloodTypes } from '../../common';
 import { isUserLGU, isUserACDV } from '../../common';
+import EmergencyContact from './EmergencyContact.vue';
 
 const $user = userStore()
 
 const errorMsg = ref('This field is required')
+
 
 const userTypes = ref([
     CONST_DistinctUserTypes[DistinctUserTypeEnum.LGU],
@@ -199,7 +205,6 @@ const userLevels = ref([
     CONST_UserLevel[UserLevelEnum.Field_Operator],
     CONST_UserLevel[UserLevelEnum.Team_Leader],
 ])
-
 
 const LGUs = computed( (): {id: UserTypeEnum, text: string, color: string}[] => {
     const arr = []
@@ -237,7 +242,7 @@ watch(userType, (val) => {
 
     if(val === DistinctUserTypeEnum.National_Agency){
         $user.formData.type = UserTypeEnum.National_Agency
-        $user.formData.na_id = null
+        $user.formData.na_id = $user.formData.na_id || null
         return 
     }
 
@@ -281,4 +286,16 @@ watch(subType, (val) => {
 
 
 
+
+
 </script>
+
+
+<style scoped>
+    hr {
+        border: 5px solid black; /* Set the border to a solid black line */
+        height: 0; /* Set height to zero, as border will create the visible line */
+        margin: 25px 0; /* Add margin for spacing */
+        box-sizing: content-box; /* Set box-sizing to content-box to avoid extra space inside the hr */
+    }
+</style>

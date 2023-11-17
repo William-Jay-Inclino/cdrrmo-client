@@ -44,6 +44,7 @@ export const userStore = defineStore('user', () => {
         na_id: null,
 
         skills: [],
+        emergencyContacts: [],
     }
     
     const _formErrorsInitial = {
@@ -72,9 +73,6 @@ export const userStore = defineStore('user', () => {
     const _formCurrentStepInitial = 1
     const _formUserTypeInitial = DistinctUserTypeEnum.LGU
 
-
-    
-    
     const _users = ref<IUser[]>([])
     const formData = ref<IUser>({..._formDataInitial})
     const formErrors = ref({..._formErrorsInitial})
@@ -323,10 +321,45 @@ export const userStore = defineStore('user', () => {
 
         }
 
+        let hasErrorEmergency =  false
 
-        const hasError = Object.values(formErrors.value).includes(true);
+        if(formData.value.emergencyContacts && formData.value.emergencyContacts.length > 0){
 
-        if(hasError){
+            for(let ec of formData.value.emergencyContacts){
+
+                ec.errorInvalidMobile = false 
+                ec.errorMobile = false 
+                ec.errorName = false 
+                ec.errorRelationship = false 
+
+                if(ec.name.trim() === ''){
+                    ec.errorName = true  
+                    hasErrorEmergency = true
+                }
+
+                if(ec.relationship.trim() === ''){
+                    ec.errorRelationship = true  
+                    hasErrorEmergency = true
+                }
+
+                if(ec.mobile.trim() === ''){
+                    ec.errorMobile = true  
+                    hasErrorEmergency = true
+                }else{
+                    if (!isValidPhoneNumber('63' + ec.mobile)) {
+                        ec.errorInvalidMobile = true
+                        hasErrorEmergency = true
+                    }
+                }
+
+
+            }
+
+        }
+        
+        const hasErrorInfo = Object.values(formErrors.value).includes(true);
+
+        if(hasErrorInfo || hasErrorEmergency){
             return false 
         }
 

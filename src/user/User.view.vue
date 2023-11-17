@@ -75,7 +75,7 @@
                                             <div class="dropdown no-arrow">
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-500"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                                     aria-labelledby="dropdownMenuLink">
@@ -89,7 +89,7 @@
                                                         <span class="ml-2">See Profile</span>
                                                     </a>
                                                     <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item" href="#">
+                                                    <a @click="onClickResetPw(user)" data-toggle="modal" :data-target="`#${resetModalId}`" class="dropdown-item" href="javascript:void(0)">
                                                         <i class="fas fa-fw fa-lock text-warning"></i>
                                                         <span class="ml-2">Reset Password</span>
                                                     </a>
@@ -109,25 +109,39 @@
                 </div>
             </div>
         </div>
-  </div>
+
+        <ResetPasswordModal :id="resetModalId" :user="selectedUser" v-if="selectedUser"/>
+
+    </div>
 
 </template>
 
 
 <script setup lang="ts">
     
+import { ref } from 'vue';
 import { IUser, userStore } from '.'
 import { routeNames } from '../common/constants'
 import { useRouter } from 'vue-router';
+import ResetPasswordModal from './components/ResetPasswordModal.vue';
+
+const resetModalId = ref('resetModalId')
 
 const $user = userStore()
 const router = useRouter()
+
+const selectedUser = ref<IUser | null>(null)
 
 console.log('$userStore', $user)
 
 const onClickUpdate = (data: IUser) => {
     console.log('onClickUpdate()', data)
     router.push({name: routeNames.userForm, query: {id: data.id}})
+}
+
+const onClickResetPw = (user: IUser) => {
+    console.log('onClickResetPw()', user)
+    selectedUser.value = user
 }
 
 </script>

@@ -154,12 +154,12 @@ export const CONST_UserTypes = {
 export const CONST_DistinctUserTypes = {
     [DistinctUserTypeEnum.LGU]: {
         id: DistinctUserTypeEnum.LGU,
-        text: 'LGU',
+        text: 'LGU - Local Government Unit',
         color: '', 
     },
     [DistinctUserTypeEnum.ACDV]: {
         id: DistinctUserTypeEnum.ACDV,
-        text: 'ACDV',
+        text: 'ACDV - Accredited Community Disaster & Emergency Volunteer',
         color: '', 
     },
     [DistinctUserTypeEnum.National_Agency]: {
@@ -187,17 +187,17 @@ export const CONST_SubTypes = {
     },
     [UserTypeEnum.ACDV_BART]: {
         id: UserTypeEnum.ACDV_BART,
-        text: 'BART',
+        text: 'BART - Barangay Auxiliary Response Team',
         color: '', 
     },
     [UserTypeEnum.ACDV_CSO]: {
         id: UserTypeEnum.ACDV_CSO,
-        text: 'CSO',
+        text: 'CSO - Civic Social Organization',
         color: '', 
     },
     [UserTypeEnum.ACDV_PO]: {
         id: UserTypeEnum.ACDV_PO,
-        text: 'PO',
+        text: "PO - People's Organization",
         color: '', 
     },
     [UserTypeEnum.ACDV_INDIVIDUAL]: {
@@ -212,43 +212,53 @@ export const CONST_SubTypes = {
     },
 }
 
+export const relationships = [
+    'Mother', 'Father', 'Stepmother', 'Stepfather', 'Legal Guardian',
+    'Brother', 'Sister', 'Half-brother', 'Half-sister', 'Stepbrother', 'Stepsister',
+    'Grandparent', 'Uncle', 'Aunt', 'Cousin',
+    'Husband', 'Wife', 'Domestic Partner', 'Boyfriend', 'Girlfriend',
+    'Work Colleague', 'Supervisor', 'Mentor',
+    'Friend', 'Neighbor', 'Roommate', 'Pastor/Religious Leader', 'Doctor', 'Legal Representative'
+  ];
+  
+
 // =========================== CONSTANTS BELOW ARE USED IN FAKE DATA ONLY  =========================== 
 
-export const CONST_UserlvlText = {
-    [UserLevelEnum.Admin]: 'Admin',
-    [UserLevelEnum.Dispatcher]: 'Dispatcher',
-    [UserLevelEnum.Field_Operator]: 'Field Operator',
-    [UserLevelEnum.Team_Leader]: 'Team Leader',
-}
+// export const CONST_UserlvlText = {
+//     [UserLevelEnum.Admin]: 'Admin',
+//     [UserLevelEnum.Dispatcher]: 'Dispatcher',
+//     [UserLevelEnum.Field_Operator]: 'Field Operator',
+//     [UserLevelEnum.Team_Leader]: 'Team Leader',
+// }
 
-export const CONST_UserTypeText = {
-    [UserTypeEnum.LGU_Regular]: 'LGU',
-    [UserTypeEnum.LGU_Casual]: 'LGU',
-    [UserTypeEnum.LGU_Job_Order]: 'LGU',
-    [UserTypeEnum.ACDV_BART]: 'ACDV',
-    [UserTypeEnum.ACDV_CSO]: 'ACDV',
-    [UserTypeEnum.ACDV_PO]: 'ACDV',
-    [UserTypeEnum.ACDV_INDIVIDUAL]: 'ACDV',
-    [UserTypeEnum.National_Agency]: 'National Agency',
-}
+// export const CONST_UserTypeText = {
+//     [UserTypeEnum.LGU_Regular]: 'LGU',
+//     [UserTypeEnum.LGU_Casual]: 'LGU',
+//     [UserTypeEnum.LGU_Job_Order]: 'LGU',
+//     [UserTypeEnum.ACDV_BART]: 'ACDV',
+//     [UserTypeEnum.ACDV_CSO]: 'ACDV',
+//     [UserTypeEnum.ACDV_PO]: 'ACDV',
+//     [UserTypeEnum.ACDV_INDIVIDUAL]: 'ACDV',
+//     [UserTypeEnum.National_Agency]: 'National Agency',
+// }
 
-export const CONST_UserSubTypeText = {
-    [UserTypeEnum.LGU_Regular]: 'Regular',
-    [UserTypeEnum.LGU_Casual]: 'Casual',
-    [UserTypeEnum.LGU_Job_Order]: 'Job Order',
-    [UserTypeEnum.ACDV_BART]: 'BART',
-    [UserTypeEnum.ACDV_CSO]: 'CSO',
-    [UserTypeEnum.ACDV_PO]: 'PO',
-    [UserTypeEnum.ACDV_INDIVIDUAL]: 'INDIVIDUAL',
-    [UserTypeEnum.National_Agency]: '',
-}
+// export const CONST_UserSubTypeText = {
+//     [UserTypeEnum.LGU_Regular]: 'Regular',
+//     [UserTypeEnum.LGU_Casual]: 'Casual',
+//     [UserTypeEnum.LGU_Job_Order]: 'Job Order',
+//     [UserTypeEnum.ACDV_BART]: 'BART',
+//     [UserTypeEnum.ACDV_CSO]: 'CSO',
+//     [UserTypeEnum.ACDV_PO]: 'PO',
+//     [UserTypeEnum.ACDV_INDIVIDUAL]: 'INDIVIDUAL',
+//     [UserTypeEnum.National_Agency]: '',
+// }
 
-export const CONST_GenderText = {
-    [GenderEnum.Male]: 'Male',
-    [GenderEnum.Female]: 'Female',
-}
+// export const CONST_GenderText = {
+//     [GenderEnum.Male]: 'Male',
+//     [GenderEnum.Female]: 'Female',
+// }
 
-export const CONST_TeamStatusText = {
-    [TeamStatusEnum.Active]: 'Active',
-    [TeamStatusEnum.Dispatched]: 'Dispatched',
-}
+// export const CONST_TeamStatusText = {
+//     [TeamStatusEnum.Active]: 'Active',
+//     [TeamStatusEnum.Dispatched]: 'Dispatched',
+// }
