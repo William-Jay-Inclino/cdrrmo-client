@@ -1,5 +1,5 @@
 import { ITrainingSkill } from "../../training_skill"
-import { DistinctUserTypeEnum, GenderEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from "."
+import { GenderEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from "."
 import { DispatchStatusEnum } from "@/dispatch"
 import { IBART } from "../../bart"
 import { ICSO } from "../../cso"

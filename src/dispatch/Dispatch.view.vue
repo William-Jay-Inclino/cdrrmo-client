@@ -1,6 +1,6 @@
 <template>
 
-    <div class="container-fluid">
+    <!-- <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dispatch Module</h1>
@@ -66,12 +66,10 @@
                                     <i class="fas fa-fw fa-hospital text-primary"></i>
                                     <span class="ml-2">Arrived in Hospital</span>
                                 </a>
-                                <!-- <a class="dropdown-item" href="#">Archive</a> -->
                             </div>
                         </div>
                     </div>
 
-                    <!-- Card Body -->
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered">
@@ -114,19 +112,15 @@
                                         <th>Caller Name</th>
                                         <th>Caller Number</th>
                                         <th width="18.75%">
-                                            <!-- <i class="fas fa-fw fa-clock"></i> -->
                                             <span class="ml-2">Time Proceeding</span>
                                         </th>
                                         <th width="18.75%">
-                                            <!-- <i class="fas fa-fw fa-clock"></i> -->
                                             <span class="ml-2">Time Arrival</span>
                                         </th>
                                         <th width="18.75%">
-                                            <!-- <i class="fas fa-fw fa-clock"></i> -->
                                             <span class="ml-2">Time Proceeding Hospital</span>
                                         </th>
                                         <th width="18.75%">
-                                            <!-- <i class="fas fa-fw fa-clock"></i> -->
                                             <span class="ml-2">Time Arrival Hospital</span>
                                         </th>
                                     </tr>
@@ -168,70 +162,68 @@
 
         <DispatchStatusModal v-show="showDispatchStatusModal" :id="dispatchStatusModalId" :dispatched-team="selectedDispatchedTeam" @update-status="onUpdateStatus"/>
         <TeamInfoModal :id="teamInfoModalId" v-if="selectedDispatchedTeam" :team-id="selectedDispatchedTeam.team_id" />
-  </div>
+  </div> -->
 
 </template>
 
 
 <script setup lang="ts">
   
-import { dispatchStore } from '.';
-import DispatchStatusModal from './components/DispatchStatusModal.vue';
-import TeamInfoModal from '../team/components/TeamInfo.vue';
+// import { dispatchStore } from '.';
+// import DispatchStatusModal from './components/DispatchStatusModal.vue';
+// import TeamInfoModal from '../team/components/TeamInfo.vue';
 
-import { ref } from 'vue';
-import { DispatchStatusEnum, IDispatch } from './entities';
+// import { ref } from 'vue';
+// import { DispatchStatusEnum, IDispatch } from './entities';
 
-import { useToast } from "vue-toastification";
+// import { useToast } from "vue-toastification";
 
-const toast = useToast();
+// const toast = useToast();
 
-const $dispatch = dispatchStore()
+// const $dispatch = dispatchStore()
 
-const showDispatchStatusModal = ref(false)
-const dispatchStatusModalId = ref('dispatchStatusModal')
+// const showDispatchStatusModal = ref(false)
+// const dispatchStatusModalId = ref('dispatchStatusModal')
 
-const showTeamInfoModal = ref(false)
-const teamInfoModalId = ref('teamInfoModalId')
+// const showTeamInfoModal = ref(false)
+// const teamInfoModalId = ref('teamInfoModalId')
 
-const selectedDispatchedTeam = ref<IDispatch>()
+// const selectedDispatchedTeam = ref<IDispatch>()
 
 
-const onShowDispatchStatusModal = (dispatchedTeam: IDispatch) => {
+// const onShowDispatchStatusModal = (dispatchedTeam: IDispatch) => {
 
-    console.log('onShowDispatchStatusModal()', dispatchedTeam)
-    showDispatchStatusModal.value = true 
-    selectedDispatchedTeam.value = dispatchedTeam
-}
+//     console.log('onShowDispatchStatusModal()', dispatchedTeam)
+//     showDispatchStatusModal.value = true 
+//     selectedDispatchedTeam.value = dispatchedTeam
+// }
 
-const onShowTeamInfoModal = (dispatchedTeam: IDispatch) => {
-    console.log('onShowDispatchStatusModal()', dispatchedTeam)
-    showTeamInfoModal.value = true 
-    selectedDispatchedTeam.value = dispatchedTeam
+// const onShowTeamInfoModal = (dispatchedTeam: IDispatch) => {
+//     console.log('onShowDispatchStatusModal()', dispatchedTeam)
+//     showTeamInfoModal.value = true 
+//     selectedDispatchedTeam.value = dispatchedTeam
 
-}
+// }
 
-const onUpdateStatus = (data: {status: DispatchStatusEnum | undefined}) => {
-    if(!data.status || !selectedDispatchedTeam.value) return 
-    $dispatch.updateDispatchStatus({id: selectedDispatchedTeam.value.dispatch_id, status: data.status})
+// const onUpdateStatus = (data: {status: DispatchStatusEnum | undefined}) => {
+//     if(!data.status || !selectedDispatchedTeam.value) return 
+//     $dispatch.updateDispatchStatus({id: selectedDispatchedTeam.value.dispatch_id, status: data.status})
 
-    toast.success("Status successfully updated!");
-}
+//     toast.success("Status successfully updated!");
+// }
 
-const onProceedingHospital = (dispatchedTeam: IDispatch) => {
-    $dispatch.onProceedingHospital(dispatchedTeam)
+// const onProceedingHospital = (dispatchedTeam: IDispatch) => {
+//     $dispatch.onProceedingHospital(dispatchedTeam)
 
-    toast.success("Time proceeding to hospital recorded!");
-}
+//     toast.success("Time proceeding to hospital recorded!");
+// }
 
-const onArrivedHospital = (dispatchedTeam: IDispatch) => {
-    $dispatch.onArrivedHospital(dispatchedTeam)
+// const onArrivedHospital = (dispatchedTeam: IDispatch) => {
+//     $dispatch.onArrivedHospital(dispatchedTeam)
 
-    toast.success("Time arrived in hospital recorded!");
-}
+//     toast.success("Time arrived in hospital recorded!");
+// }
 
 
 
 </script>
-
-@/common/types/types

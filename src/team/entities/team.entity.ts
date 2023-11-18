@@ -1,5 +1,5 @@
 import { TeamStatusEnum } from "."
-import { IUser, IPersonnelSkill } from '../../user/entities'
+import { IUser, IUserSkill } from '../../user/entities'
 
 export interface ITeam{
     team_id: string
@@ -23,5 +23,5 @@ export interface ITeamMember{
 
     // props that are set programmatically
     member: IUser,
-    skills?: IPersonnelSkill[]
+    skills?: IUserSkill[]
 }

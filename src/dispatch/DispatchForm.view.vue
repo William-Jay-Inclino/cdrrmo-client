@@ -1,6 +1,6 @@
 <template>
 
-    <div class="container-fluid">
+    <!-- <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dispatch Module</h1>
@@ -53,10 +53,6 @@
                                 <label>Description</label>
                                 <textarea v-model="$dispatch.formData.description" class="form-control" rows="3"></textarea>
                             </div>
-                            <!-- <div class="form-group">
-                                <label>Medical Description</label>
-                                <textarea v-model="$dispatch.formData.medical_description" class="form-control" rows="3"></textarea>
-                            </div> -->
                             <div class="form-group">
                                 <label>Number of people involved</label>
                                 <input v-model="$dispatch.formData.num_people_involved" type="number" class="form-control">
@@ -93,11 +89,11 @@
             </div>
             
         </div>
-  </div>
+  </div> -->
 
 </template>
 
-
+<!-- 
 <script setup lang="ts">
     import { ref } from 'vue';
     import Breadcrumbs from '../common/components/Breadcrumbs.vue'
@@ -150,7 +146,7 @@
     }
 
 
-</script>
+</script> -->
 
 
 <style scoped>
