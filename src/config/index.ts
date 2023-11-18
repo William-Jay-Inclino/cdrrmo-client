@@ -8,8 +8,11 @@ const api = axios.create({
     },
 });
 
+const baseUrl = '/cdrrmo'
 
 export const config = {
-    api
+    api,
+    baseUrl
 }
+
 
