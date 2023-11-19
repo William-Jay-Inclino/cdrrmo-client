@@ -8,7 +8,8 @@ const api = axios.create({
     },
 });
 
-const baseUrl = '/cdrrmo'
+// const baseUrl = '/cdrrmo'
+const baseUrl = import.meta.env.VITE_DOMAIN + import.meta.env.BASE_URL
 
 export const config = {
     api,
