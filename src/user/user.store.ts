@@ -21,6 +21,9 @@ export const userStore = defineStore('user', () => {
     const $po = poStore()
     const $bart = bartStore()
 
+    // this can be called globally. For example if a certain user is set as a teamLeader, we need to update the state of users when User.view is navigated
+    const needsUpdate = ref(false )
+
     const _formDataInitial: IUser = {
         id: '',
         user_name: '', // ok
@@ -89,8 +92,7 @@ export const userStore = defineStore('user', () => {
 
     onMounted( async() => {
         console.log(_store + 'onMounted()')
-        const items = await userService.findAll()
-        setUsers(items)
+        await init()
     })
 
     // ============================== END LIFECYCLE HOOKS ============================== 
@@ -102,6 +104,13 @@ export const userStore = defineStore('user', () => {
 
 
     // ============================== START SETTERS ============================== 
+
+    const init = async() => {
+        console.log(_store + 'init()')
+        const items = await userService.findAll()
+        setUsers(items)
+        needsUpdate.value = false
+    }
 
     const setUsers = (items: IUser[]) => {
         console.log(_store + 'setUsers()', items)
@@ -445,6 +454,7 @@ export const userStore = defineStore('user', () => {
   
     return {
         users,
+        needsUpdate,
         formData,
         formErrors,
         formCurrentStep,
@@ -455,6 +465,7 @@ export const userStore = defineStore('user', () => {
         BARTs,
         CSOs,
 
+        init,
         initUpdateFormData,
         setUsers,
         setFormDataAuth,

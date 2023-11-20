@@ -10,7 +10,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Are you sure you want to delete?</div>
+                <div class="modal-body text-dark">Are you sure you want to delete?</div>
                 <div class="modal-footer justify-content-between">
                     <button @click="onNo" class="btn btn-secondary" type="button" data-dismiss="modal">No</button>
                     <button @click="onYes" class="btn btn-danger" type="button" data-dismiss="modal">Yes</button>

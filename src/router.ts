@@ -41,7 +41,12 @@ const routes = [
         component: () => import('./team/Team.view.vue')
     },
     {
-        path: '/teams/members/:id',
+        path: '/teams/form',
+        name: routeNames.teamsForm,
+        component: () => import('./team/TeamForm.view.vue')
+    },
+    {
+        path: '/teams/members',
         name: routeNames.teamMembers,
         component: () => import('./team/TeamMembers.view.vue')
     },

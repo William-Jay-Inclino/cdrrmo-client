@@ -3,15 +3,17 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Team Module</h1>
+            <h1 class="h3 mb-0 text-gray-800"> Team </h1>
         </div>
 
         <div class="row justify-content-center">
             <div class="col-8">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">List of Teams</h6>
-                        <button class="btn btn-primary" type="submit">Add Team</button>
+                        <h6 class="m-0 font-weight-bold text-primary">List of Team</h6>
+                        <router-link :to="{name: routeNames.teamsForm}">
+                            <button class="btn btn-primary" type="button">Add Team</button>
+                        </router-link>
                     </div>
 
                     <!-- Card Body -->
@@ -20,8 +22,8 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Team leader</th>
-                                        <th>Team Name</th>
+                                        <th width="10%">Name</th>
+                                        <th>Team Leader</th>
                                         <th class="text-center">Status</th>
                                         <th class="text-center">
                                             <i class="fas fa-fw fa-cogs"></i>
@@ -29,43 +31,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="team of $team.teams">
-                                        <td> {{ team.team_leader?.first_name }} </td>
-                                        <td> {{ team.team_name }} </td>
+                                    <tr v-for="item of $module.teams">
+                                        <td> {{ item.name }} </td>
+                                        <td> {{ item.team_leader.first_name + ' ' + item.team_leader.last_name}} </td>
                                         <td class="text-center"> 
-                                            <span :class="{[`text-bg-${team.statusObj?.color}`]: true}" class="badge rounded-pill text-white"> 
-                                                {{ team.statusObj?.text }} 
+                                            <span :class="{[`text-bg-${CONST_TeamStatus[item.status].color}`]: true}" class="badge rounded-pill text-white"> 
+                                                {{ CONST_TeamStatus[item.status].text }} 
                                             </span> 
                                         </td>
-                                        <!-- <td>
-                                            <router-link :to="{name: 'teamMembers.route', params: {'id': team.team_id}}">
-                                                <button type="button" class="btn btn-primary btn-sm">Members</button>
-                                            </router-link>
-                                        </td> -->
                                         <td class="text-center">
-                                            <div class="dropdown no-arrow">
-                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                                    aria-labelledby="dropdownMenuLink">
-                                                    <a class="dropdown-item" href="#">
-                                                        <i class="fas fa-fw fa-pencil-alt text-primary"></i>
-                                                        <span class="ml-2">Update Info</span>
-                                                    </a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <router-link class="dropdown-item" :to="{name: 'teamMembers.route', params: {'id': team.team_id}}">
-                                                        <i class="fas fa-fw fa-users text-info"></i>
-                                                        <span class="ml-2">Manage Team</span>
-                                                    </router-link>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item" href="#">
-                                                        <i class="fas fa-fw fa-archive text-danger"></i>
-                                                        <span class="ml-2">Archive</span>
-                                                    </a>
-                                                </div>
-                                            </div>
+                                            <button @click="onClickUpdateIcon(item)" class="btn btn-light btn-sm">
+                                                <i class="fas fa-fw fa-pencil-alt"></i>
+                                            </button>
+                                            <button data-toggle="modal" :data-target="`#${deleteModalId}`" @click="onShowDeleteModal(item.id)" class="btn btn-light btn-sm">
+                                                <i class="fas fa-fw fa-trash text-danger"></i>
+                                            </button>
+                                            <button @click="onClickManageTeam(item.id)" class="btn btn-light btn-sm">
+                                                <i class="fas fa-fw fa-users text-info"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -75,23 +58,61 @@
                 </div>
             </div>
         </div>
+
+        <DeleteModal :id="deleteModalId" @on-delete="onDelete" @on-cancel="onCancelDelete"/>
+
   </div>
 
 </template>
 
 
 <script setup lang="ts">
-    import { teamService, teamStore } from './index'
 
-    const teams = teamService.getAllTeams()
+import { useToast } from "vue-toastification";
+import { ITeam, teamStore } from '.'
+import { routeNames, CONST_TeamStatus } from '../common/constants'
+import DeleteModal from "../common/components/DeleteModal.vue";
+import { ref } from "vue";
+import { useRouter } from 'vue-router';
 
-    const $team = teamStore()
-    $team.setTeams(teams)
+const toast = useToast();
+const $module = teamStore()
+const moduleLabel = 'Team'
+const deleteModalId = ref('deleteModalId')
+const idToDelete = ref('')
+const router = useRouter()
 
-    /* 
+const onShowDeleteModal = (id: string) => {
+    console.log('onShowDeleteModal()')
+    idToDelete.value = id
+}
 
-    Note: if using fake data, if you refresh the page there will be new set of teams. Therefore team id param in url is irrelevant
+const onDelete = async() => {
 
-    */
+    if(idToDelete.value.trim() === '') return 
+
+    const removed = await $module.onDelete(idToDelete.value)
+
+    if(removed){
+        toast.success(moduleLabel + ' successfully deleted!')
+    }else{
+        toast.error('Failed to remove ' + moduleLabel)
+    }
+
+    idToDelete.value = ''
+}
+
+const onCancelDelete = () => {
+    idToDelete.value = ''
+}
+
+const onClickUpdateIcon = (data: ITeam) => {
+    router.push({name: routeNames.teamsForm, query: {id: data.id}})
+}
+
+const onClickManageTeam = (id: string) => {
+    console.log('onClickManageTeam()', id)
+    router.push({name: routeNames.teamMembers, query: {id: id}})
+}
 
 </script>

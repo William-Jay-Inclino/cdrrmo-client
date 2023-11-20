@@ -72,6 +72,9 @@ export interface IUser {
         color: string,
         icon: string,
     }
+
+    // used in v-select
+    label: string 
     
 }
 
