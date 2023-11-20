@@ -38,6 +38,13 @@ export const teamStore = defineStore('team', () => {
     // getters 
     const teams = computed( () => _teams.value)
 
+    const formIsEditMode = computed( (): boolean => {
+        if(formData.value.id && formData.value.id.trim() !== ''){
+            return true 
+        }
+        return false 
+    })
+
     // setters 
     const setTeams = (items: ITeam[]) => {
         console.log(_store + 'setTeams()', items)
@@ -195,6 +202,19 @@ export const teamStore = defineStore('team', () => {
 
     }
 
+    const onDeleteTeamMember = async(id: string): Promise<boolean> => {
+        console.log(_store + 'onDeleteTeamMember()', id)
+
+        const deleted = await teamService.removeTeamMember(id)
+
+        if(deleted){
+            return true
+        }
+
+        return false 
+
+    }
+
     const resetFormData = () => {
         console.log(_store + 'resetForm()')
         formData.value = {..._formDataInitial}
@@ -205,6 +225,7 @@ export const teamStore = defineStore('team', () => {
         teams,
         formData,
         formErrors,
+        formIsEditMode,
         onSubmit,
         onDelete,
         resetFormData,
@@ -214,6 +235,7 @@ export const teamStore = defineStore('team', () => {
         getTeamLeaderLabel,
         getTeam,
         onAddMember,
+        onDeleteTeamMember
     }
 })
 

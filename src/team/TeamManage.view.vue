@@ -27,12 +27,11 @@
                 <TeamInfo v-if="team" :team="team"/>
             </div>
             <div class="col-6">
-                <TeamMembers v-if="team" :team="team" @remove-member="onTeamMemberRemoved"/>
+                <TeamMembers v-if="team" :team="team" @on-remove-member="onRemoveMember"/>
             </div>
         </div>
 
         <AddMemberModal v-if="team" :id="addMemberModalId" :team="team" @add-member="onTeamMemberAdded"/>
-
     </div>
 
 </template>
@@ -43,6 +42,8 @@
     import TeamInfo from './components/TeamInfo.vue'
     import TeamMembers from './components/TeamMembers.vue';
     import AddMemberModal from './components/AddMemberModal.vue';
+
+    import Swal from 'sweetalert2'
 
     import { onMounted, ref } from 'vue';
     import { routeNames } from '../common';
@@ -91,11 +92,47 @@
             toast.error('Failed to add team meber')
         }
 
+
     }
 
-    const onTeamMemberRemoved = () => {
-        console.log('onTeamMemberRemoved()')
-        toast.success("Team member successfully removed!");
+    const onRemoveMember = (id: string) => {
+        console.log('onRemoveMember()', id)
+
+        if(!team.value) return 
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Team member will be removed!",
+            icon: "warning",
+            position: "top",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+            }).then( async(result) => {
+            if (result.isConfirmed) {
+                const removed = await $team.onDeleteTeamMember(id)
+
+                if(removed){
+                    toast.success('Team member successfully removed!')
+
+                    const members = team.value!.teamMembers
+
+                    const indx = members.findIndex(i => i.id === id)
+
+                    console.log('indx', indx)
+
+                    if(indx !== -1){
+                        members.splice(indx, 1)
+                    }
+                    
+
+                }else{
+                    toast.error('Failed to remove team member')
+                }
+            }
+        });
     }
+
 
 </script>

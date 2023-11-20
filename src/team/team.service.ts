@@ -106,6 +106,22 @@ class TeamService{
         return null 
     }
 
+    async removeTeamMember(id: string): Promise<boolean> {
+        console.log(this.service + 'removeTeamMember()', id)
+		try {
+			const response = await config.api.delete(this.endpoint + 'member/' + id);
+			console.log({response})
+            if(response.status === 204){
+                return true
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+        return false
+
+    }
+
 }
 
 export const teamService = new TeamService()

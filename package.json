@@ -12,6 +12,7 @@
     "awesomplete": "^1.1.5",
     "axios": "^1.6.1",
     "pinia": "^2.1.7",
+    "sweetalert2": "^11.10.1",
     "vue": "^3.3.8",
     "vue-router": "^4.2.5",
     "vue-select": "^4.0.0-beta.6",

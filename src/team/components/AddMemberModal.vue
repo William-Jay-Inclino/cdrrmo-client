@@ -64,8 +64,7 @@
         if(!member.value) return 
         return member.value.id
     })
-
-
+    
     watch(memberId, (val) => {
         if(!val) return 
         isMemberEmpty.value = false 

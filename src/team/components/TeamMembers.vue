@@ -31,7 +31,7 @@
                                 </ul>
                             </td>
                             <td class="align-middle text-center">
-                                <button @click="() => console.log('remove')" class="btn btn-light">
+                                <button @click="onRemoveMember(member.id)" class="btn btn-light">
                                     <i class="fas fa-fw fa-trash text-danger"></i> 
                                 </button>
                             </td>
@@ -55,6 +55,11 @@
         team: ITeam
     }>()
 
+    const emit = defineEmits(['on-remove-member'])
+
+    const onRemoveMember = (id: string) => {
+        emit('on-remove-member', id)
+    }
 
     // const onClickAddMember = () => {
     //     isAdding.value = true 

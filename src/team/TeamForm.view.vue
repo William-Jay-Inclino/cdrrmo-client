@@ -49,7 +49,7 @@
                             <button @click="onCancel" type="button" class="btn btn-dark">Cancel</button>
                             <div>
                                 <button @click="onSubmit(1)" type="button" class="btn btn-success">Submit & Finish</button>
-                                <button @click="onSubmit(2)" type="button" class="btn btn-primary ml-2">Submit & Add Members</button>
+                                <button v-if="!$team.formIsEditMode" @click="onSubmit(2)" type="button" class="btn btn-primary ml-2">Submit & Add Members</button>
                             </div>
                         </div>
                     </div>
@@ -152,7 +152,7 @@ const onSubmit = async(action: number) => {
     if(action === 1){
         router.push({name: routeNames.teams})
     }else{
-        router.push({name: routeNames.teamManage})
+        router.push({name: routeNames.teamManage, query: {id: submitted.id}})
     }
 
 
