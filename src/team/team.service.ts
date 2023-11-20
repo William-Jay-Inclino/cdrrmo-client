@@ -1,6 +1,6 @@
 import { config } from "../config";
 import { ICreateTeamDto } from "./dto/create-team.dto";
-import { ITeam } from "./entities"
+import { ITeam, ITeamMember } from "./entities"
 
 class TeamService{
 
@@ -87,6 +87,23 @@ class TeamService{
 		}
         return false
 
+    }
+
+    async addTeamMember(payload: {data: {team_id: string, member_id: string}}): Promise<ITeamMember | null>{
+        console.log(this.service + 'addTeamMember()', payload)
+
+		try {
+			const response = await config.api.post(this.endpoint + 'member', payload.data);
+			console.log({response})
+            if(response.status === 201){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return null 
     }
 
 }

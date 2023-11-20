@@ -152,7 +152,7 @@ const onSubmit = async(action: number) => {
     if(action === 1){
         router.push({name: routeNames.teams})
     }else{
-        router.push({name: routeNames.teamMembers})
+        router.push({name: routeNames.teamManage})
     }
 
 

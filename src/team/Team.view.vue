@@ -112,7 +112,7 @@ const onClickUpdateIcon = (data: ITeam) => {
 
 const onClickManageTeam = (id: string) => {
     console.log('onClickManageTeam()', id)
-    router.push({name: routeNames.teamMembers, query: {id: id}})
+    router.push({name: routeNames.teamManage, query: {id: id}})
 }
 
 </script>

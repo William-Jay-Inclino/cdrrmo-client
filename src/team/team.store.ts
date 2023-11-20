@@ -1,6 +1,6 @@
 
 import { defineStore } from 'pinia'
-import { ITeam, TeamStatusEnum } from '.'
+import { ITeam, ITeamMember, TeamStatusEnum } from '.'
 import { computed, onMounted, ref } from 'vue';
 import { teamService } from '.';
 import { ICreateTeamDto } from './dto/create-team.dto';
@@ -167,6 +167,34 @@ export const teamStore = defineStore('team', () => {
         return teamLeader.first_name + ' ' + teamLeader.last_name
     }
 
+    const getTeam = async(teamId: string): Promise<ITeam | null> => {
+
+        console.log(_store + 'getTeam()', teamId)
+
+        const team = await teamService.findOne(teamId)
+
+        if(!team){
+            console.error('team not found in db')
+            return null
+        }
+
+        return team
+
+    }
+
+    const onAddMember = async(payload: {team_id: string, member_id: string}): Promise<ITeamMember | null> => {
+        console.log(_store + 'onAddMember()', payload)
+
+        const created = await teamService.addTeamMember({data: payload})
+
+        if(created){
+            return created
+        }
+
+        return null
+
+    }
+
     const resetFormData = () => {
         console.log(_store + 'resetForm()')
         formData.value = {..._formDataInitial}
@@ -184,6 +212,8 @@ export const teamStore = defineStore('team', () => {
         initUpdateFormData,
         userIsTeamLead,
         getTeamLeaderLabel,
+        getTeam,
+        onAddMember,
     }
 })
 

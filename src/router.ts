@@ -46,9 +46,9 @@ const routes = [
         component: () => import('./team/TeamForm.view.vue')
     },
     {
-        path: '/teams/members',
-        name: routeNames.teamMembers,
-        component: () => import('./team/TeamMembers.view.vue')
+        path: '/teams/manage',
+        name: routeNames.teamManage,
+        component: () => import('./team/TeamManage.view.vue')
     },
 
     // ================ cso route ================ 
