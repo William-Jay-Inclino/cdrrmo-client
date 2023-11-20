@@ -8,8 +8,12 @@
                     <h5 class="modal-title">Add Team Member</h5>
                 </div>
                 <div class="modal-body">
-                    <v-select :options="users" v-model="member"></v-select>
-                    <small v-if="isMemberExist" class="form-text text-danger"> Personnel is already a member </small>
+                    <v-select :options="$team.usersWithoutTeam" v-model="member"></v-select>
+                    <small class="form-text text-muted">   
+
+                        <i> Note: Only individuals who are not assigned to any team are displayed. </i>
+
+                    </small>
                     <small v-if="isMemberEmpty" class="form-text text-danger"> Select a personnel </small>
                     <div class="row mt-4">
                         <div class="col">
@@ -32,7 +36,7 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button class="btn btn-dark" type="button" data-dismiss="modal">Cancel</button>
-                    <button @click="onSubmit()" class="btn btn-success" type="button" :data-dismiss="submitted ? 'modal' : ''" :disabled="isMemberExist">Submit</button>
+                    <button @click="onSubmit()" class="btn btn-success" type="button" :data-dismiss="submitted ? 'modal' : ''" >Submit</button>
                 </div>
             </div>
         </div>
@@ -42,24 +46,25 @@
 
 <script setup lang="ts">
     import { computed, ref, watch } from 'vue';
-    import { IUser, userStore } from '../../user';
+    import { IUser } from '../../user';
     import { ITeam, teamStore } from '..';
 
-    const props = defineProps<{
+    const emit = defineEmits(['add-member'])
+
+    defineProps<{
         id: string
         team: ITeam
     }>()
 
+    const $team = teamStore()
+
     const isMemberEmpty = ref(false)
     const submitted = ref(false)
 
-    const emit = defineEmits(['add-member'])
-
-    const $user = userStore()
-    const $team = teamStore()
-
     const member = ref<IUser | null>(null)
     
+
+
     const memberId = computed( () => {
         if(!member.value) return 
         return member.value.id
@@ -70,24 +75,17 @@
         isMemberEmpty.value = false 
     })
 
-    const users = computed( () => {
-        return $user.users.map(user => {
-            user.label = $team.getTeamLeaderLabel(user)
-            return user
-        })
-    })
+    // const isMemberExist = computed( (): boolean => {
+    //     if(!member.value) return false
 
-    const isMemberExist = computed( (): boolean => {
-        if(!member.value) return false
+    //     const i = props.team.teamMembers.find(i => i.member_id === member.value?.id)
 
-        const i = props.team.teamMembers.find(i => i.member_id === member.value?.id)
+    //     if(i){
+    //         return true
+    //     }
 
-        if(i){
-            return true
-        }
-
-        return false 
-    })
+    //     return false 
+    // })
 
     const onSubmit = () => {
         console.log('onSubmit()')
@@ -98,8 +96,12 @@
             return 
         }
 
+        const payload = {...member.value}
+
+        member.value = null
+
         submitted.value = true
-        emit('add-member', memberId.value)
+        emit('add-member', payload)
     }
 
 </script>

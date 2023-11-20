@@ -4,7 +4,7 @@ import { ITeam, ITeamMember, TeamStatusEnum } from '.'
 import { computed, onMounted, ref } from 'vue';
 import { teamService } from '.';
 import { ICreateTeamDto } from './dto/create-team.dto';
-import { IUser } from '@/user';
+import { IUser, userService } from '../user';
 
 export const teamStore = defineStore('team', () => {
 
@@ -28,11 +28,11 @@ export const teamStore = defineStore('team', () => {
 
     // state
     const _teams = ref<ITeam[]>([])
+    const _usersWithoutTeam = ref<IUser[]>([])
 
     onMounted( async() => {
         console.log(_store + 'onMounted()')
-        const items = await teamService.findAll()
-        setTeams(items)
+        await init()
     })
 
     // getters 
@@ -43,6 +43,13 @@ export const teamStore = defineStore('team', () => {
             return true 
         }
         return false 
+    })
+
+    const usersWithoutTeam = computed( (): IUser[] => {
+        return _usersWithoutTeam.value.map(user => {
+            user.label = getTeamLeaderLabel(user)
+            return user
+        })
     })
 
     // setters 
@@ -63,7 +70,20 @@ export const teamStore = defineStore('team', () => {
         formData.value.status = team.status
     }
 
+    const setUsersWithoutTeam = (users: IUser[]) => {
+        console.log(_store + 'setUsersWithouTeam()', users)
+        _usersWithoutTeam.value = users
+    }
+
     // methods
+
+    const init = async() => {
+        const items = await teamService.findAll()
+        setTeams(items)
+
+        const usersWithoutTeam = await userService.findUsersWithoutTeam()
+        setUsersWithoutTeam(usersWithoutTeam)
+    }
 
     const initUpdateFormData = async(id: string) => {
         console.log(_store + 'initUpdateFormData()', id)
@@ -192,22 +212,30 @@ export const teamStore = defineStore('team', () => {
     const onAddMember = async(payload: {team_id: string, member_id: string}): Promise<ITeamMember | null> => {
         console.log(_store + 'onAddMember()', payload)
 
-        const created = await teamService.addTeamMember({data: payload})
+        const memberAdded = await teamService.addTeamMember({data: payload})
 
-        if(created){
-            return created
+        if(memberAdded){
+
+            // also remove the member in _usersWithoutTeam since that member is now assigned in a team
+            const indx = _usersWithoutTeam.value.findIndex(i => i.id === memberAdded.member_id)
+            if(indx !== -1){
+                _usersWithoutTeam.value.splice(indx, 1)
+            }
+
+            return memberAdded
         }
 
         return null
 
     }
 
-    const onDeleteTeamMember = async(id: string): Promise<boolean> => {
-        console.log(_store + 'onDeleteTeamMember()', id)
+    const onDeleteTeamMember = async(member: ITeamMember): Promise<boolean> => {
+        console.log(_store + 'onDeleteTeamMember()', member)
 
-        const deleted = await teamService.removeTeamMember(id)
+        const deleted = await teamService.removeTeamMember(member.id)
 
         if(deleted){
+            _usersWithoutTeam.value.push(member.member)
             return true
         }
 
@@ -226,6 +254,8 @@ export const teamStore = defineStore('team', () => {
         formData,
         formErrors,
         formIsEditMode,
+        usersWithoutTeam,
+        setUsersWithoutTeam,
         onSubmit,
         onDelete,
         resetFormData,

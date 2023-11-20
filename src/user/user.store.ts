@@ -5,24 +5,16 @@ import { DistinctUserTypeEnum, GenderEnum, IUser, UserLevelEnum, UserStatusEnum,
 import { CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_UserTypes, CONST_bloodTypes } from '../common/constants';
 import { faker } from '@faker-js/faker';
 import { getAge, isValidDate, isValidPhoneNumber } from '../common';
-import { INa, naStore } from '../na';
-import { ICSO, csoStore } from '../cso';
-import { IPO, poStore } from '../po';
-import { IBART, bartStore } from '../bart';
+import { INa, naService } from '../na';
+import { ICSO, csoService } from '../cso';
+import { IPO, poService } from '../po';
+import { IBART, bartService } from '../bart';
 
 export const userStore = defineStore('user', () => {
 
     // ============================== START STATE ============================== 
 
     const _store = 'userStore: '
-
-    const $na = naStore()
-    const $cso = csoStore()
-    const $po = poStore()
-    const $bart = bartStore()
-
-    // this can be called globally. For example if a certain user is set as a teamLeader, we need to update the state of users when User.view is navigated
-    const needsUpdate = ref(false )
 
     const _formDataInitial: IUser = {
         id: '',
@@ -73,6 +65,11 @@ export const userStore = defineStore('user', () => {
         isInvalidContactNo: false,
     }
 
+    const _NAs = ref<INa[]>([])
+    const _CSOs = ref<ICSO[]>([])
+    const _POs = ref<IPO[]>([])
+    const _BARTs = ref<IBART[]>([])
+
     const _formCurrentStepInitial = 1
     const _formUserTypeInitial = DistinctUserTypeEnum.LGU
 
@@ -90,15 +87,13 @@ export const userStore = defineStore('user', () => {
 
     // ============================== START LIFECYCLE HOOKS ============================== 
 
-    onMounted( async() => {
-        console.log(_store + 'onMounted()')
-        await init()
-    })
+    // onMounted( async() => {
+    //     console.log(_store + 'onMounted()')
+    //     await init()
+    // })
 
     // ============================== END LIFECYCLE HOOKS ============================== 
     
-
-
 
 
 
@@ -107,9 +102,16 @@ export const userStore = defineStore('user', () => {
 
     const init = async() => {
         console.log(_store + 'init()')
-        const items = await userService.findAll()
-        setUsers(items)
-        needsUpdate.value = false
+        setUsers(await userService.findAll())
+    }
+
+    const initForm = async() => {
+        console.log(_store + 'initForm()')
+
+        setBARTs(await bartService.findAll())
+        setCSOs(await csoService.findAll())
+        setNAs(await naService.findAll())
+        setPOs(await poService.findAll())
     }
 
     const setUsers = (items: IUser[]) => {
@@ -126,6 +128,22 @@ export const userStore = defineStore('user', () => {
     const setFormData = (payload: {data: IUser}) => {
         console.log(_store + 'setFormData()', payload)
         formData.value = payload.data
+    }
+
+    const setNAs = (payload: INa[]) => {
+        _NAs.value = payload
+    }
+
+    const setPOs = (payload: IPO[]) => {
+        _POs.value = payload
+    }
+
+    const setBARTs = (payload: IBART[]) => {
+        _BARTs.value = payload
+    }
+
+    const setCSOs = (payload: ICSO[]) => {
+        _CSOs.value = payload
     }
 
     // ============================== END SETTERS ============================== 
@@ -163,10 +181,10 @@ export const userStore = defineStore('user', () => {
         })
     })
 
-    const NAs = computed( (): INa[] => $na.nas)
-    const CSOs = computed( (): ICSO[] => $cso.csos)
-    const POs = computed( (): IPO[] => $po.pos)
-    const BARTs = computed( (): IBART[] => $bart.barts)
+    const NAs = computed( (): INa[] => _NAs.value)
+    const CSOs = computed( (): ICSO[] => _CSOs.value)
+    const POs = computed( (): IPO[] => _POs.value)
+    const BARTs = computed( (): IBART[] => _BARTs.value)
 
     // ============================== END GETTERS ============================== 
 
@@ -454,7 +472,6 @@ export const userStore = defineStore('user', () => {
   
     return {
         users,
-        needsUpdate,
         formData,
         formErrors,
         formCurrentStep,
@@ -466,6 +483,7 @@ export const userStore = defineStore('user', () => {
         CSOs,
 
         init,
+        initForm,
         initUpdateFormData,
         setUsers,
         setFormDataAuth,

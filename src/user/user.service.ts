@@ -24,6 +24,23 @@ class UserService{
         return []
     }
 
+    async findUsersWithoutTeam(): Promise<IUser[]>{
+        console.log(this.service + 'findUsersWithoutTeam()')
+        
+		try {
+			const response = await config.api.get(this.endpoint + 'no-team');
+			console.log({response})
+            if(response.status === 200){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return []
+    }
+
     async findOne(id: string): Promise<IUser | null>{
         console.log(this.service + 'findOne()', id)
 		try {

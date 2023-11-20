@@ -88,12 +88,14 @@
 
 
 
-
+    
     // ========================== START STATE ========================== 
 
     const toast = useToast();
     const router = useRouter()
     const $user = userStore()
+
+    $user.initForm()
 
     const breadcrumbItems = ref([
         {

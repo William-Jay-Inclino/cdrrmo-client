@@ -130,11 +130,6 @@ const resetModalId = ref('resetModalId')
 const $user = userStore()
 const router = useRouter()
 
-// see needsUpdate state variable in the store for reference
-if($user.needsUpdate){
-    $user.init()
-}
-
 $user.init()
 const selectedUser = ref<IUser | null>(null)
 

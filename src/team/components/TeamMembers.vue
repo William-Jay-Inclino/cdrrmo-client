@@ -31,7 +31,7 @@
                                 </ul>
                             </td>
                             <td class="align-middle text-center">
-                                <button @click="onRemoveMember(member.id)" class="btn btn-light">
+                                <button @click="onRemoveMember(member)" class="btn btn-light">
                                     <i class="fas fa-fw fa-trash text-danger"></i> 
                                 </button>
                             </td>
@@ -49,7 +49,7 @@
 
 <script setup lang="ts">
 
-    import { ITeam } from '..';
+    import { ITeam, ITeamMember } from '..';
     
     defineProps<{
         team: ITeam
@@ -57,8 +57,8 @@
 
     const emit = defineEmits(['on-remove-member'])
 
-    const onRemoveMember = (id: string) => {
-        emit('on-remove-member', id)
+    const onRemoveMember = (member: ITeamMember) => {
+        emit('on-remove-member', member)
     }
 
     // const onClickAddMember = () => {

@@ -48,7 +48,7 @@
     import { onMounted, ref } from 'vue';
     import { routeNames } from '../common';
     import { useRouter } from 'vue-router';
-    import { ITeam, teamStore } from '.';
+    import { ITeam, ITeamMember, teamStore } from '.';
     import { useToast } from "vue-toastification";
 
     const toast = useToast();
@@ -78,12 +78,12 @@
         team.value = await $team.getTeam(teamId as string)
     })
 
-    const onTeamMemberAdded = async(member_id: string) => {
-        console.log('onTeamMemberAdded()', member_id)
+    const onTeamMemberAdded = async(member: ITeamMember) => {
+        console.log('onTeamMemberAdded()', member)
 
         if(!team.value) return 
 
-        const addedMember = await $team.onAddMember({member_id: member_id, team_id: team.value.id})
+        const addedMember = await $team.onAddMember({member_id: member.id, team_id: team.value.id})
 
         if(addedMember){
             toast.success("Team member successfully added!");
@@ -95,44 +95,45 @@
 
     }
 
-    const onRemoveMember = (id: string) => {
-        console.log('onRemoveMember()', id)
+    const onRemoveMember = (member: ITeamMember) => {
+        console.log('onRemoveMember()', member)
 
         if(!team.value) return 
 
+        const fullName = member.member.first_name + ' ' + member.member.last_name
+
         Swal.fire({
             title: "Are you sure?",
-            text: "Team member will be removed!",
+            text: fullName + " will be removed!",
             icon: "warning",
             position: "top",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-            }).then( async(result) => {
+            confirmButtonColor: "#e74a3b",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "Yes, delete it!",
+            reverseButtons: true, 
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                const removed = await $team.onDeleteTeamMember(id)
+                const removed = await $team.onDeleteTeamMember(member);
 
-                if(removed){
-                    toast.success('Team member successfully removed!')
+                if (removed) {
+                toast.success(fullName + " successfully removed!");
 
-                    const members = team.value!.teamMembers
+                const members = team.value!.teamMembers;
 
-                    const indx = members.findIndex(i => i.id === id)
+                const indx = members.findIndex((i) => i.id === member.id);
 
-                    console.log('indx', indx)
+                console.log("indx", indx);
 
-                    if(indx !== -1){
-                        members.splice(indx, 1)
-                    }
-                    
-
-                }else{
-                    toast.error('Failed to remove team member')
+                if (indx !== -1) {
+                    members.splice(indx, 1);
+                }
+                } else {
+                toast.error("Failed to remove " + fullName);
                 }
             }
         });
-    }
 
+    }
 
 </script>
