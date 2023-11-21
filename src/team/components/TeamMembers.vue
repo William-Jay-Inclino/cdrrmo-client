@@ -24,7 +24,7 @@
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item" v-for="skill in member.member.skills">
                                         {{ skill.TrainingSkill.name }}
-                                        <button class="btn btn-light btn-sm float-end">
+                                        <button class="btn btn-light btn-sm">
                                             <i class="fas fa-fw fa-eye text-info"></i>
                                         </button>
                                     </li>
