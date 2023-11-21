@@ -73,15 +73,31 @@ export const CONST_TeamStatus = {
 export const CONST_DispatchStatus = {
     [DispatchStatusEnum.Queue]: {
         text: 'Queue',
-        color: 'primary', 
-    },
-    [DispatchStatusEnum.Dispatched]: {
-        text: 'Dispatched',
         color: 'info', 
     },
-    [DispatchStatusEnum.Deck]: {
-        text: 'Deck',
-        color: 'success', 
+    [DispatchStatusEnum.ProceedingScene]: {
+        text: 'Proceeding to scene',
+        color: 'info', 
+    },
+    [DispatchStatusEnum.ArrivedScene]: {
+        text: 'Arrived at scene',
+        color: 'info', 
+    },
+    [DispatchStatusEnum.ProceedingHospital]: {
+        text: 'Proceeding to hospital',
+        color: 'info', 
+    },
+    [DispatchStatusEnum.ArrivedHospital]: {
+        text: 'Arrived at hospital',
+        color: 'info', 
+    },
+    [DispatchStatusEnum.ProceedingBase]: {
+        text: 'Proceeding to Base',
+        color: 'info', 
+    },
+    [DispatchStatusEnum.ArrivedBase]: {
+        text: 'Arrived at Base',
+        color: 'info', 
     },
 }
 
