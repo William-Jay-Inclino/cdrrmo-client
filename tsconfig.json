@@ -21,6 +21,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
+    // "types": ["@types/awesomplete"],
+
     "paths": {
       "@/*": ["./src/*"],
     }

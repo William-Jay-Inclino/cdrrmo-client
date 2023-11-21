@@ -1,66 +1,126 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { routeNames } from '@/helpers/constants'
+import { routeNames } from './common/constants'
 
 const routes = [
+
+    // ================ dashboard route ================ 
+    {
+        path: '/',
+        name: routeNames.dashboard,
+        component: () => import('./dashboard/Dashboard.vue')
+    },
+
+    // ================ user route ================ 
     {
         path: '/users',
         name: routeNames.users,
-        component: () => import('@/views/User/User.view.vue')
+        component: () => import('./user/User.view.vue')
     },
     {
         path: '/users/form',
         name: routeNames.userForm,
-        component: () => import('@/views/User/UserForm.view.vue')
+        component: () => import('./user/UserForm.view.vue')
     },
+
+    // ================ dispatch route ================ 
     {
         path: '/dispatch',
         name: routeNames.dispatch,
-        component: () => import('@/views/Dispatch/Dispatch.view.vue')
+        component: () => import('./dispatch/Dispatch.view.vue')
     },
     {
         path: '/dispatch/form',
         name: routeNames.dispatchForm,
-        component: () => import('@/views/Dispatch/DispatchForm.view.vue')
+        component: () => import('./dispatch/DispatchForm.view.vue')
     },
+
+    // ================ team route ================ 
     {
         path: '/teams',
         name: routeNames.teams,
-        component: () => import('@/views/Team/Team.view.vue')
+        component: () => import('./team/Team.view.vue')
     },
     {
-        path: '/teams/members/:id',
-        name: routeNames.teamMembers,
-        component: () => import('@/views/Team/TeamMembers.view.vue')
+        path: '/teams/form',
+        name: routeNames.teamsForm,
+        component: () => import('./team/TeamForm.view.vue')
     },
+    {
+        path: '/teams/manage',
+        name: routeNames.teamManage,
+        component: () => import('./team/TeamManage.view.vue')
+    },
+
+    // ================ cso route ================ 
     {
         path: '/csos',
         name: routeNames.csos,
-        component: () => import('@/views/Cso/Cso.view.vue')
+        component: () => import('./cso/Cso.view.vue')
     },
+    {
+        path: '/csos/form',
+        name: routeNames.csosForm,
+        component: () => import('./cso/CsoForm.view.vue')
+    },
+
+    // ================ po route ================ 
     {
         path: '/pos',
         name: routeNames.pos,
-        component: () => import('@/views/Po/Po.view.vue')
+        component: () => import('./po/Po.view.vue')
     },
+    {
+        path: '/pos/form',
+        name: routeNames.posForm,
+        component: () => import('./po/PoForm.view.vue')
+    },
+
+    // ================ bart route ================ 
     {
         path: '/barts',
         name: routeNames.barts,
-        component: () => import('@/views/Bart/Bart.view.vue')
+        component: () => import('./bart/Bart.view.vue')
     },
+    {
+        path: '/barts/form',
+        name: routeNames.bartsForm,
+        component: () => import('./bart/BartForm.view.vue')
+    },
+
+    // ================ na route ================ 
     {
         path: '/national-agencies',
         name: routeNames.nationalAgencies,
-        component: () => import('@/views/Na/Na.view.vue')
+        component: () => import('./na/Na.view.vue')
     },
+    {
+        path: '/national-agencies/form',
+        name: routeNames.nationalAgenciesForm,
+        component: () => import('./na/NaForm.view.vue')
+    },
+
+    // ================ emergency route ================ 
     {
         path: '/emergencies',
         name: routeNames.emergencies,
-        component: () => import('@/views/Emergency/Emergency.view.vue')
+        component: () => import('./emergency/Emergency.view.vue')
     },
+    {
+        path: '/emergencies/form',
+        name: routeNames.emergenciesForm,
+        component: () => import('./emergency/EmergencyForm.view.vue')
+    },
+
+    // ================ training skill route ================ 
     {
         path: '/training-skills',
         name: routeNames.trainingSkills,
-        component: () => import('@/views/TrainingSkill/TrainingSkill.vue')
+        component: () => import('./training_skill/TrainingSkill.view.vue')
+    },
+    {
+        path: '/training-skills/form',
+        name: routeNames.trainingSkillsForm,
+        component: () => import('./training_skill/TrainingSkillForm.view.vue')
     },
 //   {
 //     path: '/login',
