@@ -1,20 +1,42 @@
 
 import { defineStore } from 'pinia'
-import { appService } from './app.service'
+import { IUser, userService } from '../user'
+import { computed, onMounted, ref } from 'vue'
 
 // root store
 
 export const appStore = defineStore('app', () => {
     
     // state
+
+    const _store = 'appStore: '
+    const _authUser = ref<IUser>()
+
+
+    onMounted( async() => {
+      await init()
+    })
     
-    //methods 
-    const init = () => {
-        appService.init()
+    // methods 
+    const init = async() => {
+      // to be refactored
+      const users = await userService.findAll()
+      setAuthUser(users[0])
     }
+
+
+    // getters
+
+    const authUser = computed( (): IUser => _authUser.value!)
+
+    const setAuthUser = (user: IUser) => {
+      console.log(_store + 'setAuthUser()', user)
+      _authUser.value = user
+    } 
 
     return {
       init,
+      authUser,
     }
 })
 

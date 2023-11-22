@@ -54,7 +54,7 @@
     </router-link>
 </li>
 
-<li class="nav-item" :class="{'active': routeName === routeNames.teams || routeName === routeNames.teamMembers}">
+<li class="nav-item" :class="{'active': routeName === routeNames.teams || routeName === routeNames.teamManage || routeName === routeNames.teamsForm}">
     <router-link :to="{name: routeNames.teams}" class="nav-link">
         <i class="fas fa-fw fa-sitemap"></i>
         <span>Team</span>
