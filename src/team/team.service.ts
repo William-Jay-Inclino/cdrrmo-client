@@ -1,6 +1,6 @@
 import { config } from "../config";
 import { ICreateTeamDto } from "./dto/create-team.dto";
-import { ITeam, ITeamMember } from "./entities"
+import { ITeam, ITeamMember, TeamStatusEnum } from "./entities"
 
 class TeamService{
 
@@ -11,6 +11,22 @@ class TeamService{
         console.log(this.service + 'findAll()')
 		try {
 			const response = await config.api.get(this.endpoint);
+			console.log({response})
+            if(response.status === 200){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return []
+    }
+
+    async findAllActive(status: TeamStatusEnum): Promise<ITeam[]>{
+        console.log(this.service + 'findAllActive()', status)
+		try {
+			const response = await config.api.get(this.endpoint + '/status/' + status);
 			console.log({response})
             if(response.status === 200){
                 return response.data

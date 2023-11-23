@@ -4,18 +4,11 @@
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dispatch Module</h1>
-            <button class="btn btn-primary">
-                Dispatch a team
-            </button>
+            <router-link :to="{name: 'dispatchForm.route'}">
+                <button class="btn btn-primary float-end" type="submit">Dispatch a Team</button>
+            </router-link>
         </div>
         
-        <!-- <div class="row mb-3">
-            <div class="col-11">
-                <router-link :to="{name: 'dispatchForm.route'}">
-                    <button class="btn btn-primary float-end" type="submit">Dispatch a Team</button>
-                </router-link>
-            </div>
-        </div> -->
 
         <div class="row pt-5">
             <div class="col-4 d-flex flex-column">
@@ -60,7 +53,6 @@
     const $dispatch = dispatchStore()
 
     $dispatch.init()
-
 
 
 
