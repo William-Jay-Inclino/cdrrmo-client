@@ -5,7 +5,8 @@ import { computed, ref } from 'vue';
 import { ICreateDispatchDto } from './dto/create-dispatch.dto';
 import { IEmergency, emergencyService } from '../emergency';
 import { ITeam, TeamStatusEnum, teamService } from '../team';
-
+import { isValidPhoneNumber } from '../common';
+import { appStore } from '../app';
 
 export const dispatchStore = defineStore('dispatch', () => {
     
@@ -23,16 +24,33 @@ export const dispatchStore = defineStore('dispatch', () => {
         hazard: '',
         remarks: '',
         status: DispatchStatusEnum.Queue,
-        time_of_call: null,
+        time_of_call: '',
+    }
+
+    const _formErrorsInitial = {
+        emergency: false,
+        callerName: false,
+        callerNumber: false,
+        location: false,
+        description: false,
+        numPeopleInvolved: false,
+        hazard: false,
+        team: false,
+        timeOfCall: false,
+
+        isInvalidContactNo: false,
     }
 
     const _flagsInitial = {
         expand: true 
     }
 
+    const $app = appStore()
+
     // state
     const _dispatchedTeams = ref<IDispatch[]>([])
     const formData = ref<ICreateDispatchDto>({..._formDataInitial})
+    const formErrors = ref({..._formErrorsInitial})
     const formTeams = ref<ITeam[]>([])
 
     const flags = ref({..._flagsInitial})
@@ -79,14 +97,111 @@ export const dispatchStore = defineStore('dispatch', () => {
         setEmergencies(await emergencyService.findAll())
     }
 
+    const onSubmit = async(payload: {data: ICreateDispatchDto}): Promise<IDispatch[] | null> => {
+        console.log(_store + 'onSubmit()', payload)
+
+        formErrors.value.emergency = false 
+        formErrors.value.callerName = false 
+        formErrors.value.callerNumber = false 
+        formErrors.value.location = false 
+        formErrors.value.description = false 
+        formErrors.value.numPeopleInvolved = false 
+        formErrors.value.team = false 
+        formErrors.value.isInvalidContactNo = false 
+        formErrors.value.timeOfCall = false 
+        
+
+        if(!payload.data.emergency_id || payload.data.emergency_id.trim() === ''){ 
+            formErrors.value.emergency = true 
+        }
+
+        if(payload.data.caller_name.trim() === ''){
+            formErrors.value.callerName = true
+        }
+
+        if(payload.data.caller_number.trim() === ''){
+            formErrors.value.callerNumber = true
+        }else{
+            if (!isValidPhoneNumber('63' + formData.value.caller_number)) {
+                formErrors.value.isInvalidContactNo = true;
+            }
+        }
+
+        if(payload.data.location.trim() === ''){
+            formErrors.value.location = true
+        }
+
+        if(payload.data.description.trim() === ''){
+            formErrors.value.description = true
+        }
+
+        if(payload.data.num_people_involved < 0){
+            formErrors.value.numPeopleInvolved = true
+        }
+
+        if(formTeams.value.length === 0){
+            formErrors.value.team = true
+        }
+
+        const pattern = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/;
+
+        if(!pattern.test(payload.data.time_of_call)){
+            formErrors.value.timeOfCall = true
+        }
+
+        const hasError = Object.values(formErrors.value).includes(true);
+
+        if(hasError){
+            return null 
+        }
+
+        const dispatchedTeams = setPayload(payload.data)
+
+        return await onCreate({data: dispatchedTeams})
+
+    }
+
+    const setPayload = (dispatchedTeam: ICreateDispatchDto): ICreateDispatchDto[] => {
+        console.log(_store + 'setPayload()', dispatchedTeam)
+
+        const dispatchedTeamArray: ICreateDispatchDto[] = []
+
+        for(let i of formTeams.value){
+            const x = {...dispatchedTeam}
+            x.team_id = i.id
+            x.dispatcher_id = $app.authUser.id
+            dispatchedTeamArray.push(x)
+        }
+
+        return dispatchedTeamArray
+
+    }
+
+    const onCreate = async(payload: {data: ICreateDispatchDto[]}): Promise<IDispatch[] | null> => {
+        console.log(_store + 'onCreate()', payload)
+
+        const createdDispatches = await dispatchService.create(payload)
+
+        if(createdDispatches && createdDispatches.length > 0){
+            _dispatchedTeams.value.unshift(...createdDispatches)
+            return createdDispatches
+        }
+
+        return null
+    }
+
     const resetFormData = () => {
+        console.log(_store + 'resetFormData()')
         formData.value = {..._formDataInitial}
+        formErrors.value = {..._formErrorsInitial}
+        formTeams.value = []
     }
     
 
     return {
         dispatchedTeams,
         formData,
+        formErrors,
         formTeams,
         flags,
         emergencies,
@@ -94,6 +209,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         resetFormData,
         init,
         initForm,
+        onSubmit,
     }
 })
 

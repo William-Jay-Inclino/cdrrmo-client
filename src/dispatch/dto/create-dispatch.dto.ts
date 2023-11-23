@@ -12,5 +12,5 @@ export interface ICreateDispatchDto{
     hazard: string 
     remarks: string 
     status: DispatchStatusEnum 
-    time_of_call: Date | null
+    time_of_call: string
 }

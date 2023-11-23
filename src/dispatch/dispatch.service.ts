@@ -1,4 +1,5 @@
 import { config } from "../config";
+import { ICreateDispatchDto } from "./dto/create-dispatch.dto";
 import { IDispatch } from "./entities"
 
 class DispatchService{
@@ -38,7 +39,7 @@ class DispatchService{
         return null
     }
 
-    async create(payload: {data: IDispatch}): Promise<IDispatch | null>{
+    async create(payload: {data: ICreateDispatchDto[]}): Promise<IDispatch[] | null>{
         console.log(this.service + 'create()', payload)
 
 		try {

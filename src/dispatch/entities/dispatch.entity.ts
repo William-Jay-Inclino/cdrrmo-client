@@ -1,7 +1,7 @@
-import { IEmergency } from "@/emergency"
-import { DispatchStatusEnum } from "."
-import { ITeam } from "@/team"
-import { IUser } from "@/user"
+import { IEmergency } from "../../emergency"
+import { DispatchStatusEnum } from "../entities"
+import { ITeam } from "../../team"
+import { IUser } from "../../user"
 
 export interface IDispatch{
     id: string 
