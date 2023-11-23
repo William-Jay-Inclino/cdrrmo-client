@@ -24,9 +24,15 @@ export const dispatchStore = defineStore('dispatch', () => {
         time_of_call: null,
     }
 
+    const _flagsInitial = {
+        expand: true 
+    }
+
     // state
     const _dispatchedTeams = ref<IDispatch[]>([])
     const formData = ref<ICreateDispatchDto>({..._formDataInitial})
+
+    const flags = ref({..._flagsInitial})
 
     // getters 
     
@@ -51,6 +57,7 @@ export const dispatchStore = defineStore('dispatch', () => {
     return {
         dispatchedTeams,
         formData,
+        flags,
         resetFormData,
         init,
     }

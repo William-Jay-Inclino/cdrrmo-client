@@ -15,12 +15,12 @@ export interface IDispatch{
     num_people_involved: number 
     hazard: string 
     time_of_call: Date
-    time_proceeding: Date | null
-    time_arrival: Date | null
+    time_proceeding_scene: Date | null
+    time_arrival_scene: Date | null
     time_proceeding_hospital: Date | null 
     time_arrival_hospital: Date | null 
-    time_back_to_base: Date | null 
-    time_arrival_to_base: Date | null 
+    time_proceeding_base: Date | null 
+    time_arrival_base: Date | null 
     remarks: string 
     status: DispatchStatusEnum 
 
