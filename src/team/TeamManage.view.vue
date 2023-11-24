@@ -14,7 +14,10 @@
 
         <div class="row">
             <div class="col">
-                <button data-toggle="modal" :data-target="`#${addMemberModalId}`" class="btn btn-primary float-end">
+                <!-- <button type="button" data-toggle="modal" :data-target="`#${addMemberModalId}`" class="btn btn-primary float-end">
+                    Add Member
+                </button> -->
+                <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#addMemberModalId">
                     Add Member
                 </button>
             </div>
@@ -31,7 +34,7 @@
             </div>
         </div>
 
-        <AddMemberModal v-if="team" :id="addMemberModalId" :team="team" @add-member="onTeamMemberAdded"/>
+        <AddMemberModal :id="addMemberModalId" @add-member="onTeamMemberAdded"/>
     </div>
 
 </template>
