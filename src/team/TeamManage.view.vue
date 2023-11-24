@@ -76,6 +76,8 @@
         }
     ])
 
+    $team.initManageTeam()
+
     
     onMounted( async() => {
         team.value = await $team.getTeam(teamId as string)

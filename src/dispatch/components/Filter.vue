@@ -2,13 +2,10 @@
     <div class="card shadow mb-4 flex-grow-1">
         <div class="card-header"> Filter </div>
         <div class="card-body d-flex justify-content-center">
-            <button class="btn btn-outline-primary custom-btn">Queue</button>
-            <button class="btn btn-outline-primary custom-btn">Proceeding to scene</button>
-            <button class="btn btn-outline-primary custom-btn">Arrived at scene</button>
-            <button class="btn btn-outline-primary custom-btn">Proceeding to hospital</button>
-            <button class="btn btn-outline-primary custom-btn">Arrived at hospital</button>
-            <button class="btn btn-outline-primary custom-btn">Proceeding to Base</button>
-            <button class="btn btn-outline-primary custom-btn">Arrived at Base</button>
+            <button class="btn btn-outline-secondary custom-btn">Queue</button>
+            <button class="btn btn-outline-danger custom-btn">Ongoing</button>
+            <button class="btn btn-outline-success custom-btn">Returned</button>
+            <button class="btn btn-outline-warning custom-btn">Cancelled</button>
         </div>
     </div>
 </template>

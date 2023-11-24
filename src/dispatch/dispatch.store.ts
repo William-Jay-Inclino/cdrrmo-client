@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 import { DispatchStatusEnum, IDispatch, dispatchService } from '.'
 import { computed, ref } from 'vue';
-import { ICreateDispatchDto } from './dto/create-dispatch.dto';
+import { ICreateDispatchDto, IUpdateDispatchDto } from './dto';
 import { IEmergency, emergencyService } from '../emergency';
 import { ITeam, TeamStatusEnum, teamService } from '../team';
 import { isValidPhoneNumber } from '../common';
@@ -196,6 +196,44 @@ export const dispatchStore = defineStore('dispatch', () => {
         return null
     }
 
+    const onUpdate = async(payload: {id: string, data: IUpdateDispatchDto}): Promise<IDispatch | null> => {
+        console.log(_store + 'onUpdate()', payload)
+
+        const updated = await dispatchService.update(payload)
+
+        if(updated){
+
+            const indx = _dispatchedTeams.value.findIndex(i => i.id === updated.id)
+
+            if(indx !== -1){
+                _dispatchedTeams.value[indx] = {...updated}
+            }
+            
+            return updated
+        }
+
+        return null
+    }
+
+    const onUpdateTimeField = async(payload: {id: string, field: string}): Promise<IDispatch | null> => {
+        console.log(_store + 'onUpdateTimeField()', payload)
+
+        const updated = await dispatchService.updateTimeField(payload)
+
+        if(updated){
+
+            const indx = _dispatchedTeams.value.findIndex(i => i.id === updated.id)
+
+            if(indx !== -1){
+                _dispatchedTeams.value[indx] = {...updated}
+            }
+            
+            return updated
+        }
+
+        return null
+    }
+
     const resetFormData = () => {
         console.log(_store + 'resetFormData()')
         formData.value = {..._formDataInitial}
@@ -218,6 +256,8 @@ export const dispatchStore = defineStore('dispatch', () => {
         init,
         initForm,
         onSubmit,
+        onUpdate,
+        onUpdateTimeField,
         setTeamInfo,
     }
 })

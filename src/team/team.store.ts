@@ -78,9 +78,13 @@ export const teamStore = defineStore('team', () => {
     // methods
 
     const init = async() => {
+        console.log(_store + 'init()')
         const items = await teamService.findAll()
         setTeams(items)
+    }
 
+    const initManageTeam = async() => {
+        console.log(_store + 'initManageTeam()')
         const usersWithoutTeam = await userService.findUsersWithoutTeam()
         setUsersWithoutTeam(usersWithoutTeam)
     }
@@ -261,6 +265,7 @@ export const teamStore = defineStore('team', () => {
         resetFormData,
         setFormData,
         initUpdateFormData,
+        initManageTeam,
         userIsTeamLead,
         getTeamLeaderLabel,
         getTeam,

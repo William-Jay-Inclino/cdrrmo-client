@@ -1,5 +1,5 @@
 import { config } from "../config";
-import { ICreateDispatchDto } from "./dto/create-dispatch.dto";
+import { ICreateDispatchDto, IUpdateDispatchDto } from "./dto";
 import { IDispatch } from "./entities"
 
 class DispatchService{
@@ -56,11 +56,33 @@ class DispatchService{
         return null 
     }
 
-    async update(payload: {id: string, data: IDispatch}): Promise<IDispatch | null>{
+    async update(payload: {id: string, data: IUpdateDispatchDto}): Promise<IDispatch | null>{
         console.log(this.service + 'update()', payload)
 
 		try {
 			const response = await config.api.patch(this.endpoint + payload.id, payload.data);
+			console.log({response})
+            if(response.status === 200){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return null 
+    }
+
+    async updateTimeField(payload: {id: string, field: string}): Promise<IDispatch | null>{
+        console.log(this.service + 'update()', payload)
+
+		try {
+
+            const data = {
+                [payload.field]: ''
+            }
+
+			const response = await config.api.patch(this.endpoint + payload.id + '/update-time/' + payload.field, data);
 			console.log({response})
             if(response.status === 200){
                 return response.data

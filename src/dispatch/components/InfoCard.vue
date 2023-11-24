@@ -71,9 +71,9 @@
                         </tr>
                         <tr v-show="isExpanded">
                             <th>Time proceeding to scene</th>
-                            <td v-if="dispatchedTeam.time_proceeding_scene"> {{ dispatchedTeam.time_proceeding_scene }} </td>
+                            <td v-if="dispatchedTeam.time_proceeding_scene"> {{ formatDate(new Date(dispatchedTeam.time_proceeding_scene)) }} </td>
                             <td v-else>
-                                <button class="btn btn-outline-info btn-sm">
+                                <button @click="setTime(dispatchedTeam.id, 'Time proceeding to scene')" class="btn btn-outline-info btn-sm">
                                     <i class="fas fa-fw fa-clock"></i>
                                     <span> Set Time </span>
                                 </button>
@@ -81,9 +81,9 @@
                         </tr>
                         <tr v-show="isExpanded">
                             <th>Time arrival at scene</th>
-                            <td v-if="dispatchedTeam.time_arrival_scene"> {{ dispatchedTeam.time_arrival_scene }} </td>
+                            <td v-if="dispatchedTeam.time_arrival_scene"> {{ formatDate(new Date(dispatchedTeam.time_arrival_scene)) }} </td>
                             <td v-else>
-                                <button class="btn btn-outline-info btn-sm">
+                                <button v-if="dispatchedTeam.time_proceeding_scene" @click="setTime(dispatchedTeam.id, 'Time arrival at scene')" class="btn btn-outline-info btn-sm">
                                     <i class="fas fa-fw fa-clock"></i>
                                     <span> Set Time </span>
                                 </button>
@@ -91,9 +91,9 @@
                         </tr>
                         <tr v-show="isExpanded">
                             <th>Time proceeding to hospital</th>
-                            <td v-if="dispatchedTeam.time_proceeding_hospital"> {{ dispatchedTeam.time_proceeding_hospital }} </td>
+                            <td v-if="dispatchedTeam.time_proceeding_hospital"> {{ formatDate(new Date(dispatchedTeam.time_proceeding_hospital)) }} </td>
                             <td v-else>
-                                <button class="btn btn-outline-info btn-sm">
+                                <button v-if="dispatchedTeam.time_arrival_scene" @click="setTime(dispatchedTeam.id, 'Time proceeding to hospital')" class="btn btn-outline-info btn-sm">
                                     <i class="fas fa-fw fa-clock"></i>
                                     <span> Set Time </span>
                                 </button>
@@ -101,9 +101,9 @@
                         </tr>
                         <tr v-show="isExpanded">
                             <th>Time arrival at hospital</th>
-                            <td v-if="dispatchedTeam.time_arrival_hospital"> {{ dispatchedTeam.time_arrival_hospital }} </td>
+                            <td v-if="dispatchedTeam.time_arrival_hospital"> {{ formatDate(new Date(dispatchedTeam.time_arrival_hospital)) }} </td>
                             <td v-else>
-                                <button class="btn btn-outline-info btn-sm">
+                                <button v-if="dispatchedTeam.time_proceeding_hospital" @click="setTime(dispatchedTeam.id, 'Time arrival at hospital')" class="btn btn-outline-info btn-sm">
                                     <i class="fas fa-fw fa-clock"></i>
                                     <span> Set Time </span>
                                 </button>
@@ -111,9 +111,9 @@
                         </tr>
                         <tr v-show="isExpanded">
                             <th>Time proceeding to base</th>
-                            <td v-if="dispatchedTeam.time_proceeding_base"> {{ dispatchedTeam.time_proceeding_base }} </td>
+                            <td v-if="dispatchedTeam.time_proceeding_base"> {{ formatDate(new Date(dispatchedTeam.time_proceeding_base)) }} </td>
                             <td v-else>
-                                <button class="btn btn-outline-info btn-sm">
+                                <button v-if="dispatchedTeam.time_arrival_scene || dispatchedTeam.time_arrival_hospital" @click="setTime(dispatchedTeam.id, 'Time proceeding to base')" class="btn btn-outline-info btn-sm">
                                     <i class="fas fa-fw fa-clock"></i>
                                     <span> Set Time </span>
                                 </button>
@@ -121,9 +121,9 @@
                         </tr>
                         <tr v-show="isExpanded">
                             <th>Time arrival at base</th>
-                            <td v-if="dispatchedTeam.time_arrival_hospital"> {{ dispatchedTeam.time_arrival_hospital }} </td>
+                            <td v-if="dispatchedTeam.time_arrival_base"> {{ formatDate(new Date(dispatchedTeam.time_arrival_base)) }} </td>
                             <td v-else>
-                                <button class="btn btn-outline-info btn-sm">
+                                <button v-if="dispatchedTeam.time_proceeding_base" @click="setTime(dispatchedTeam.id, 'Time arrival at base')" class="btn btn-outline-info btn-sm">
                                     <i class="fas fa-fw fa-clock"></i>
                                     <span> Set Time </span>
                                 </button>
@@ -138,12 +138,23 @@
             </div>
         </div>
 
-        <div class="card-footer">
-            <div class="d-flex justify-content-between">
-                <button class="btn btn-danger text-left">Cancel Service</button>
-                <button class="btn btn-primary text-right">Reassign Dispatcher</button>
+        <div class="card-footer justify-content-center">
+            <div class="row" v-if="!dispatchedTeam.time_arrival_base">
+                <div class="col">
+                    <button class="btn btn-primary float-end">Reassign Dispatcher</button>
+                </div>
+                <div class="col">
+                    <button class="btn btn-danger">Cancel Service</button>
+                </div>
             </div>
+            <div class="row" v-else>
+                <div class="col-6 mx-auto text-center">
+                    <button class="btn btn-success">Set to complete</button>
+                </div>
+            </div>
+            <!-- <button class="btn btn-success">Set to complete</button> -->
         </div>
+
 
 
     </div>
@@ -158,26 +169,52 @@ import { CONST_DispatchStatus, formatDate } from '../../common';
 import { dispatchStore } from '..';
 import { computed } from 'vue';
 
+import Swal from 'sweetalert2'
+
 defineProps<{
         dispatchedTeam: IDispatch
 }>()
 
+const emit = defineEmits(['set-time'])
 
 const $dispatch = dispatchStore()
 
-
 const isExpanded = computed( () => $dispatch.flags.expand)
-
 
 const cardHeaderBg = (status: DispatchStatusEnum) => {
 
-if(status === DispatchStatusEnum.Queue){
-    return {'text-bg-success': true}
+    if(status === DispatchStatusEnum.Queue){
+        return {'text-bg-secondary': true}
+    }
+
+    if(status === DispatchStatusEnum.ArrivedBase){
+        return {'text-bg-success': true}
+    }
+
+    return {'text-bg-danger': true}
+
 }
 
-return {'text-bg-danger': true}
+const setTime = (id: string, field: any) => {
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: field + " will be recorded!",
+        position: "top",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#1cc88a",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Yes, record it!",
+        reverseButtons: true,
+        }).then( (result) => {
+        if (result.isConfirmed) {
+            emit('set-time', {id, field})
+        }
+    });
 
 }
+
 
 </script>
 

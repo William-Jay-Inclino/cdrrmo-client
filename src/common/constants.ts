@@ -84,27 +84,27 @@ export const CONST_DispatchStatus = {
     [DispatchStatusEnum.ArrivedScene]: {
         id: DispatchStatusEnum.ArrivedScene,
         text: 'Arrived at scene',
-        color: 'info', 
+        color: 'primary', 
     },
     [DispatchStatusEnum.ProceedingHospital]: {
         id: DispatchStatusEnum.ProceedingHospital,
         text: 'Proceeding to hospital',
-        color: 'info', 
+        color: 'primary', 
     },
     [DispatchStatusEnum.ArrivedHospital]: {
         id: DispatchStatusEnum.ArrivedHospital,
         text: 'Arrived at hospital',
-        color: 'info', 
+        color: 'primary', 
     },
     [DispatchStatusEnum.ProceedingBase]: {
         id: DispatchStatusEnum.ProceedingBase,
         text: 'Proceeding to Base',
-        color: 'info', 
+        color: 'primary', 
     },
     [DispatchStatusEnum.ArrivedBase]: {
         id: DispatchStatusEnum.ArrivedBase,
         text: 'Arrived at Base',
-        color: 'info', 
+        color: 'primary', 
     },
 }
 

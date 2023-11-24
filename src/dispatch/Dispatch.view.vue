@@ -14,7 +14,7 @@
             <div class="col-4 d-flex flex-column">
                 <Search/>
             </div>
-            <div class="col-8 d-flex flex-column">
+            <div class="col-4 d-flex flex-column">
                 <Filter/>
             </div>
         </div>
@@ -31,8 +31,8 @@
         </div>
 
         <div class="row pt-3">
-            <div class="col-4" v-for="dispatchedTeam in $dispatch.dispatchedTeams">
-                <InfoCard :dispatched-team="dispatchedTeam"/>
+            <div class="col-lg-4 col-md-6 col-sm-12" v-for="dispatchedTeam in $dispatch.dispatchedTeams">
+                <InfoCard :dispatched-team="dispatchedTeam" @set-time="setTime"/>
             </div>
         </div>
 
@@ -43,7 +43,7 @@
 
 
 <script setup lang="ts">
-  
+    import { useToast } from "vue-toastification";
     import { dispatchStore } from '.';
     import Search from './components/Search.vue';
     import Filter from './components/Filter.vue';
@@ -54,6 +54,34 @@
 
     $dispatch.init()
 
+    const toast = useToast();
+
+    // these are column fields in table dispatch in database 
+    const fields = {
+        'Time proceeding to scene': 'time_proceeding_scene',
+        'Time arrival at scene': 'time_arrival_scene',
+        'Time proceeding to hospital': 'time_proceeding_hospital',
+        'Time arrival at hospital': 'time_arrival_hospital',
+        'Time proceeding to base': 'time_proceeding_base',
+        'Time arrival at base': 'time_arrival_base',
+    } as any
+
+    const setTime = async(payload: {id: string, field: any}) => {
+
+        console.log('setTime()', payload)
+
+        const field = fields[payload.field]
+
+        const dispatchedTeam = await $dispatch.onUpdateTimeField({id: payload.id,field})
+
+        if(dispatchedTeam){
+            toast.success(payload.field + ' successfully recorded!')
+
+        }else{
+            toast.error('Failed to update ' + payload.field)
+        }
+
+    } 
 
 
 </script>
