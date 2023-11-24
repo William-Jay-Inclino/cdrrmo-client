@@ -36,8 +36,7 @@
             </div>
         </div>
 
-        <!-- <DispatchStatusModal v-show="showDispatchStatusModal" :id="dispatchStatusModalId" :dispatched-team="selectedDispatchedTeam" @update-status="onUpdateStatus"/>
-        <TeamInfoModal :id="teamInfoModalId" v-if="selectedDispatchedTeam" :team-id="selectedDispatchedTeam.team_id" /> -->
+        <TeamInfoModal :team="$dispatch.teamInfo" :can-manage="false"/>
   </div>
 
 </template>
@@ -49,6 +48,7 @@
     import Search from './components/Search.vue';
     import Filter from './components/Filter.vue';
     import InfoCard from './components/InfoCard.vue'
+    import TeamInfoModal from '../team/components/TeamInfoModal.vue';
 
     const $dispatch = dispatchStore()
 

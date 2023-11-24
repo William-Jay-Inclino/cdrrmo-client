@@ -32,7 +32,7 @@
                             <th>Team dispatched</th>
                             <td>
                                 {{ dispatchedTeam.team.name }}
-                                <button data-toggle="modal" data-target="teamInfoModalId" class="btn btn-light btn-sm">
+                                <button @click="$dispatch.setTeamInfo(dispatchedTeam.team)" type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#teamInfoModal">
                                     <i class="fas fa-fw fa-info-circle text-info"></i>
                                 </button>
                             </td>
@@ -137,6 +137,15 @@
                 </table>
             </div>
         </div>
+
+        <div class="card-footer">
+            <div class="d-flex justify-content-between">
+                <button class="btn btn-danger text-left">Cancel Service</button>
+                <button class="btn btn-primary text-right">Reassign Dispatcher</button>
+            </div>
+        </div>
+
+
     </div>
 </template>
 

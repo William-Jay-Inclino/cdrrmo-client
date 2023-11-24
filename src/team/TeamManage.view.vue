@@ -30,7 +30,7 @@
                 <TeamInfo v-if="team" :team="team"/>
             </div>
             <div class="col-6">
-                <TeamMembers v-if="team" :team="team" @on-remove-member="onRemoveMember"/>
+                <TeamMembers v-if="team" :team="team" @on-remove-member="onRemoveMember" :can-manage="true"/>
             </div>
         </div>
 

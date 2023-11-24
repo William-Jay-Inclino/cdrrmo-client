@@ -2,7 +2,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-bg-primary">
-            <h6 class="m-0 font-weight-bold"> Manage Members </h6>
+            <h6 class="m-0 font-weight-bold"> Members </h6>
         </div>
 
         <div class="card-body">
@@ -12,7 +12,7 @@
                         <tr>
                             <th> Name </th>
                             <th class="pl-4"> Skills </th>
-                            <th class="text-center">
+                            <th v-if="canManage" class="text-center">
                                 <i class="fas fa-fw fa-cogs"></i>
                             </th>
                         </tr>
@@ -24,13 +24,13 @@
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item" v-for="skill in member.member.skills">
                                         {{ skill.TrainingSkill.name }}
-                                        <button class="btn btn-light btn-sm">
+                                        <!-- <button class="btn btn-light btn-sm">
                                             <i class="fas fa-fw fa-eye text-info"></i>
-                                        </button>
+                                        </button> -->
                                     </li>
                                 </ul>
                             </td>
-                            <td class="align-middle text-center">
+                            <td v-if="canManage" class="align-middle text-center">
                                 <button @click="onRemoveMember(member)" class="btn btn-light">
                                     <i class="fas fa-fw fa-trash text-danger"></i> 
                                 </button>
@@ -53,6 +53,7 @@
     
     defineProps<{
         team: ITeam
+        canManage: boolean
     }>()
 
     const emit = defineEmits(['on-remove-member'])

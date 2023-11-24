@@ -57,6 +57,7 @@ export const dispatchStore = defineStore('dispatch', () => {
     const _emergencies = ref<IEmergency[]>([])
     const _activeTeams = ref<ITeam[]>([])
 
+    const teamInfo = ref<ITeam | null>(null)
 
     // setters
 
@@ -72,6 +73,11 @@ export const dispatchStore = defineStore('dispatch', () => {
 
     const setActiveTeams = (activeTeams: ITeam[]) => {
         _activeTeams.value = activeTeams
+    }
+
+    const setTeamInfo = (team: ITeam) => {
+        console.log(_store + 'setTeamInfo()', team)
+        teamInfo.value = team
     }
 
     // getters 
@@ -195,6 +201,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         formData.value = {..._formDataInitial}
         formErrors.value = {..._formErrorsInitial}
         formTeams.value = []
+        teamInfo.value = null
     }
     
 
@@ -206,10 +213,12 @@ export const dispatchStore = defineStore('dispatch', () => {
         flags,
         emergencies,
         activeTeams,
+        teamInfo,
         resetFormData,
         init,
         initForm,
         onSubmit,
+        setTeamInfo,
     }
 })
 
