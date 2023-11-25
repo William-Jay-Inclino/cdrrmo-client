@@ -30,6 +30,7 @@ export const teamStore = defineStore('team', () => {
     // state
     const _teams = ref<ITeam[]>([])
     const _usersWithoutTeam = ref<IUser[]>([])
+    const _orphanTeamLeaders = ref<IUser[]>([])
 
     onMounted( async() => {
         console.log(_store + 'onMounted()')
@@ -76,12 +77,27 @@ export const teamStore = defineStore('team', () => {
         _usersWithoutTeam.value = users
     }
 
+    const setOrphanTeamLeaders = (users: IUser[]) => {
+        console.log(_store + 'setOrphanTeamLeaders()', users)
+        _orphanTeamLeaders.value = users
+    }
+
     // methods
 
     const init = async() => {
         console.log(_store + 'init()')
-        const items = await teamService.findAll()
-        setTeams(items)
+        setTeams(await teamService.findAll())
+    }
+
+    const initForm = async(id?: string) => {
+        setOrphanTeamLeaders(await userService.findOrphanTeamLeaders())
+
+        if(id){
+            const itemFound = await teamService.findOne(id)
+            if(itemFound){
+                setFormData({data: itemFound})
+            }
+        }
     }
 
     const initManageTeam = async() => {
@@ -90,13 +106,13 @@ export const teamStore = defineStore('team', () => {
         setUsersWithoutTeam(usersWithoutTeam)
     }
 
-    const initUpdateFormData = async(id: string) => {
-        console.log(_store + 'initUpdateFormData()', id)
-        const itemFound = await teamService.findOne(id)
-        if(itemFound){
-            setFormData({data: itemFound})
-        }
-    }
+    // const initUpdateFormData = async(id: string) => {
+    //     console.log(_store + 'initUpdateFormData()', id)
+    //     const itemFound = await teamService.findOne(id)
+    //     if(itemFound){
+    //         setFormData({data: itemFound})
+    //     }
+    // }
 
     const onSubmit = async(payload: {data: ICreateTeamDto}): Promise<ITeam | null> => {
         console.log(_store + 'onSubmit()', payload)
@@ -270,7 +286,7 @@ export const teamStore = defineStore('team', () => {
         onDelete,
         resetFormData,
         setFormData,
-        initUpdateFormData,
+        initForm,
         initManageTeam,
         userIsTeamLead,
         getTeamLeaderLabel,

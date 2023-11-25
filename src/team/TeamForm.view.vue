@@ -33,7 +33,7 @@
                                     <v-select :options="users" v-model="$team.formData.team_leader"></v-select>
                                     <small class="form-text text-muted">   
 
-                                       <i> Note: Only individuals who are not assigned to any team are displayed. </i>
+                                       <i> Note: Only team leaders who are not assigned to any team are displayed. </i>
 
                                     </small>
                                     <small class="form-text text-danger" v-if="$team.formErrors.teamLeader"> {{ errorMsg }} </small>
@@ -133,10 +133,12 @@ onMounted( async() => {
 
     if(query.id){
         // intialize update form / populate form 
-        await $team.initUpdateFormData(query.id as string)
+        await $team.initForm(query.id as string)
+    }else{
+        await $team.initForm()
     }
 
-    _users.value = await userService.findUsersWithoutTeam()
+    _users.value = await userService.findOrphanTeamLeaders()
 
 })
 
