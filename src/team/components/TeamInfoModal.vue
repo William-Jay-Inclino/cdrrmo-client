@@ -1,25 +1,26 @@
 <template>
 
-    <div class="modal fade" :id="id" tabindex="-1" role="dialog" :aria-labelledby="id"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
+    <div class="modal fade" id="teamInfoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header" >
-                    <h5 class="modal-title">Team Details</h5>
-                </div>
-                <div class="modal-body">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Team Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
                     <div class="row">
                         <div class="col">
-                            <!-- <TeamInfo :team-id="teamId"/> -->
+                            <TeamInfo v-if="team" :team="team"/>
                         </div>
                         <div class="col">
-                            <!-- <TeamMembers :team-id="teamId"/> -->
+                            <TeamMembers v-if="team" :team="team" :can-manage="canManage"/>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-dark float-end" type="button" data-dismiss="modal">Close</button>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <!-- <button v-if="canManage" type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
             </div>
         </div>
     </div>
@@ -28,12 +29,13 @@
 
 <script setup lang="ts">
 
-    // import TeamInfo from '@/components/TeamInfo.vue'
-    // import TeamMembers from '@/components/TeamMembers.vue'
+    import { ITeam } from '..';
+    import TeamInfo from '../components/TeamInfo.vue'
+    import TeamMembers from '../components/TeamMembers.vue'
 
     defineProps<{
-        id: string
-        teamId: string
+        team: ITeam | null
+        canManage: boolean
     }>()
 
 

@@ -30,9 +30,9 @@
                         <tr v-for="skill in team.team_leader.skills">
                             <td>
                                 {{ skill.TrainingSkill.name }}
-                                <button class="btn btn-light btn-sm">
+                                <!-- <button class="btn btn-light btn-sm">
                                     <i class="fas fa-fw fa-eye text-info"></i>
-                                </button>
+                                </button> -->
                             </td>
                         </tr>
                         <tr>

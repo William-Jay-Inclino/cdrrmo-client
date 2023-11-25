@@ -14,7 +14,10 @@
 
         <div class="row">
             <div class="col">
-                <button data-toggle="modal" :data-target="`#${addMemberModalId}`" class="btn btn-primary float-end">
+                <!-- <button type="button" data-toggle="modal" :data-target="`#${addMemberModalId}`" class="btn btn-primary float-end">
+                    Add Member
+                </button> -->
+                <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#addMemberModalId">
                     Add Member
                 </button>
             </div>
@@ -27,11 +30,11 @@
                 <TeamInfo v-if="team" :team="team"/>
             </div>
             <div class="col-6">
-                <TeamMembers v-if="team" :team="team" @on-remove-member="onRemoveMember"/>
+                <TeamMembers v-if="team" :team="team" @on-remove-member="onRemoveMember" :can-manage="true"/>
             </div>
         </div>
 
-        <AddMemberModal v-if="team" :id="addMemberModalId" :team="team" @add-member="onTeamMemberAdded"/>
+        <AddMemberModal :id="addMemberModalId" @add-member="onTeamMemberAdded"/>
     </div>
 
 </template>
@@ -72,6 +75,8 @@
             isActive: true,
         }
     ])
+
+    $team.initManageTeam()
 
     
     onMounted( async() => {

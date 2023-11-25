@@ -1,11 +1,11 @@
 <template>
 
-    <div class="modal fade" id="addMemberModalId" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" :id="id" tabindex="-1" role="dialog" :aria-labelledby="id"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Add Team Member</h5>
-                    <button @click="onCancel()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header" >
+                    <h5 class="modal-title">Add Team Member</h5>
                 </div>
                 <div class="modal-body">
                     <v-select :options="$team.usersWithoutTeam" v-model="member"></v-select>
@@ -35,8 +35,8 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button @click="onCancel()" class="btn btn-dark" type="button" data-bs-dismiss="modal">Cancel</button>
-                    <button @click="onSubmit()" class="btn btn-success" type="button">Submit</button>
+                    <button class="btn btn-dark" type="button" data-dismiss="modal">Cancel</button>
+                    <button @click="onSubmit()" class="btn btn-success" type="button" :data-dismiss="submitted ? 'modal' : ''" >Submit</button>
                 </div>
             </div>
         </div>
@@ -47,17 +47,19 @@
 <script setup lang="ts">
     import { computed, ref, watch } from 'vue';
     import { IUser } from '../../user';
-    import { teamStore } from '..';
+    import { ITeam, teamStore } from '..';
 
     const emit = defineEmits(['add-member'])
 
     defineProps<{
         id: string
+        team: ITeam
     }>()
 
     const $team = teamStore()
 
     const isMemberEmpty = ref(false)
+    const submitted = ref(false)
 
     const member = ref<IUser | null>(null)
     
@@ -73,6 +75,18 @@
         isMemberEmpty.value = false 
     })
 
+    // const isMemberExist = computed( (): boolean => {
+    //     if(!member.value) return false
+
+    //     const i = props.team.teamMembers.find(i => i.member_id === member.value?.id)
+
+    //     if(i){
+    //         return true
+    //     }
+
+    //     return false 
+    // })
+
     const onSubmit = () => {
         console.log('onSubmit()')
         isMemberEmpty.value = false 
@@ -86,11 +100,8 @@
 
         member.value = null
 
+        submitted.value = true
         emit('add-member', payload)
-    }
-
-    const onCancel = () => {
-        member.value = null
     }
 
 </script>

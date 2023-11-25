@@ -1,7 +1,7 @@
 
 import { defineStore } from 'pinia'
 import { ITeam, ITeamMember, TeamStatusEnum } from '.'
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { teamService } from '.';
 import { ICreateTeamDto } from './dto/create-team.dto';
 import { IUser, userService } from '../user';
@@ -20,7 +20,8 @@ export const teamStore = defineStore('team', () => {
 
     const _formErrorsInitial = {
         teamLeader: false,
-        name: false
+        name: false,
+        status: false,
     }
     
     const formData = ref({..._formDataInitial});
@@ -29,11 +30,7 @@ export const teamStore = defineStore('team', () => {
     // state
     const _teams = ref<ITeam[]>([])
     const _usersWithoutTeam = ref<IUser[]>([])
-
-    onMounted( async() => {
-        console.log(_store + 'onMounted()')
-        await init()
-    })
+    const _orphanTeamLeaders = ref<IUser[]>([])
 
     // getters 
     const teams = computed( () => _teams.value)
@@ -75,22 +72,33 @@ export const teamStore = defineStore('team', () => {
         _usersWithoutTeam.value = users
     }
 
+    const setOrphanTeamLeaders = (users: IUser[]) => {
+        console.log(_store + 'setOrphanTeamLeaders()', users)
+        _orphanTeamLeaders.value = users
+    }
+
     // methods
 
     const init = async() => {
-        const items = await teamService.findAll()
-        setTeams(items)
-
-        const usersWithoutTeam = await userService.findUsersWithoutTeam()
-        setUsersWithoutTeam(usersWithoutTeam)
+        console.log(_store + 'init()')
+        setTeams(await teamService.findAll())
     }
 
-    const initUpdateFormData = async(id: string) => {
-        console.log(_store + 'initUpdateFormData()', id)
-        const itemFound = await teamService.findOne(id)
-        if(itemFound){
-            setFormData({data: itemFound})
+    const initForm = async(id?: string) => {
+        setOrphanTeamLeaders(await userService.findOrphanTeamLeaders())
+
+        if(id){
+            const itemFound = await teamService.findOne(id)
+            if(itemFound){
+                setFormData({data: itemFound})
+            }
         }
+    }
+
+    const initManageTeam = async() => {
+        console.log(_store + 'initManageTeam()')
+        const usersWithoutTeam = await userService.findUsersWithoutTeam()
+        setUsersWithoutTeam(usersWithoutTeam)
     }
 
     const onSubmit = async(payload: {data: ICreateTeamDto}): Promise<ITeam | null> => {
@@ -98,6 +106,7 @@ export const teamStore = defineStore('team', () => {
 
         formErrors.value.name = false 
         formErrors.value.teamLeader = false 
+        formErrors.value.status = false 
 
 
         if(payload.data.name.trim() === ''){ 
@@ -106,6 +115,10 @@ export const teamStore = defineStore('team', () => {
 
         if(!payload.data.team_leader){ 
             formErrors.value.teamLeader = true 
+        }
+
+        if(payload.data.status !== TeamStatusEnum.Active && payload.data.status !== TeamStatusEnum.Inactive){
+            formErrors.value.status = true 
         }
 
         const hasError = Object.values(formErrors.value).includes(true);
@@ -260,7 +273,9 @@ export const teamStore = defineStore('team', () => {
         onDelete,
         resetFormData,
         setFormData,
-        initUpdateFormData,
+        init,
+        initForm,
+        initManageTeam,
         userIsTeamLead,
         getTeamLeaderLabel,
         getTeam,

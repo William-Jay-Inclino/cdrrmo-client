@@ -23,9 +23,9 @@
 
     // "types": ["@types/awesomplete"],
 
-    "paths": {
-      "@/*": ["./src/*"],
-    }
+    // "paths": {
+    //   "@/*": ["./src/*"],
+    // }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/modules/bart"],
   "references": [{ "path": "./tsconfig.node.json" }]

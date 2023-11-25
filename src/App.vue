@@ -47,15 +47,12 @@
 	import LogoutModal from './common/components/LogoutModal.vue'
 	import ScrollToTop from './common/components/ScrollToTop.vue'
 
-	// const test = async() => {
-	// 	try {
-	// 		const response = await config.api.get('/user');
-	// 		console.log({response})
-	// 	} catch (error) {
-	// 		console.error('Error fetching data:', error);
-	// 	}
-	// }
+	import { appStore } from './app';
 	
+	const $app = appStore()
+
+	console.log('$app', $app)
+
 </script>
 
 

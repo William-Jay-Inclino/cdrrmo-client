@@ -1,31 +1,5 @@
-// import { ISingleSelect } from "@/common/types/forms"
 
 import { UserTypeEnum } from "../user";
-
-// export const getEnumKey = (p: {enumVal: number, enumType: any}) :string => {
-//     let enumKey = Object.keys(p.enumType)[Object.values(p.enumType).indexOf(p.enumVal)]
-//     return enumKey
-// }
-
-
-// used in forms for single select
-// constant is an enum
-// export const constantToSingleSelect = (constant: any): ISingleSelect[] => {
-
-//     const items: ISingleSelect[] = []
-
-//     for(let item in constant){
-//         items.push({
-//             id: constant[item]['id'],
-//             text: constant[item]['text'],
-//             selected: false,
-//         })
-//     }
-
-//     items[0].selected = true
-
-//     return items
-// }
 
 
 export function isValidDate(dateString: any): boolean {
@@ -71,7 +45,6 @@ export function isValidPhoneNumber(phoneNumber: string) {
 }
 
 
-
 export const getAge = (birthDate: Date): number => {
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
@@ -99,6 +72,23 @@ export const isUserACDV = (type: UserTypeEnum): boolean => {
 }
 
 
+function padTo2Digits(num: number) {
+    return num.toString().padStart(2, '0');
+}
 
-
-
+export function formatDate(date: Date) {
+    return (
+        [
+            padTo2Digits(date.getMonth() + 1),
+            padTo2Digits(date.getDate()),
+            date.getFullYear() % 100,
+        ].join('-') +
+        ' ' +
+        [
+        padTo2Digits(date.getHours()),
+        padTo2Digits(date.getMinutes()),
+        padTo2Digits(date.getSeconds()),
+        ].join(':')
+    );
+}
+  

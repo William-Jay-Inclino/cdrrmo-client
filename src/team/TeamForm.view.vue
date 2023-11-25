@@ -18,8 +18,8 @@
                 <div class="row">
                     <div class="col">
                         <div class="card shadow mb-4">
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary"> {{ action + ' ' + moduleLabel }} </h6>
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-bg-primary">
+                                <h6 class="m-0 font-weight-bold"> {{ action + ' ' + moduleLabel }} </h6>
                             </div>
                 
                             <div class="card-body">
@@ -33,10 +33,40 @@
                                     <v-select :options="users" v-model="$team.formData.team_leader"></v-select>
                                     <small class="form-text text-muted">   
 
-                                       <i> Note: Only individuals who are not assigned to any team are displayed. </i>
+                                       <i> Note: Only team leaders who are not assigned to any team are displayed. </i>
 
                                     </small>
                                     <small class="form-text text-danger" v-if="$team.formErrors.teamLeader"> {{ errorMsg }} </small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="d-grid gap-2">
+                                                <button
+                                                    :class="{'btn-primary': $team.formData.status === TeamStatusEnum.Active, 'btn-outline-primary': $team.formData.status !== TeamStatusEnum.Active}"
+                                                    class="btn"
+                                                    type="button"
+                                                    @click="$team.formData.status = TeamStatusEnum.Active"
+                                                >
+                                                    {{ CONST_TeamStatus[TeamStatusEnum.Active].text }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="d-grid gap-2">
+                                                <button
+                                                    :class="{'btn-primary': $team.formData.status === TeamStatusEnum.Inactive, 'btn-outline-primary': $team.formData.status !== TeamStatusEnum.Inactive}"
+                                                    class="btn"
+                                                    type="button"
+                                                    @click="$team.formData.status = TeamStatusEnum.Inactive"
+                                                >
+                                                {{ CONST_TeamStatus[TeamStatusEnum.Inactive].text }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <small class="form-text text-danger" v-if="$team.formErrors.status"> {{ errorMsg }} </small>
                                 </div>
                             </div>
 
@@ -71,10 +101,10 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import Breadcrumbs from '../common/components/Breadcrumbs.vue'
 import { useToast } from "vue-toastification";
-import { teamStore } from '.'
+import { TeamStatusEnum, teamStore } from '.'
 import { routeNames } from '../common';
 import { IUser, userService } from '../user';
-
+import { CONST_TeamStatus } from '../common'
 
 const toast = useToast();
 const $team = teamStore()
@@ -103,10 +133,12 @@ onMounted( async() => {
 
     if(query.id){
         // intialize update form / populate form 
-        await $team.initUpdateFormData(query.id as string)
+        await $team.initForm(query.id as string)
+    }else{
+        await $team.initForm()
     }
 
-    _users.value = await userService.findUsersWithoutTeam()
+    _users.value = await userService.findOrphanTeamLeaders()
 
 })
 

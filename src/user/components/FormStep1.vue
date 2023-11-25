@@ -59,7 +59,7 @@
         </div>
         <div class="form-group">
             <label>Contact Number</label>
-            <div class="input-group mb-3">
+            <div class="input-group">
                 <span class="input-group-text" id="basic-addon1">+63</span>
                 <input
                   v-model="$user.formData.contact_no"

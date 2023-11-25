@@ -1,46 +1,114 @@
-import { DispatchStatusEnum, IDispatch } from "."
-import { faker } from '@faker-js/faker'
+import { config } from "../config";
+import { ICreateDispatchDto, IUpdateDispatchDto } from "./dto";
+import { IDispatch } from "./entities"
+
 class DispatchService{
 
-    getAllDispatchTeams() :IDispatch[]{
-        console.log('getAllDispatchTeams()')
-        // get from api TBA 
+    private endpoint = '/dispatch/'
+    private service = 'DispatchService: '
+
+    async findAll(): Promise<IDispatch[]>{
+        console.log(this.service + 'findAll()')
+		try {
+			const response = await config.api.get(this.endpoint);
+			console.log({response})
+            if(response.status === 200){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
         return []
-
     }
 
-    async getDispatchById(dispatch_id: number): Promise<IDispatch | null>{
-        console.log('getDispatchById()', dispatch_id)
-        const dispatch = {} as IDispatch
-        return dispatch
+    async findOne(id: string): Promise<IDispatch | null>{
+        console.log(this.service + 'findOne()', id)
+		try {
+			const response = await config.api.get(this.endpoint + id);
+			console.log({response})
+            if(response.status === 200){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return null
     }
 
-    async createDispatch(payload: IDispatch): Promise<IDispatch> {
-        console.log('createDispatch()', payload)
-        payload.dispatch_id = faker.string.uuid()
-        payload.time_dispatch = new Date()
-        
-        return payload
+    async create(payload: {data: ICreateDispatchDto[]}): Promise<IDispatch[] | null>{
+        console.log(this.service + 'create()', payload)
+
+		try {
+			const response = await config.api.post(this.endpoint, payload.data);
+			console.log({response})
+            if(response.status === 201){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return null 
     }
 
-    async updateDispatch(id: string, payload: IDispatch): Promise<IDispatch | null> {
-        console.log('id', id)
-        console.log('updateDispatch()', payload)
-        payload.time_dispatch = new Date()
-        return payload
+    async update(payload: {id: string, data: IUpdateDispatchDto}): Promise<IDispatch | null>{
+        console.log(this.service + 'update()', payload)
+
+		try {
+			const response = await config.api.patch(this.endpoint + payload.id, payload.data);
+			console.log({response})
+            if(response.status === 200){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return null 
     }
 
-    async deleteDispatch(dispatch_id: number): Promise<boolean>{
-        console.log('deleteDispatch()', dispatch_id)
-        return true
+    async updateTimeField(payload: {id: string, field: string}): Promise<IDispatch | null>{
+        console.log(this.service + 'update()', payload)
+
+		try {
+
+            const data = {
+                [payload.field]: ''
+            }
+
+			const response = await config.api.patch(this.endpoint + payload.id + '/update-time/' + payload.field, data);
+			console.log({response})
+            if(response.status === 200){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return null 
     }
 
-    async updateStatus(dispatch_id: string, status: DispatchStatusEnum): Promise<IDispatch | null> {
-        console.log('dispatch_id', dispatch_id)
-        console.log('status', status)
-        console.log('updateStatus')
-        const dispatch = {} as IDispatch
-        return dispatch
+    async remove(id: string): Promise<boolean> {
+        console.log(this.service + 'remove()', id)
+		try {
+			const response = await config.api.delete(this.endpoint + id);
+			console.log({response})
+            if(response.status === 204){
+                return true
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+        return false
+
     }
 
 }

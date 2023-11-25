@@ -16,6 +16,8 @@ export interface ITeam{
         text: string,
         color: string,
     },
+
+    label?: string
 }
 
 export interface ITeamMember{
