@@ -20,7 +20,8 @@ export const teamStore = defineStore('team', () => {
 
     const _formErrorsInitial = {
         teamLeader: false,
-        name: false
+        name: false,
+        status: false,
     }
     
     const formData = ref({..._formDataInitial});
@@ -102,6 +103,7 @@ export const teamStore = defineStore('team', () => {
 
         formErrors.value.name = false 
         formErrors.value.teamLeader = false 
+        formErrors.value.status = false 
 
 
         if(payload.data.name.trim() === ''){ 
@@ -110,6 +112,10 @@ export const teamStore = defineStore('team', () => {
 
         if(!payload.data.team_leader){ 
             formErrors.value.teamLeader = true 
+        }
+
+        if(payload.data.status !== TeamStatusEnum.Active && payload.data.status !== TeamStatusEnum.Inactive){
+            formErrors.value.status = true 
         }
 
         const hasError = Object.values(formErrors.value).includes(true);

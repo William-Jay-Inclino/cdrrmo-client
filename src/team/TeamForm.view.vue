@@ -38,6 +38,36 @@
                                     </small>
                                     <small class="form-text text-danger" v-if="$team.formErrors.teamLeader"> {{ errorMsg }} </small>
                                 </div>
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="d-grid gap-2">
+                                                <button
+                                                    :class="{'btn-primary': $team.formData.status === TeamStatusEnum.Active, 'btn-outline-primary': $team.formData.status !== TeamStatusEnum.Active}"
+                                                    class="btn"
+                                                    type="button"
+                                                    @click="$team.formData.status = TeamStatusEnum.Active"
+                                                >
+                                                    {{ CONST_TeamStatus[TeamStatusEnum.Active].text }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="d-grid gap-2">
+                                                <button
+                                                    :class="{'btn-primary': $team.formData.status === TeamStatusEnum.Inactive, 'btn-outline-primary': $team.formData.status !== TeamStatusEnum.Inactive}"
+                                                    class="btn"
+                                                    type="button"
+                                                    @click="$team.formData.status = TeamStatusEnum.Inactive"
+                                                >
+                                                {{ CONST_TeamStatus[TeamStatusEnum.Inactive].text }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <small class="form-text text-danger" v-if="$team.formErrors.status"> {{ errorMsg }} </small>
+                                </div>
                             </div>
 
                         </div>
@@ -71,10 +101,10 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import Breadcrumbs from '../common/components/Breadcrumbs.vue'
 import { useToast } from "vue-toastification";
-import { teamStore } from '.'
+import { TeamStatusEnum, teamStore } from '.'
 import { routeNames } from '../common';
 import { IUser, userService } from '../user';
-
+import { CONST_TeamStatus } from '../common'
 
 const toast = useToast();
 const $team = teamStore()

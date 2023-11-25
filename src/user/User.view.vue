@@ -26,12 +26,12 @@
                                         <th>Address</th>
                                         <th>Age</th>
                                         <th>Contact #</th>
-                                        <th>Blood Type</th>
+                                        <!-- <th>Blood Type</th> -->
                                         <th class="text-center">Gender</th>
                                         <th>Userlevel</th>
                                         <th>Type</th>
                                         <th>Subtype</th>
-                                        <th>Sub-Subtype</th>
+                                        <!-- <th>Sub-Subtype</th> -->
                                         <th class="text-center">Status</th>
                                         <!-- <th class="text-center">Dispatch Status</th> -->
                                         <th class="text-center">
@@ -45,7 +45,7 @@
                                         <td> {{ user.address }} </td>
                                         <td> {{ user.age }} </td>
                                         <td> {{ user.contact_no }} </td>
-                                        <td> {{ user.blood_type }} </td>
+                                        <!-- <td> {{ user.blood_type }} </td> -->
                                         <td class="text-center">
                                             <i class="fas fa-fw" :class="{[`${user.genderObj?.icon}`]: true}" :style="{color: user.genderObj?.color}">
 
@@ -57,10 +57,10 @@
                                         <td v-if="user.Na"> {{ user.Na.name }} </td>
                                         <td v-else> {{ user.userSubTypeObj?.text }} </td>
 
-                                        <td v-if="user.Bart"> {{ user.Bart.name }} </td>
+                                        <!-- <td v-if="user.Bart"> {{ user.Bart.name }} </td>
                                         <td v-else-if="user.Cso"> {{ user.Cso.name }} </td>
                                         <td v-else-if="user.Po"> {{ user.Po.name }} </td>
-                                        <td v-else></td>
+                                        <td v-else></td> -->
                                         <td class="text-center"> 
                                             <span :class="{[`text-bg-${user.statusObj?.color}`]: true}" class="badge rounded-pill text-white"> 
                                                 {{ user.statusObj?.text }} 
@@ -72,34 +72,15 @@
                                             </span> 
                                         </td> -->
                                         <td class="text-center">
-                                            <div class="dropdown no-arrow">
-                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-500"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                                    aria-labelledby="dropdownMenuLink">
-                                                    <a @click="onClickUpdate(user)" class="dropdown-item" href="javascript:void(0)">
-                                                        <i class="fas fa-fw fa-pencil-alt text-primary"></i>
-                                                        <span class="ml-2">Update Info</span>
-                                                    </a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item" href="#">
-                                                        <i class="fas fa-fw fa-eye text-info"></i>
-                                                        <span class="ml-2">See Profile</span>
-                                                    </a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a @click="onClickResetPw(user)" data-toggle="modal" :data-target="`#${resetModalId}`" class="dropdown-item" href="javascript:void(0)">
-                                                        <i class="fas fa-fw fa-lock text-warning"></i>
-                                                        <span class="ml-2">Reset Password</span>
-                                                    </a>
-                                                    <!-- <div class="dropdown-divider"></div> -->
-                                                    <!-- <a class="dropdown-item" href="#">
-                                                        <i class="fas fa-fw fa-archive text-danger"></i>
-                                                        <span class="ml-2">Archive</span>
-                                                    </a> -->
-                                                </div>
-                                            </div>
+                                            <button @click="onClickUpdate(user)" class="btn btn-light btn-sm">
+                                                <i class="fas fa-fw fa-pencil-alt"></i>
+                                            </button>
+                                            <button class="btn btn-light btn-sm">
+                                                <i class="fas fa-fw fa-trash text-danger"></i>
+                                            </button>
+                                            <button @click="onClickResetPw(user)" class="btn btn-light btn-sm">
+                                                <i class="fas fa-fw fa-lock text-warning"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>

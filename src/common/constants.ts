@@ -68,6 +68,11 @@ export const CONST_TeamStatus = {
         text: 'Dispatched',
         color: 'primary'
     },
+    [TeamStatusEnum.Inactive]: {
+        id: TeamStatusEnum.Inactive,
+        text: 'Inactive',
+        color: 'danger'
+    },
 }
 
 export const CONST_DispatchStatus = {
