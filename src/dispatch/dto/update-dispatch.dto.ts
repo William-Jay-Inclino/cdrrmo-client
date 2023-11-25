@@ -14,6 +14,9 @@ export interface IUpdateDispatchDto {
     status?: DispatchStatusEnum;
     time_of_call?: string;
 
+    is_cancelled?: boolean
+    is_completed?: boolean
+
     time_proceeding_scene?: string;
     time_arrival_scene?: string;
     time_proceeding_hospital?: string;

@@ -23,6 +23,9 @@ export interface IDispatch{
     time_arrival_base: Date | null 
     remarks: string 
     status: DispatchStatusEnum 
+    
+    is_cancelled: boolean
+    is_completed: boolean
 
     dispatcher: IUser
     emergency: IEmergency

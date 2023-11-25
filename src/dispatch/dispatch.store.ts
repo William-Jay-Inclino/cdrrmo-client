@@ -42,7 +42,11 @@ export const dispatchStore = defineStore('dispatch', () => {
     }
 
     const _flagsInitial = {
-        expand: true 
+        expand: true,
+        showComplete: true,
+        queue: true,
+        ongoing: true,
+        returned: true,
     }
 
     const $app = appStore()
@@ -82,7 +86,18 @@ export const dispatchStore = defineStore('dispatch', () => {
 
     // getters 
     
-    const dispatchedTeams = computed( () => _dispatchedTeams.value)
+    const dispatchedTeams = computed( () => {
+
+        // let items: IDispatch[] = []
+
+        // if(flags.value.queue){
+        //     items = [...items, ..._dispatchedTeams.value.filter(i => i.status === DispatchStatusEnum.Queue)]
+        // }
+
+        // return items
+
+        return _dispatchedTeams.value
+    })
     const emergencies = computed( () => _emergencies.value)
     const activeTeams = computed( () => {
         return _activeTeams.value.map(i => {

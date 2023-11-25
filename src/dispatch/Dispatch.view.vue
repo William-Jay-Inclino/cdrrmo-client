@@ -21,19 +21,21 @@
 
         <div class="row pt-3">
             <div class="col">
-                <div class="form-check form-switch ml-4">
-                    <input style="cursor: pointer;" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="$dispatch.flags.expand">
-                    <label class="form-check-label" for="flexSwitchCheckChecked">
-                        Expand
-                    </label>
-                </div>
+                <Switch />
             </div>
         </div>
 
         <div class="row pt-3">
-            <div class="col-lg-4 col-md-6 col-sm-12" v-for="dispatchedTeam in $dispatch.dispatchedTeams">
-                <InfoCard :dispatched-team="dispatchedTeam" @set-time="setTime"/>
-            </div>
+            <template v-for="dispatchedTeam in $dispatch.dispatchedTeams">
+                <div class="col-lg-4 col-md-6 col-sm-12" v-if="$dispatch.flags.showComplete || !dispatchedTeam.is_completed">
+                    <InfoCard
+                        :dispatched-team="dispatchedTeam"
+                        @set-time="setTime"
+                        @set-complete="setComplete"
+                        @cancel-service="cancelService"
+                    />
+                </div>
+            </template>
         </div>
 
         <TeamInfoModal :team="$dispatch.teamInfo" :can-manage="false"/>
@@ -44,11 +46,12 @@
 
 <script setup lang="ts">
     import { useToast } from "vue-toastification";
-    import { dispatchStore } from '.';
+    import { IDispatch, dispatchStore } from '.';
     import Search from './components/Search.vue';
     import Filter from './components/Filter.vue';
     import InfoCard from './components/InfoCard.vue'
     import TeamInfoModal from '../team/components/TeamInfoModal.vue';
+    import Switch from './components/Switch.vue'
 
     const $dispatch = dispatchStore()
 
@@ -66,13 +69,13 @@
         'Time arrival at base': 'time_arrival_base',
     } as any
 
-    const setTime = async(payload: {id: string, field: any}) => {
+    const setTime = async(payload: {dispatchedTeam: IDispatch, field: any}) => {
 
         console.log('setTime()', payload)
 
         const field = fields[payload.field]
 
-        const dispatchedTeam = await $dispatch.onUpdateTimeField({id: payload.id,field})
+        const dispatchedTeam = await $dispatch.onUpdateTimeField({id: payload.dispatchedTeam.id,field})
 
         if(dispatchedTeam){
             toast.success(payload.field + ' successfully recorded!')
@@ -81,7 +84,45 @@
             toast.error('Failed to update ' + payload.field)
         }
 
-    } 
+    }
+    
+    const setComplete = async(payload: {dispatchedTeam: IDispatch}) => {
+
+        console.log('setComplete()', payload)
+
+        const data = {
+            is_completed: true
+        }
+
+        const dispatchedTeam = await $dispatch.onUpdate({id: payload.dispatchedTeam.id, data})
+
+        if(dispatchedTeam){
+            toast.success('Operation completed successfully!')
+
+        }else{
+            toast.error('Operation could not be completed!')
+        }
+
+    }
+
+    const cancelService = async(payload: {dispatchedTeam: IDispatch}) => {
+
+        console.log('cancelService()', payload)
+
+        const data = {
+            is_cancelled: true
+        }
+
+        const dispatchedTeam = await $dispatch.onUpdate({id: payload.dispatchedTeam.id, data})
+
+        if(dispatchedTeam){
+            toast.success('Operation cancelled successfully!')
+
+        }else{
+            toast.error('Operation could not be cancelled!')
+        }
+
+    }
 
 
 </script>
