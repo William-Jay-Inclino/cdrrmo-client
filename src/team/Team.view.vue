@@ -77,6 +77,8 @@ const toast = useToast();
 const $module = teamStore()
 const router = useRouter()
 
+$module.init()
+
 const onDelete = async(team: ITeam) => {
 
     Swal.fire({

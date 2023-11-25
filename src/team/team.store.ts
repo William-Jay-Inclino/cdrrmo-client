@@ -1,7 +1,7 @@
 
 import { defineStore } from 'pinia'
 import { ITeam, ITeamMember, TeamStatusEnum } from '.'
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { teamService } from '.';
 import { ICreateTeamDto } from './dto/create-team.dto';
 import { IUser, userService } from '../user';
@@ -31,11 +31,6 @@ export const teamStore = defineStore('team', () => {
     const _teams = ref<ITeam[]>([])
     const _usersWithoutTeam = ref<IUser[]>([])
     const _orphanTeamLeaders = ref<IUser[]>([])
-
-    onMounted( async() => {
-        console.log(_store + 'onMounted()')
-        await init()
-    })
 
     // getters 
     const teams = computed( () => _teams.value)
@@ -105,14 +100,6 @@ export const teamStore = defineStore('team', () => {
         const usersWithoutTeam = await userService.findUsersWithoutTeam()
         setUsersWithoutTeam(usersWithoutTeam)
     }
-
-    // const initUpdateFormData = async(id: string) => {
-    //     console.log(_store + 'initUpdateFormData()', id)
-    //     const itemFound = await teamService.findOne(id)
-    //     if(itemFound){
-    //         setFormData({data: itemFound})
-    //     }
-    // }
 
     const onSubmit = async(payload: {data: ICreateTeamDto}): Promise<ITeam | null> => {
         console.log(_store + 'onSubmit()', payload)
@@ -286,6 +273,7 @@ export const teamStore = defineStore('team', () => {
         onDelete,
         resetFormData,
         setFormData,
+        init,
         initForm,
         initManageTeam,
         userIsTeamLead,

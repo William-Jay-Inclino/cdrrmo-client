@@ -1,6 +1,6 @@
 
 import { defineStore } from 'pinia'
-import { DispatchStatusEnum, IDispatch, dispatchService } from '.'
+import { DispatchStatusEnum, IDispatch, SearchRefEnum, dispatchService } from '.'
 import { computed, ref } from 'vue';
 import { ICreateDispatchDto, IUpdateDispatchDto } from './dto';
 import { IEmergency, emergencyService } from '../emergency';
@@ -43,7 +43,7 @@ export const dispatchStore = defineStore('dispatch', () => {
 
     const _flagsInitial = {
         expand: true,
-        showComplete: true,
+        showComplete: false,
         queue: true,
         ongoing: true,
         returned: true,
@@ -53,16 +53,16 @@ export const dispatchStore = defineStore('dispatch', () => {
 
     // state
     const _dispatchedTeams = ref<IDispatch[]>([])
-    const formData = ref<ICreateDispatchDto>({..._formDataInitial})
-    const formErrors = ref({..._formErrorsInitial})
-    const formTeams = ref<ITeam[]>([])
-
-    const flags = ref({..._flagsInitial})
     const _emergencies = ref<IEmergency[]>([])
     const _activeTeams = ref<ITeam[]>([])
 
+    const formData = ref<ICreateDispatchDto>({..._formDataInitial})
+    const formErrors = ref({..._formErrorsInitial})
+    const formTeams = ref<ITeam[]>([])
+    const flags = ref({..._flagsInitial})
     const teamInfo = ref<ITeam | null>(null)
-
+    const searchQuery = ref('')
+    const searchReference = ref<SearchRefEnum>(SearchRefEnum.Team)
     // setters
 
     const setDispatchTeams = (dispatchedTeams: IDispatch[]) => {
@@ -88,15 +88,63 @@ export const dispatchStore = defineStore('dispatch', () => {
     
     const dispatchedTeams = computed( () => {
 
-        // let items: IDispatch[] = []
+        let items: IDispatch[] = []
 
-        // if(flags.value.queue){
-        //     items = [...items, ..._dispatchedTeams.value.filter(i => i.status === DispatchStatusEnum.Queue)]
-        // }
+        if(flags.value.queue){
+            items = [...items, ..._dispatchedTeams.value.filter(i => i.status === DispatchStatusEnum.Queue)]
+        }
 
-        // return items
+        if(flags.value.ongoing){
+            items = [...items, ..._dispatchedTeams.value.filter(i => {
+                if(
+                    i.status === DispatchStatusEnum.ProceedingScene || 
+                    i.status === DispatchStatusEnum.ArrivedScene ||
+                    i.status === DispatchStatusEnum.ProceedingHospital ||
+                    i.status === DispatchStatusEnum.ArrivedHospital ||
+                    i.status === DispatchStatusEnum.ProceedingBase
+                ){
+                    return i
+                }
+            })]
+        }
 
-        return _dispatchedTeams.value
+        if(flags.value.returned){
+            items = [...items, ..._dispatchedTeams.value.filter(i => i.status === DispatchStatusEnum.ArrivedBase)]
+        }
+
+        items = items.map(i => {
+            i.isExpanded = flags.value.expand
+            return i
+        })
+
+        if(searchReference.value === SearchRefEnum.Team){
+            items = items.filter(i => i.team.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
+        }
+        else if(searchReference.value === SearchRefEnum.Dispatcher){
+            items = items.filter(i => (i.dispatcher.first_name + ' ' + i.dispatcher.last_name).toLowerCase().includes(searchQuery.value.toLowerCase()))
+        }
+        else if(searchReference.value === SearchRefEnum.Emergency){
+            items = items.filter(i => i.emergency.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
+        }
+
+        else if(searchReference.value === SearchRefEnum.Location){
+            items = items.filter(i => i.location.toLowerCase().includes(searchQuery.value.toLowerCase()))
+        }
+
+        else if(searchReference.value === SearchRefEnum.CallerName){
+            items = items.filter(i => i.caller_name.toLowerCase().includes(searchQuery.value.toLowerCase()))
+        }
+
+        else if(searchReference.value === SearchRefEnum.CallerNumber){
+            items = items.filter(i => i.caller_number.toLowerCase().includes(searchQuery.value.toLowerCase()))
+        }
+
+        else if(searchReference.value === SearchRefEnum.Description){
+            items = items.filter(i => i.description.toLowerCase().includes(searchQuery.value.toLowerCase()))
+        }
+
+
+        return items
     })
     const emergencies = computed( () => _emergencies.value)
     const activeTeams = computed( () => {
@@ -267,6 +315,8 @@ export const dispatchStore = defineStore('dispatch', () => {
         emergencies,
         activeTeams,
         teamInfo,
+        searchQuery,
+        searchReference,
         resetFormData,
         init,
         initForm,

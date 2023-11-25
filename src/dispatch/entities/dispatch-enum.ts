@@ -7,3 +7,14 @@ export enum DispatchStatusEnum{
     ProceedingBase = 6,
     ArrivedBase = 7,
 }
+
+
+export enum SearchRefEnum{
+    Team = 'Team',
+    Dispatcher = 'Dispatcher',
+    Emergency = 'Emergency type',
+    Location = 'Location',
+    CallerName = 'Caller name',
+    CallerNumber = 'Caller number',
+    Description = 'Description',
+}

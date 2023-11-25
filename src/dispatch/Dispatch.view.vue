@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
     import { useToast } from "vue-toastification";
-    import { IDispatch, dispatchStore } from '.';
+    import { DispatchStatusEnum, IDispatch, dispatchStore } from '.';
     import Search from './components/Search.vue';
     import Filter from './components/Filter.vue';
     import InfoCard from './components/InfoCard.vue'
@@ -109,8 +109,11 @@
 
         console.log('cancelService()', payload)
 
+        // if status is queue then set status to be ArriveBase else remain
+
         const data = {
-            is_cancelled: true
+            is_cancelled: true,
+            status: (payload.dispatchedTeam.status === DispatchStatusEnum.Queue) ? DispatchStatusEnum.ArrivedBase : payload.dispatchedTeam.status
         }
 
         const dispatchedTeam = await $dispatch.onUpdate({id: payload.dispatchedTeam.id, data})

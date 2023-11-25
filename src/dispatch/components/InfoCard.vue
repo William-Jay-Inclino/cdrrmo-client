@@ -11,9 +11,9 @@
                 </span> 
             </h6>
 
-            <a href="javascript:void(0)" class="text-decoration-none">
+            <a href="javascript:void(0)" class="text-decoration-none" @click="dispatchedTeam.isExpanded = !dispatchedTeam.isExpanded">
                 <i 
-                    :class="{'fa-angle-down': !isExpanded, 'fa-angle-up': isExpanded}"
+                    :class="{'fa-angle-down': !dispatchedTeam.isExpanded, 'fa-angle-up': dispatchedTeam.isExpanded}"
                     class="fas fa-fw fa-2x pointer text-light"
                 ></i>
             </a>
@@ -21,10 +21,10 @@
         </div>
 
         <div class="card-body">
-            <div class="table-responsive" :class="{'tbl-expanded': isExpanded}">
+            <div class="table-responsive" :class="{'tbl-expanded': dispatchedTeam.isExpanded}">
                 <table class="table">
                     <thead>
-                        <tr>
+                        <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Team">
                             <th>Team dispatched</th>
                             <td>
                                 {{ dispatchedTeam.team.name }}
@@ -33,109 +33,156 @@
                                 </button>
                             </td>
                         </tr>
-                        <tr v-show="isExpanded">
+                        <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Dispatcher">
                             <th>Dispatcher</th>
                             <td> {{ dispatchedTeam.dispatcher.first_name + ' ' + dispatchedTeam.dispatcher.last_name }} </td>
                         </tr>
-                        <tr v-show="isExpanded">
+                        <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Location">
                             <th>Location</th>
                             <td> {{ dispatchedTeam.location }} </td>
                         </tr>
-                        <tr v-show="isExpanded">
+                        <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Emergency">
                             <th>Emergency type</th>
                             <td> {{ dispatchedTeam.emergency.name }} </td>
                         </tr>
-                        <tr v-show="isExpanded">
+                        <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Description">
                             <th>Description</th>
                             <td> {{ dispatchedTeam.description }} </td>
                         </tr>
-                        <tr v-show="isExpanded">
+                        <tr v-show="dispatchedTeam.isExpanded">
                             <th>Hazard</th>
                             <td> {{ dispatchedTeam.hazard }} </td>
                         </tr>
-                        <tr v-show="isExpanded">
+                        <tr v-show="dispatchedTeam.isExpanded">
                             <th>Number of people involved</th>
                             <td> {{ dispatchedTeam.num_people_involved }} </td>
                         </tr>
-                        <tr v-show="isExpanded">
+                        <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.CallerName">
                             <th>Caller name</th>
                             <td> {{ dispatchedTeam.caller_name }} </td>
                         </tr>
-                        <tr v-show="isExpanded">
+                        <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.CallerNumber">
                             <th>Caller number</th>
                             <td> {{ dispatchedTeam.caller_number }} </td>
                         </tr>
-                        <tr v-show="isExpanded">
+                        <tr v-show="dispatchedTeam.isExpanded">
                             <th>Time of Call</th>
                             <td> {{ formatDate(new Date(dispatchedTeam.time_of_call)) }} </td>
                         </tr>
-                        <tr v-show="isExpanded">
+                        <tr v-show="dispatchedTeam.isExpanded">
                             <th>Time proceeding to scene</th>
-                            <td v-if="dispatchedTeam.time_proceeding_scene"> {{ formatDate(new Date(dispatchedTeam.time_proceeding_scene)) }} </td>
-                            <td v-else-if="dispatchedTeam.is_cancelled" class="text-danger"> {{ cancelledLabel }} </td>
-                            <td v-else>
-                                <button @click="setTime(dispatchedTeam, 'Time proceeding to scene')" class="btn btn-outline-info btn-sm">
-                                    <i class="fas fa-fw fa-clock"></i>
-                                    <span> Set Time </span>
-                                </button>
+                            <td>
+                                <template v-if="dispatchedTeam.time_proceeding_scene"> 
+                                    {{ formatDate(new Date(dispatchedTeam.time_proceeding_scene)) }} 
+                                </template>
+                                <template v-else-if="dispatchedTeam.is_cancelled">
+                                    <span class="text-danger">
+                                        {{ cancelledLabel }} 
+                                    </span>
+                                </template>
+                                <template v-else>
+                                    <button @click="setTime(dispatchedTeam, 'Time proceeding to scene')" class="btn btn-outline-info btn-sm">
+                                        <i class="fas fa-fw fa-clock"></i>
+                                        <span> Set Time </span>
+                                    </button>
+                                </template>
+
                             </td>
                         </tr>
-                        <tr v-show="isExpanded">
+                        <tr v-show="dispatchedTeam.isExpanded">
                             <th>Time arrival at scene</th>
-                            <td v-if="dispatchedTeam.time_arrival_scene"> {{ formatDate(new Date(dispatchedTeam.time_arrival_scene)) }} </td>
-                            <td v-else-if="dispatchedTeam.is_cancelled" class="text-danger"> {{ cancelledLabel }} </td>
-                            <td v-else>
-                                <button v-if="dispatchedTeam.time_proceeding_scene" @click="setTime(dispatchedTeam, 'Time arrival at scene')" class="btn btn-outline-info btn-sm">
-                                    <i class="fas fa-fw fa-clock"></i>
-                                    <span> Set Time </span>
-                                </button>
+                            <td>
+                                <template v-if="dispatchedTeam.time_arrival_scene"> 
+                                    {{ formatDate(new Date(dispatchedTeam.time_arrival_scene)) }} 
+                                </template>
+                                <template v-else-if="dispatchedTeam.is_cancelled" class="text-danger"> 
+                                    <span class="text-danger">
+                                        {{ cancelledLabel }} 
+                                    </span> 
+                                </template>
+                                <template v-else>
+                                    <button v-if="dispatchedTeam.time_proceeding_scene" @click="setTime(dispatchedTeam, 'Time arrival at scene')" class="btn btn-outline-info btn-sm">
+                                        <i class="fas fa-fw fa-clock"></i>
+                                        <span> Set Time </span>
+                                    </button>
+                                </template>
+
                             </td>
                         </tr>
-                        <tr v-show="isExpanded">
+                        <tr v-show="dispatchedTeam.isExpanded">
                             <th>Time proceeding to hospital</th>
-                            <td v-if="dispatchedTeam.time_proceeding_hospital"> {{ formatDate(new Date(dispatchedTeam.time_proceeding_hospital)) }} </td>
-                            <td v-else-if="dispatchedTeam.is_cancelled" class="text-danger"> {{ cancelledLabel }} </td>
-                            <td v-else>
-                                <button v-if="dispatchedTeam.time_arrival_scene && !(dispatchedTeam.time_proceeding_base || dispatchedTeam.time_arrival_base)" @click="setTime(dispatchedTeam, 'Time proceeding to hospital')" class="btn btn-outline-info btn-sm">
-                                    <i class="fas fa-fw fa-clock"></i>
-                                    <span> Set Time </span>
-                                </button>
+                            <td>
+                                <template v-if="dispatchedTeam.time_proceeding_hospital"> 
+                                    {{ formatDate(new Date(dispatchedTeam.time_proceeding_hospital)) }} 
+                                </template>
+                                <template v-else-if="dispatchedTeam.is_cancelled" class="text-danger"> 
+                                    <span class="text-danger">
+                                        {{ cancelledLabel }} 
+                                    </span>
+                                </template>
+                                <template v-else>
+                                    <button v-if="dispatchedTeam.time_arrival_scene && !(dispatchedTeam.time_proceeding_base || dispatchedTeam.time_arrival_base)" @click="setTime(dispatchedTeam, 'Time proceeding to hospital')" class="btn btn-outline-info btn-sm">
+                                        <i class="fas fa-fw fa-clock"></i>
+                                        <span> Set Time </span>
+                                    </button>
+                                </template>
+
                             </td>
                         </tr>
-                        <tr v-show="isExpanded">
+                        <tr v-show="dispatchedTeam.isExpanded">
                             <th>Time arrival at hospital</th>
-                            <td v-if="dispatchedTeam.time_arrival_hospital"> {{ formatDate(new Date(dispatchedTeam.time_arrival_hospital)) }} </td>
-                            <td v-else-if="dispatchedTeam.is_cancelled" class="text-danger"> {{ cancelledLabel }} </td>
-                            <td v-else>
-                                <button v-if="dispatchedTeam.time_proceeding_hospital" @click="setTime(dispatchedTeam, 'Time arrival at hospital')" class="btn btn-outline-info btn-sm">
-                                    <i class="fas fa-fw fa-clock"></i>
-                                    <span> Set Time </span>
-                                </button>
+                            <td>
+                                <template v-if="dispatchedTeam.time_arrival_hospital"> 
+                                    {{ formatDate(new Date(dispatchedTeam.time_arrival_hospital)) }} 
+                                </template>
+                                <template v-else-if="dispatchedTeam.is_cancelled" class="text-danger"> 
+                                    <span class="text-danger">
+                                        {{ cancelledLabel }} 
+                                    </span> 
+                                </template>
+                                <template v-else>
+                                    <button v-if="dispatchedTeam.time_proceeding_hospital" @click="setTime(dispatchedTeam, 'Time arrival at hospital')" class="btn btn-outline-info btn-sm">
+                                        <i class="fas fa-fw fa-clock"></i>
+                                        <span> Set Time </span>
+                                    </button>
+                                </template>
                             </td>
                         </tr>
-                        <tr v-show="isExpanded">
+                        <tr v-show="dispatchedTeam.isExpanded">
                             <th>Time proceeding to base</th>
-                            <td v-if="dispatchedTeam.time_proceeding_base"> {{ formatDate(new Date(dispatchedTeam.time_proceeding_base)) }} </td>
-                            <td v-else-if="dispatchedTeam.is_cancelled" class="text-danger"> {{ cancelledLabel }} </td>
-                            <td v-else>
-                                <button v-if="dispatchedTeam.time_arrival_hospital" @click="setTime(dispatchedTeam, 'Time proceeding to base')" class="btn btn-outline-info btn-sm">
-                                    <i class="fas fa-fw fa-clock"></i>
-                                    <span> Set Time </span>
-                                </button>
+                            <td>
+                                <template v-if="dispatchedTeam.time_proceeding_base">
+                                    {{ formatDate(new Date(dispatchedTeam.time_proceeding_base)) }}
+                                </template>
+                                <template v-else-if="(dispatchedTeam.is_cancelled && dispatchedTeam.time_proceeding_scene) || dispatchedTeam.time_arrival_hospital">
+                                    <button @click="setTime(dispatchedTeam, 'Time proceeding to base')" class="btn btn-outline-info btn-sm">
+                                        <i class="fas fa-fw fa-clock"></i>
+                                        <span> Set Time </span>
+                                    </button>
+                                </template>
+                                <template v-else-if="dispatchedTeam.is_cancelled">
+                                    <span class="text-danger">{{ cancelledLabel }}</span>
+                                </template>
                             </td>
                         </tr>
-                        <tr v-show="isExpanded">
+                        <tr v-show="dispatchedTeam.isExpanded">
                             <th>Time arrival at base</th>
-                            <td v-if="dispatchedTeam.time_arrival_base"> {{ formatDate(new Date(dispatchedTeam.time_arrival_base)) }} </td>
-                            <td v-else-if="dispatchedTeam.is_cancelled" class="text-danger"> {{ cancelledLabel }} </td>
-                            <td v-else>
-                                <button v-if="dispatchedTeam.time_proceeding_base" @click="setTime(dispatchedTeam, 'Time arrival at base')" class="btn btn-outline-info btn-sm">
-                                    <i class="fas fa-fw fa-clock"></i>
-                                    <span> Set Time </span>
-                                </button>
+                            <td>
+                                <template v-if="dispatchedTeam.time_arrival_base">
+                                    {{ formatDate(new Date(dispatchedTeam.time_arrival_base)) }}
+                                </template>
+                                <template v-else-if="(dispatchedTeam.is_cancelled && dispatchedTeam.time_proceeding_base) || dispatchedTeam.time_proceeding_base">
+                                    <button @click="setTime(dispatchedTeam, 'Time arrival at base')" class="btn btn-outline-info btn-sm">
+                                        <i class="fas fa-fw fa-clock"></i>
+                                        <span> Set Time </span>
+                                    </button>
+                                </template>
+                                <template v-else-if="dispatchedTeam.is_cancelled && !dispatchedTeam.time_proceeding_scene">
+                                    <span class="text-danger">{{ cancelledLabel }}</span>
+                                </template>
                             </td>
                         </tr>
-                        <tr v-show="isExpanded">
+                        <tr v-show="dispatchedTeam.isExpanded">
                             <th>Remarks</th>
                             <td> {{ dispatchedTeam.remarks }} </td>
                         </tr>
@@ -151,12 +198,17 @@
                 </div>
             </div>
 
-            <div v-else-if="!dispatchedTeam.time_arrival_base && !dispatchedTeam.is_cancelled" class="row">
+            <div v-else-if="!dispatchedTeam.time_arrival_base && (!dispatchedTeam.is_cancelled || dispatchedTeam.is_cancelled && dispatchedTeam.time_proceeding_scene)" class="row">
                 <div class="col text-center">
                     <button class="btn btn-primary">Reassign Dispatcher</button>
                 </div>
-                <div class="col text-center" v-if="dispatchedTeam.status === DispatchStatusEnum.Queue || dispatchedTeam.status === DispatchStatusEnum.ProceedingScene">
-                    <button @click="cancelService(dispatchedTeam)" class="btn btn-danger">Cancel Service</button>
+                <div 
+                    class="col text-center" 
+                    v-if="dispatchedTeam.status === DispatchStatusEnum.Queue || 
+                        dispatchedTeam.status === DispatchStatusEnum.ProceedingScene &&
+                        !dispatchedTeam.is_cancelled
+                    ">
+                        <button @click="cancelService(dispatchedTeam)" class="btn btn-danger">Cancel Service</button>
                 </div>
             </div>
             <div v-else class="row">
@@ -176,11 +228,10 @@
 
 <script setup lang="ts">
 
-import { DispatchStatusEnum, IDispatch } from '..';
+import { DispatchStatusEnum, IDispatch, SearchRefEnum } from '..';
 import { CONST_DispatchStatus, formatDate } from '../../common';
 import { dispatchStore } from '..';
-import { computed, ref } from 'vue';
-
+import { ref } from 'vue';
 import Swal from 'sweetalert2'
 
 defineProps<{
@@ -192,16 +243,9 @@ const $dispatch = dispatchStore()
 
 const cancelledLabel = ref('Service Cancelled')
 
-
-const isExpanded = computed( () => $dispatch.flags.expand)
-
 const cardHeaderBg = (dispatchedTeam: IDispatch) => {
 
-    if(
-        dispatchedTeam.status === DispatchStatusEnum.ArrivedBase || 
-        dispatchedTeam.is_cancelled || 
-        dispatchedTeam.is_completed
-    ){
+    if(dispatchedTeam.status === DispatchStatusEnum.ArrivedBase || dispatchedTeam.is_completed){
         return {'text-bg-success': true}
     }
 

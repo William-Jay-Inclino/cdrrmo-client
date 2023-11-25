@@ -37,4 +37,6 @@ export interface IDispatch{
         text: string,
         color: string,
     },
+
+    isExpanded?: boolean
 }
