@@ -40,7 +40,7 @@
         </div>
 
         <TeamInfoModal :team="$dispatch.teamInfo" :can-manage="false"/>
-        <ReassignModal :dispatcher="dispatcher" @reassign-dispatcher="reassignDispatcher"/>
+        <ReassignModal :dispatched-team="dispatchedTeamSelected" @reassign-dispatcher="reassignDispatcher"/>
   </div>
 
 </template>
@@ -60,7 +60,7 @@
 
     const $dispatch = dispatchStore()
 
-    const dispatcher = ref<IUser | null>(null)
+    const dispatchedTeamSelected = ref<IDispatch | null>(null)
 
     $dispatch.init()
 
@@ -82,7 +82,7 @@
 
         const field = fields[payload.field]
 
-        const dispatchedTeam = await $dispatch.onUpdateTimeField({id: payload.dispatchedTeam.id,field})
+        const dispatchedTeam = await $dispatch.onUpdateTimeField({id: payload.dispatchedTeam.id,field, dispatcher_id: payload.dispatchedTeam.dispatcher_id})
 
         if(dispatchedTeam){
             toast.success(payload.field + ' successfully recorded!')
@@ -136,11 +136,25 @@
 
     const onReassign = async(payload: {dispatchedTeam: IDispatch}) => {
         console.log('reassignDispatcher()', payload)
-        dispatcher.value = payload.dispatchedTeam.dispatcher
+        dispatchedTeamSelected.value = payload.dispatchedTeam
     }
 
-    const reassignDispatcher = async(payload: {dispatcher: IUser}) => {
+    const reassignDispatcher = async(payload: {dispatchedTeam: IDispatch, dispatcher: IUser}) => {
         console.log('reassignDispatcher()', payload)
+
+        const data = {
+            dispatcher_id: payload.dispatcher.id
+        }
+
+        const dispatchedTeam = await $dispatch.onUpdate({id: payload.dispatchedTeam.id, data})
+
+        if(dispatchedTeam){
+            dispatchedTeamSelected.value = null
+            toast.success(`Reassigned successfully to ${payload.dispatcher.first_name + ' ' + payload.dispatcher.last_name}!`)
+        }else{
+            toast.error('Reassigned failed!')
+        }
+        
     }
 
 

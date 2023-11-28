@@ -73,13 +73,13 @@ class DispatchService{
         return null 
     }
 
-    async updateTimeField(payload: {id: string, field: string}): Promise<IDispatch | null>{
+    async updateTimeField(payload: {id: string, field: string, dispatcher_id: string}): Promise<IDispatch | null>{
         console.log(this.service + 'update()', payload)
 
 		try {
 
             const data = {
-                [payload.field]: ''
+                dispatcher_id: payload.dispatcher_id,
             }
 
 			const response = await config.api.patch(this.endpoint + payload.id + '/update-time/' + payload.field, data);

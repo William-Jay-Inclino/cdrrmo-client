@@ -7,6 +7,7 @@ import { IEmergency, emergencyService } from '../emergency';
 import { ITeam, TeamStatusEnum, teamService } from '../team';
 import { isValidPhoneNumber } from '../common';
 import { appStore } from '../app';
+import { IUser, userService } from '../user';
 
 export const dispatchStore = defineStore('dispatch', () => {
     
@@ -55,6 +56,7 @@ export const dispatchStore = defineStore('dispatch', () => {
     const _dispatchedTeams = ref<IDispatch[]>([])
     const _emergencies = ref<IEmergency[]>([])
     const _activeTeams = ref<ITeam[]>([])
+    const _dispatchers = ref<IUser[]>([])
 
     const formData = ref<ICreateDispatchDto>({..._formDataInitial})
     const formErrors = ref({..._formErrorsInitial})
@@ -68,6 +70,11 @@ export const dispatchStore = defineStore('dispatch', () => {
     const setDispatchTeams = (dispatchedTeams: IDispatch[]) => {
         console.log(_store + 'setDispatchTeams()', dispatchedTeams)
         _dispatchedTeams.value = dispatchedTeams
+    }
+
+    const setDispatchers = (dispatchers: IUser[]) => {
+        console.log(_store + 'setDispatchers()', dispatchers)
+        _dispatchers.value = dispatchers
     }
 
     const setEmergencies = (emergencies: IEmergency[]) => {
@@ -153,11 +160,18 @@ export const dispatchStore = defineStore('dispatch', () => {
             return i
         })
     })
+    const dispatchers = computed( () => {
+        return _dispatchers.value.map(i => {
+            i.label = i.first_name + ' ' + i.last_name 
+            return i
+        })
+    })
 
     // methods 
 
     const init = async() => {
         setDispatchTeams(await dispatchService.findAll())
+        setDispatchers(await userService.findDispatchers())
     }
 
     const initForm = async() => {
@@ -278,7 +292,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         return null
     }
 
-    const onUpdateTimeField = async(payload: {id: string, field: string}): Promise<IDispatch | null> => {
+    const onUpdateTimeField = async(payload: {id: string, field: string, dispatcher_id: string}): Promise<IDispatch | null> => {
         console.log(_store + 'onUpdateTimeField()', payload)
 
         const updated = await dispatchService.updateTimeField(payload)
@@ -308,6 +322,7 @@ export const dispatchStore = defineStore('dispatch', () => {
 
     return {
         dispatchedTeams,
+        dispatchers,
         formData,
         formErrors,
         formTeams,
