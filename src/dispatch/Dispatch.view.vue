@@ -33,12 +33,14 @@
                         @set-time="setTime"
                         @set-complete="setComplete"
                         @cancel-service="cancelService"
+                        @on-reassign="onReassign"
                     />
                 </div>
             </template>
         </div>
 
         <TeamInfoModal :team="$dispatch.teamInfo" :can-manage="false"/>
+        <ReassignModal :dispatcher="dispatcher" @reassign-dispatcher="reassignDispatcher"/>
   </div>
 
 </template>
@@ -52,8 +54,13 @@
     import InfoCard from './components/InfoCard.vue'
     import TeamInfoModal from '../team/components/TeamInfoModal.vue';
     import Switch from './components/Switch.vue'
+    import ReassignModal from "./components/ReassignModal.vue";
+    import { IUser } from "../user";
+    import { ref } from "vue";
 
     const $dispatch = dispatchStore()
+
+    const dispatcher = ref<IUser | null>(null)
 
     $dispatch.init()
 
@@ -125,6 +132,15 @@
             toast.error('Operation could not be cancelled!')
         }
 
+    }
+
+    const onReassign = async(payload: {dispatchedTeam: IDispatch}) => {
+        console.log('reassignDispatcher()', payload)
+        dispatcher.value = payload.dispatchedTeam.dispatcher
+    }
+
+    const reassignDispatcher = async(payload: {dispatcher: IUser}) => {
+        console.log('reassignDispatcher()', payload)
     }
 
 

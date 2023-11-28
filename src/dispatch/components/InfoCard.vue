@@ -63,7 +63,7 @@
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.CallerNumber">
                             <th>Caller number</th>
-                            <td> {{ dispatchedTeam.caller_number }} </td>
+                            <td> +639{{ dispatchedTeam.caller_number }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
                             <th>Time of Call</th>
@@ -200,7 +200,9 @@
 
             <div v-else-if="!dispatchedTeam.time_arrival_base && (!dispatchedTeam.is_cancelled || dispatchedTeam.is_cancelled && dispatchedTeam.time_proceeding_scene)" class="row">
                 <div class="col text-center">
-                    <button class="btn btn-primary">Reassign Dispatcher</button>
+                    <button @click="reassignDispatcher(dispatchedTeam)" class="btn btn-light text-info" data-bs-toggle="modal" data-bs-target="#reassignModalId">
+                        Reassign Dispatcher
+                    </button>
                 </div>
                 <div 
                     class="col text-center" 
@@ -208,7 +210,7 @@
                         dispatchedTeam.status === DispatchStatusEnum.ProceedingScene &&
                         !dispatchedTeam.is_cancelled
                     ">
-                        <button @click="cancelService(dispatchedTeam)" class="btn btn-danger">Cancel Service</button>
+                        <button @click="cancelService(dispatchedTeam)" class="btn btn-light text-danger">Cancel Service</button>
                 </div>
             </div>
             <div v-else class="row">
@@ -235,9 +237,10 @@ import { ref } from 'vue';
 import Swal from 'sweetalert2'
 
 defineProps<{
-        dispatchedTeam: IDispatch
+    dispatchedTeam: IDispatch
 }>()
-const emit = defineEmits(['set-time', 'set-complete', 'cancel-service'])
+
+const emit = defineEmits(['set-time', 'set-complete', 'cancel-service', 'on-reassign'])
 
 const $dispatch = dispatchStore()
 
@@ -316,6 +319,10 @@ const cancelService = (dispatchedTeam: IDispatch) => {
             emit('cancel-service', {dispatchedTeam})
         }
     });
+}
+
+const reassignDispatcher = (dispatchedTeam: IDispatch) => {
+    emit('on-reassign', {dispatchedTeam})
 }
 
 
