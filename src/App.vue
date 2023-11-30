@@ -1,38 +1,27 @@
 
 <template>
 
-	<div>
+	<div id="wrapper">
+		<Sidebar v-if="showSidebar"/>
 
-		<div id="wrapper">
-			<Sidebar v-if="!isLoginPage"/>
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div class="content">
+				<Navbar v-if="showNavbar"/>
 
-			<div id="content-wrapper" class="d-flex flex-column">
-				<div class="content">
-					<Navbar v-if="!isLoginPage"/>
-
-					<!-- Main content -->
-					<router-view/>
-
-				</div>
-
-				<!-- <Footer /> -->
+				<!-- Main content -->
+				<router-view/>
 
 			</div>
 
+			<!-- <Footer /> -->
+
 		</div>
-
-
-		<ScrollToTop v-if="!isLoginPage"/>
-		<LogoutModal v-if="!isLoginPage"/>
 
 	</div>
 
 
-
-
-	<!-- <div class="container mt-5">
-		<router-view/>
-	</div> -->
+	<ScrollToTop/>
+	<LogoutModal/>
 
 
 </template>
@@ -50,15 +39,17 @@
     import { useRoute } from 'vue-router';
 
 	import { appStore } from './app';
-	import { ref } from 'vue';
+	// import { routeNames } from './common';
+	import { computed } from 'vue';
 	
 	const $app = appStore()
-
 	$app.init()
 
-	const route = useRoute();
-	const isLoginPage = ref(route.path === '/')
 
-	console.log('isLoginPage', isLoginPage.value)
+	const route = useRoute();
+
+
+	const showSidebar = computed( () => route.path !== '/')
+	const showNavbar = computed( () => route.path !== '/')
 
 </script>

@@ -3,7 +3,7 @@
       <!-- Header -->
       <header class="bg-primary text-white text-center py-4">
         <h1 class="display-4">
-          ORMOC CITY CDRRMO INFORMATION MANAGEMENT SYSTEM
+          ORMOC CDRRMO INFORMATION MANAGEMENT SYSTEM
           <i class="fas fa-shield-alt fa-lg"></i>
         </h1>
       </header>
@@ -22,8 +22,8 @@
                 <form @submit.prevent="login">
                   <!-- Email input -->
                   <div class="mb-3">
-                    <label for="email" class="form-label text-white">Email address</label>
-                    <input type="email" class="form-control" id="email" v-model="email" required>
+                    <label for="username" class="form-label text-white">Username</label>
+                    <input type="text" class="form-control" id="username" v-model="email" required>
                   </div>
   
                   <!-- Password input -->
