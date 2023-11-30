@@ -23,7 +23,7 @@
                   <!-- Email input -->
                   <div class="mb-3">
                     <label for="username" class="form-label text-white">Username</label>
-                    <input type="text" class="form-control" id="username" v-model="email" required>
+                    <input type="text" class="form-control" id="username" v-model="username" required>
                   </div>
   
                   <!-- Password input -->
@@ -44,23 +44,37 @@
   </template>
   
   <script setup lang="ts">
-  import { ref } from 'vue';
+    import { ref } from 'vue';
+    import { appStore } from './app'; 
+    import { routeNames } from './common/constants'
+    import { useRouter } from 'vue-router';
+    import Swal from 'sweetalert2'
+
+    const router = useRouter()
+    const $app = appStore()
+    // Data
+    const username = ref('');
+    const password = ref('');
   
-  // Data
-  const email = ref('');
-  const password = ref('');
-  
-  // Login function (replace this with your actual login logic)
-  const login = () => {
-    // Your login logic here
-    console.log('Login clicked!');
-  };
+    const login = async() => {
+      const userloggedIn = await $app.login({username: username.value, password: password.value})
+
+      if(userloggedIn){
+        Swal.fire({
+          title: "Logged in successfully!",
+          text: "Welcome to Ormoc CDRRMO Information Management System!",
+          icon: "success"
+      });
+        router.push({name: routeNames.dashboard})
+      }
+    };
+
+
   </script>
   
   <style scoped>
   /* Header Styles */
   header {
-    background-color: #007bff;
     color: white;
     text-align: center;
     padding: 1rem;
