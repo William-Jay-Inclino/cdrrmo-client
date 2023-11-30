@@ -4,11 +4,11 @@
 	<div>
 
 		<div id="wrapper">
-			<Sidebar />
+			<Sidebar v-if="!isLoginPage"/>
 
 			<div id="content-wrapper" class="d-flex flex-column">
 				<div class="content">
-					<Navbar />
+					<Navbar v-if="!isLoginPage"/>
 
 					<!-- Main content -->
 					<router-view/>
@@ -22,8 +22,8 @@
 		</div>
 
 
-		<ScrollToTop />
-		<LogoutModal />
+		<ScrollToTop v-if="!isLoginPage"/>
+		<LogoutModal v-if="!isLoginPage"/>
 
 	</div>
 
@@ -47,15 +47,18 @@
 	import LogoutModal from './common/components/LogoutModal.vue'
 	import ScrollToTop from './common/components/ScrollToTop.vue'
 
+    import { useRoute } from 'vue-router';
+
 	import { appStore } from './app';
+	import { ref } from 'vue';
 	
 	const $app = appStore()
 
-	console.log('$app', $app)
+	$app.init()
+
+	const route = useRoute();
+	const isLoginPage = ref(route.path === '/')
+
+	console.log('isLoginPage', isLoginPage.value)
 
 </script>
-
-
-<style>
-
-</style>

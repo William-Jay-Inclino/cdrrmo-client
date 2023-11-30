@@ -138,4 +138,4 @@
     const route = useRoute();
     const routeName = computed( () => route.name) 
 
-</script>@/common/constants
+</script>

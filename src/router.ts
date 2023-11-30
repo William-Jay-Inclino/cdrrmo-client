@@ -3,9 +3,15 @@ import { routeNames } from './common/constants'
 
 const routes = [
 
-    // ================ dashboard route ================ 
     {
         path: '/',
+        name: routeNames.login,
+        component: () => import('./Login.vue')
+    },
+
+    // ================ dashboard route ================ 
+    {
+        path: '/dashboard',
         name: routeNames.dashboard,
         component: () => import('./dashboard/Dashboard.vue')
     },

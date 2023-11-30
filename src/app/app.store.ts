@@ -1,7 +1,7 @@
 
 import { defineStore } from 'pinia'
 import { IUser, userService } from '../user'
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 
 // root store
 
@@ -12,10 +12,6 @@ export const appStore = defineStore('app', () => {
     const _store = 'appStore: '
     const _authUser = ref<IUser>()
 
-
-    onMounted( async() => {
-      await init()
-    })
     
     // methods 
     const init = async() => {
