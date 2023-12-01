@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="card shadow mb-4">
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-bg-primary">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-primary text-white">
                                 <h6 class="m-0 font-weight-bold"> {{ action + ' ' + moduleLabel }} </h6>
                             </div>
                 
@@ -44,7 +44,7 @@
                                         <div class="col">
                                             <div class="d-grid gap-2">
                                                 <button
-                                                    :class="{'btn-info': $team.formData.status === TeamStatusEnum.Active, 'btn-outline-info': $team.formData.status !== TeamStatusEnum.Active}"
+                                                    :class="{'btn-primary': $team.formData.status === TeamStatusEnum.Active, 'btn-outline-primary': $team.formData.status !== TeamStatusEnum.Active}"
                                                     class="btn btn-block"
                                                     type="button"
                                                     @click="$team.formData.status = TeamStatusEnum.Active"
@@ -56,7 +56,7 @@
                                         <div class="col">
                                             <div class="d-grid gap-2">
                                                 <button
-                                                    :class="{'btn-info': $team.formData.status === TeamStatusEnum.Inactive, 'btn-outline-info': $team.formData.status !== TeamStatusEnum.Inactive}"
+                                                    :class="{'btn-primary': $team.formData.status === TeamStatusEnum.Inactive, 'btn-outline-primary': $team.formData.status !== TeamStatusEnum.Inactive}"
                                                     class="btn btn-block"
                                                     type="button"
                                                     @click="$team.formData.status = TeamStatusEnum.Inactive"

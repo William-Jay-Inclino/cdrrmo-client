@@ -22,7 +22,7 @@
                 <div class="col">
                     <div class="d-grid gap-2">
                         <button
-                            :class="{'btn-info': $user.formData.gender === GenderEnum.Male, 'btn-outline-info': $user.formData.gender !== GenderEnum.Male}"
+                            :class="{'btn-primary': $user.formData.gender === GenderEnum.Male, 'btn-outline-primary': $user.formData.gender !== GenderEnum.Male}"
                             class="btn btn-block"
                             type="button"
                             @click="$user.formData.gender = GenderEnum.Male"
@@ -34,7 +34,7 @@
                 <div class="col">
                     <div class="d-grid gap-2">
                         <button
-                            :class="{'btn-info': $user.formData.gender === GenderEnum.Female, 'btn-outline-info': $user.formData.gender !== GenderEnum.Female}"
+                            :class="{'btn-primary': $user.formData.gender === GenderEnum.Female, 'btn-outline-primary': $user.formData.gender !== GenderEnum.Female}"
                             class="btn btn-block"
                             type="button"
                             @click="$user.formData.gender = GenderEnum.Female"
@@ -88,7 +88,7 @@
                 <div class="col">
                     <div class="d-grid gap-2">
                         <button
-                            :class="{'btn-info': $user.formData.status === UserStatusEnum.Active, 'btn-outline-info': $user.formData.status !== UserStatusEnum.Active}"
+                            :class="{'btn-primary': $user.formData.status === UserStatusEnum.Active, 'btn-outline-primary': $user.formData.status !== UserStatusEnum.Active}"
                             class="btn btn-block"
                             type="button"
                             @click="$user.formData.status = UserStatusEnum.Active"
@@ -100,7 +100,7 @@
                 <div class="col">
                     <div class="d-grid gap-2">
                         <button
-                            :class="{'btn-info': $user.formData.status === UserStatusEnum.Inactive, 'btn-outline-info': $user.formData.status !== UserStatusEnum.Inactive}"
+                            :class="{'btn-primary': $user.formData.status === UserStatusEnum.Inactive, 'btn-outline-primary': $user.formData.status !== UserStatusEnum.Inactive}"
                             class="btn btn-block"
                             type="button"
                             @click="$user.formData.status = UserStatusEnum.Inactive"

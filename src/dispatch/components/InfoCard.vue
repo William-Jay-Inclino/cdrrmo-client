@@ -5,8 +5,8 @@
             :class="cardHeaderBg(dispatchedTeam)"
         >
             <h6 class="m-0 font-weight-bold">
-                <span class="mr-1"> <b>Status:</b> </span>  
-                <span :class="{[`text-bg-${CONST_DispatchStatus[dispatchedTeam.status].color}`]: true}" class="badge rounded-pill text-white"> 
+                <span class="mr-1 text-white"> <b>Status:</b> </span>  
+                <span :class="{[`badge-${CONST_DispatchStatus[dispatchedTeam.status].color}`]: true}" class="badge badge-pill text-white"> 
                     {{ CONST_DispatchStatus[dispatchedTeam.status].text }} 
                 </span> 
             </h6>
@@ -249,14 +249,14 @@ const cancelledLabel = ref('Service Cancelled')
 const cardHeaderBg = (dispatchedTeam: IDispatch) => {
 
     if(dispatchedTeam.status === DispatchStatusEnum.ArrivedBase || dispatchedTeam.is_completed){
-        return {'text-bg-success': true}
+        return {'bg-success': true}
     }
 
     if(dispatchedTeam.status === DispatchStatusEnum.Queue){
-        return {'text-bg-secondary': true}
+        return {'bg-secondary': true}
     }
 
-    return {'text-bg-danger': true}
+    return {'bg-danger': true}
 
 }
 
