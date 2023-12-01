@@ -128,7 +128,7 @@ export const dispatchStore = defineStore('dispatch', () => {
             items = items.filter(i => i.team.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
         }
         else if(searchReference.value === SearchRefEnum.Dispatcher){
-            items = items.filter(i => (i.dispatcher.first_name + ' ' + i.dispatcher.last_name).toLowerCase().includes(searchQuery.value.toLowerCase()))
+            items = items.filter(i => (i.dispatcher.last_name + ', ' + i.dispatcher.first_name).toLowerCase().includes(searchQuery.value.toLowerCase()))
         }
         else if(searchReference.value === SearchRefEnum.Emergency){
             items = items.filter(i => i.emergency.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
@@ -176,7 +176,7 @@ export const dispatchStore = defineStore('dispatch', () => {
 
     const initForm = async() => {
         console.log('initForm()')
-        setActiveTeams(await teamService.findAllActive(TeamStatusEnum.Active))
+        setActiveTeams(await teamService.findAllActive())
         setEmergencies(await emergencyService.findAll())
     }
 
@@ -252,7 +252,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         for(let i of formTeams.value){
             const x = {...dispatchedTeam}
             x.team_id = i.id
-            x.dispatcher_id = $auth.authUser.id
+            x.dispatcher_id = $auth.authUser!.id
             dispatchedTeamArray.push(x)
         }
 

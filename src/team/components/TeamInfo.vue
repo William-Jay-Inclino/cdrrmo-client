@@ -22,7 +22,7 @@
                         </tr>
                         <tr>
                             <th>Team Leader</th>
-                            <td> {{ team.team_leader.first_name + ' ' + team.team_leader.last_name }} </td>
+                            <td> {{ team.team_leader.last_name + ', ' + team.team_leader.first_name }} </td>
                         </tr>
                         <tr v-if="true">
                             <th :rowspan="team.team_leader.skills.length + 1" class="align-middle">Skills</th>

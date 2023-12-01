@@ -1,5 +1,6 @@
 import { config } from "../config";
 import { ICreateTeamDto } from "./dto/create-team.dto";
+import { IUpdateTeamDto } from "./dto/update-team.dto";
 import { ITeam, ITeamMember, TeamStatusEnum } from "./entities"
 
 class TeamService{
@@ -23,10 +24,10 @@ class TeamService{
         return []
     }
 
-    async findAllActive(status: TeamStatusEnum): Promise<ITeam[]>{
-        console.log(this.service + 'findAllActive()', status)
+    async findAllActive(): Promise<ITeam[]>{
+        console.log(this.service + 'findAllActive()')
 		try {
-			const response = await config.api.get(this.endpoint + '/status/' + status);
+			const response = await config.api.get(this.endpoint + 'status');
 			console.log({response})
             if(response.status === 200){
                 return response.data
@@ -72,7 +73,7 @@ class TeamService{
         return null 
     }
 
-    async update(payload: {id: string, data: ICreateTeamDto}): Promise<ITeam | null>{
+    async update(payload: {id: string, data: IUpdateTeamDto}): Promise<ITeam | null>{
         console.log(this.service + 'update()', payload)
 
 		try {

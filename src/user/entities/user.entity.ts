@@ -43,6 +43,7 @@ export interface IUser {
     // end
 
     // set programmatically 
+    fullName?: string,
     age?: number
     userLevelObj?: {
         id: UserLevelEnum,

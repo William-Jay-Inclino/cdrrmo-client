@@ -35,7 +35,7 @@
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Dispatcher">
                             <th>Dispatcher</th>
-                            <td> {{ dispatchedTeam.dispatcher.first_name + ' ' + dispatchedTeam.dispatcher.last_name }} </td>
+                            <td> {{ dispatchedTeam.dispatcher.last_name + ', ' + dispatchedTeam.dispatcher.first_name }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Location">
                             <th>Location</th>

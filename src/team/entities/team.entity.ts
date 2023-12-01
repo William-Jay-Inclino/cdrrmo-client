@@ -18,6 +18,7 @@ export interface ITeam{
     },
 
     label?: string
+    isActivated?: boolean
 }
 
 export interface ITeamMember{

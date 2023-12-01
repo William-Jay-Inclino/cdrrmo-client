@@ -150,7 +150,7 @@
 
         if(dispatchedTeam){
             dispatchedTeamSelected.value = null
-            toast.success(`Reassigned successfully to ${payload.dispatcher.first_name + ' ' + payload.dispatcher.last_name}!`)
+            toast.success(`Reassigned successfully to ${payload.dispatcher.last_name + ', ' + payload.dispatcher.first_name}!`)
         }else{
             toast.error('Reassigned failed!')
         }

@@ -105,7 +105,7 @@
 
         if(!team.value) return 
 
-        const fullName = member.member.first_name + ' ' + member.member.last_name
+        const fullName = member.member.last_name + ', ' + member.member.first_name
 
         Swal.fire({
             title: "Are you sure?",

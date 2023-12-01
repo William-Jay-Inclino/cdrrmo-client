@@ -41,7 +41,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="user in $user.users">
-                                        <td> {{ user.first_name + ' ' + user.last_name }} </td>
+                                        <td> {{ user.last_name + ', ' + user.first_name }} </td>
                                         <td> {{ user.address }} </td>
                                         <td> {{ user.age }} </td>
                                         <td> {{ user.contact_no }} </td>
