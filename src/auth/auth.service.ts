@@ -34,7 +34,7 @@ class AuthService{
         return !!localStorage.getItem('auth');
     }
 
-    getAuth(): IAuth{
+    getAuth(): IAuth | null {
         console.log(this.service + 'getAuth()')
         const authString = localStorage.getItem('auth');
         return authString ? JSON.parse(authString) : null;

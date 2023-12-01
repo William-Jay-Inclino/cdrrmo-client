@@ -162,13 +162,19 @@ const toast = useToast();
 
 router.beforeEach((to, from, next) => {
     console.log('from', from)
+    console.log('to', to)
+
+    // if(to.name === routeNames.login){
+    //     next()
+    // }
+    
     if (to.meta.requiresAuth && !authService.isAuthenticated()) {
         // Redirect to the login page if not authenticated
         toast.error('Unauthorized page!')
         next({ name: routeNames.login});
-      } else {
+    } else {
         next();
-      }
+    }
 });
 
 export default router

@@ -9,5 +9,4 @@ export interface IAuthUser{
 export interface IAuth{
     user: IAuthUser
     access_token: string
-    exp: number
 }
