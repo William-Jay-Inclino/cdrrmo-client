@@ -23,17 +23,17 @@
                   <!-- Email input -->
                   <div class="mb-3">
                     <label for="username" class="form-label text-white">Username</label>
-                    <input type="text" class="form-control" id="username" v-model="username" required>
+                    <input type="text" class="form-control" id="username" v-model="username" required autocomplete="username">
                   </div>
   
                   <!-- Password input -->
                   <div class="mb-3">
                     <label for="password" class="form-label text-white">Password</label>
-                    <input type="password" class="form-control" id="password" v-model="password" required>
+                    <input type="password" class="form-control" id="password" v-model="password" required autocomplete="current-password">
                   </div>
   
                   <!-- Submit button -->
-                  <button type="submit" class="btn btn-primary float-end">Login</button>
+                  <button type="submit" class="btn btn-primary w-25 float-end">Login</button>
                 </form>
               </div>
             </div>
@@ -45,22 +45,23 @@
   
   <script setup lang="ts">
     import { ref } from 'vue';
-    import { appStore } from './app'; 
+    import { authStore } from './auth'; 
     import { routeNames } from './common/constants'
     import { useRouter } from 'vue-router';
     import Swal from 'sweetalert2'
 
     const router = useRouter()
-    const $app = appStore()
-    // Data
+    const $auth = authStore()
+
     const username = ref('');
     const password = ref('');
   
     const login = async() => {
-      const userloggedIn = await $app.login({username: username.value, password: password.value})
+      const userloggedIn = await $auth.login({username: username.value, password: password.value})
 
       if(userloggedIn){
         Swal.fire({
+          position: "top",
           title: "Logged in successfully!",
           text: "Welcome to Ormoc CDRRMO Information Management System!",
           icon: "success"

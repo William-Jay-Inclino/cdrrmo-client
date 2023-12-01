@@ -20,9 +20,8 @@
 	</div>
 
 
-	<ScrollToTop/>
-	<LogoutModal/>
-
+	<ScrollToTop v-if="showScrollToTop"/>
+	<LogoutModal v-if="showLogoutModal"/>
 
 </template>
 
@@ -37,13 +36,7 @@
 	import ScrollToTop from './common/components/ScrollToTop.vue'
 
     import { useRoute } from 'vue-router';
-
-	import { appStore } from './app';
-	// import { routeNames } from './common';
 	import { computed } from 'vue';
-	
-	const $app = appStore()
-	$app.init()
 
 
 	const route = useRoute();
@@ -51,5 +44,8 @@
 
 	const showSidebar = computed( () => route.path !== '/')
 	const showNavbar = computed( () => route.path !== '/')
+	const showScrollToTop = computed( () => route.path !== '/')
+	const showLogoutModal = computed( () => route.path !== '/')
+
 
 </script>

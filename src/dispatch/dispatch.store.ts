@@ -6,7 +6,7 @@ import { ICreateDispatchDto, IUpdateDispatchDto } from './dto';
 import { IEmergency, emergencyService } from '../emergency';
 import { ITeam, TeamStatusEnum, teamService } from '../team';
 import { isValidPhoneNumber } from '../common';
-import { appStore } from '../app';
+import { authStore } from '../auth';
 import { IUser, userService } from '../user';
 
 export const dispatchStore = defineStore('dispatch', () => {
@@ -50,7 +50,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         returned: true,
     }
 
-    const $app = appStore()
+    const $auth = authStore()
 
     // state
     const _dispatchedTeams = ref<IDispatch[]>([])
@@ -252,7 +252,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         for(let i of formTeams.value){
             const x = {...dispatchedTeam}
             x.team_id = i.id
-            x.dispatcher_id = $app.authUser.id
+            x.dispatcher_id = $auth.authUser.id
             dispatchedTeamArray.push(x)
         }
 
