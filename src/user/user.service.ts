@@ -7,11 +7,25 @@ class UserService{
     private endpoint = '/user/'
     private service = 'UserService: '
 
-    async findAll(): Promise<IUser[]>{
+    async findAll(page?: number, pageSize?: number): 
+        Promise<{
+            currentPage: number,
+            totalPages: number,
+            totalUsers: number,
+            users: IUser[]
+        }>
+    {
+
         console.log(this.service + 'findAll()')
         
 		try {
-			const response = await config.api.get(this.endpoint);
+
+            let newEndpoint = this.endpoint
+            if(page && pageSize){
+                newEndpoint += '?page='+page+'&pageSize='+pageSize
+            }
+
+			const response = await config.api.get(newEndpoint);
 			console.log({response})
             if(response.status === 200){
                 return response.data
@@ -21,7 +35,12 @@ class UserService{
 			console.error('Error fetching data:', error);
 		}
 
-        return []
+        return {
+            currentPage: 0,
+            totalPages: 0,
+            totalUsers: 0,
+            users: []
+        }
     }
 
     async findOrphanTeamLeaders(): Promise<IUser[]>{

@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import Toast, { PluginOptions } from 'vue-toastification';
 import 'vue-toastification/dist/index.css'; // Import the CSS
