@@ -10,7 +10,9 @@
             <div class="col-11">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">List of Personnels</h6>
+                        
+                        <Search />
+
                         <router-link :to="{name: routeNames.userForm}">
                             <button class="btn btn-primary"> Add Personnel </button>
                         </router-link>
@@ -26,14 +28,11 @@
                                         <th>Address</th>
                                         <th>Age</th>
                                         <th>Contact #</th>
-                                        <!-- <th>Blood Type</th> -->
                                         <th class="text-center">Gender</th>
                                         <th>Userlevel</th>
                                         <th>Type</th>
                                         <th>Subtype</th>
-                                        <!-- <th>Sub-Subtype</th> -->
                                         <th class="text-center">Status</th>
-                                        <!-- <th class="text-center">Dispatch Status</th> -->
                                         <th class="text-center">
                                             <i class="fas fa-fw fa-cogs"></i>
                                         </th>
@@ -45,7 +44,6 @@
                                         <td> {{ user.address }} </td>
                                         <td> {{ user.age }} </td>
                                         <td> {{ user.contact_no }} </td>
-                                        <!-- <td> {{ user.blood_type }} </td> -->
                                         <td class="text-center">
                                             <i class="fas fa-fw" :class="{[`${user.genderObj?.icon}`]: true}" :style="{color: user.genderObj?.color}">
 
@@ -57,26 +55,14 @@
                                         <td v-if="user.Na"> {{ user.Na.name }} </td>
                                         <td v-else> {{ user.userSubTypeObj?.text }} </td>
 
-                                        <!-- <td v-if="user.Bart"> {{ user.Bart.name }} </td>
-                                        <td v-else-if="user.Cso"> {{ user.Cso.name }} </td>
-                                        <td v-else-if="user.Po"> {{ user.Po.name }} </td>
-                                        <td v-else></td> -->
                                         <td class="text-center"> 
                                             <span :class="{[`text-bg-${user.statusObj?.color}`]: true}" class="badge rounded-pill text-white"> 
                                                 {{ user.statusObj?.text }} 
                                             </span> 
                                         </td>
-                                        <!-- <td class="text-center"> 
-                                            <span :class="{[`text-bg-${user.dispatchStatusObj?.color}`]: true}" class="badge rounded-pill text-white"> 
-                                                {{ user.dispatchStatusObj?.text }} 
-                                            </span> 
-                                        </td> -->
                                         <td class="text-center">
                                             <button @click="onClickUpdate(user)" class="btn btn-light btn-sm">
                                                 <i class="fas fa-fw fa-pencil-alt"></i>
-                                            </button>
-                                            <button class="btn btn-light btn-sm">
-                                                <i class="fas fa-fw fa-trash text-danger"></i>
                                             </button>
                                             <button @click="onClickResetPw(user)" class="btn btn-light btn-sm">
                                                 <i class="fas fa-fw fa-lock text-warning"></i>
@@ -105,6 +91,7 @@ import { IUser, userStore } from '.'
 import { routeNames } from '../common/constants'
 import { useRouter } from 'vue-router';
 import ResetPasswordModal from './components/ResetPasswordModal.vue';
+import Search from './components/Search.vue'
 
 const resetModalId = ref('resetModalId')
 
