@@ -1,11 +1,13 @@
 <template>
 
-    <div ref="myModal" class="modal fade" id="reassignModalId" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div ref="myModal" class="modal fade" id="reassignModalId" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Reassign Dispatcher</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body" v-if="dispatchedTeam">
                     <div class=" mb-3 row">
@@ -20,8 +22,8 @@
                     
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button class="btn btn-dark" type="button" data-bs-dismiss="modal">Cancel</button>
-                    <button :disabled="!selectedDispatcher" @click="onClickReassign()" class="btn btn-success" type="button" data-bs-dismiss="modal">Reassign</button>
+                    <button class="btn btn-dark" type="button" data-dismiss="modal">Cancel</button>
+                    <button :disabled="!selectedDispatcher" @click="onClickReassign()" class="btn btn-success" type="button" data-dismiss="modal">Reassign</button>
                 </div>
             </div>
         </div>

@@ -1,11 +1,13 @@
 <template>
 
-    <div class="modal fade" id="addMemberModalId" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="addMemberModalId" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Add Team Member</h5>
-                    <button @click="onCancel()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button @click="onCancel()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <v-select :options="$team.usersWithoutTeam" v-model="member"></v-select>
@@ -35,7 +37,7 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button @click="onCancel()" class="btn btn-dark" type="button" data-bs-dismiss="modal">Cancel</button>
+                    <button @click="onCancel()" class="btn btn-dark" type="button" data-dismiss="modal">Cancel</button>
                     <button @click="onSubmit()" class="btn btn-success" type="button">Submit</button>
                 </div>
             </div>

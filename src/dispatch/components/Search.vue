@@ -4,7 +4,7 @@
         <div class="card-body d-flex align-items-center">
             <div class="input-group">
                 <input v-model="$dispatch.searchQuery" type="text" class="form-control" aria-label="Text input with dropdown button">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                     {{ $dispatch.searchReference }}
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">

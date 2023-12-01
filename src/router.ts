@@ -167,18 +167,15 @@ router.beforeEach((to, from, next) => {
     if(to.name === routeNames.login){
         next()
         
-        return 
-    }
-    
-    if (to.meta.requiresAuth && !authService.isAuthenticated()) {
+    }else if (to.meta.requiresAuth && !authService.isAuthenticated()) {
         // Redirect to the login page if not authenticated
         toast.error('Unauthorized page!')
         next({ name: routeNames.login});
 
-        return 
-    } 
+    }else{
+        next();
+    }
 
-    next();
 });
 
 export default router

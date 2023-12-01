@@ -11,7 +11,7 @@
                         <tr>
                             <th>Team Status</th>
                             <td> 
-                                <span :class="{[`text-bg-${CONST_TeamStatus[team.status].color}`]: true}" class="badge rounded-pill text-white"> 
+                                <span :class="{[`badge-${CONST_TeamStatus[team.status].color}`]: true}" class="badge badge-pill text-white"> 
                                     {{ CONST_TeamStatus[team.status].text }} 
                                 </span> 
                             </td>

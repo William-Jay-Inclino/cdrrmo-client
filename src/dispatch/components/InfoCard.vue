@@ -28,7 +28,7 @@
                             <th>Team dispatched</th>
                             <td>
                                 {{ dispatchedTeam.team.name }}
-                                <button @click="$dispatch.setTeamInfo(dispatchedTeam.team)" type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#teamInfoModal">
+                                <button @click="$dispatch.setTeamInfo(dispatchedTeam.team)" type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#teamInfoModal">
                                     <i class="fas fa-fw fa-info-circle text-info"></i>
                                 </button>
                             </td>
@@ -200,7 +200,7 @@
 
             <div v-else-if="!dispatchedTeam.time_arrival_base && (!dispatchedTeam.is_cancelled || dispatchedTeam.is_cancelled && dispatchedTeam.time_proceeding_scene)" class="row">
                 <div class="col text-center">
-                    <button @click="reassignDispatcher(dispatchedTeam)" class="btn btn-light text-info" data-bs-toggle="modal" data-bs-target="#reassignModalId">
+                    <button @click="reassignDispatcher(dispatchedTeam)" class="btn btn-light text-info" data-toggle="modal" data-target="#reassignModalId">
                         Reassign Dispatcher
                     </button>
                 </div>

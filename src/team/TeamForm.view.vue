@@ -38,14 +38,14 @@
                                     </small>
                                     <small class="form-text text-danger" v-if="$team.formErrors.teamLeader"> {{ errorMsg }} </small>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" v-if="!$team.formIsEditMode">
                                     <label>Status</label>
                                     <div class="row">
                                         <div class="col">
                                             <div class="d-grid gap-2">
                                                 <button
-                                                    :class="{'btn-primary': $team.formData.status === TeamStatusEnum.Active, 'btn-outline-primary': $team.formData.status !== TeamStatusEnum.Active}"
-                                                    class="btn"
+                                                    :class="{'btn-info': $team.formData.status === TeamStatusEnum.Active, 'btn-outline-info': $team.formData.status !== TeamStatusEnum.Active}"
+                                                    class="btn btn-block"
                                                     type="button"
                                                     @click="$team.formData.status = TeamStatusEnum.Active"
                                                 >
@@ -56,8 +56,8 @@
                                         <div class="col">
                                             <div class="d-grid gap-2">
                                                 <button
-                                                    :class="{'btn-primary': $team.formData.status === TeamStatusEnum.Inactive, 'btn-outline-primary': $team.formData.status !== TeamStatusEnum.Inactive}"
-                                                    class="btn"
+                                                    :class="{'btn-info': $team.formData.status === TeamStatusEnum.Inactive, 'btn-outline-info': $team.formData.status !== TeamStatusEnum.Inactive}"
+                                                    class="btn btn-block"
                                                     type="button"
                                                     @click="$team.formData.status = TeamStatusEnum.Inactive"
                                                 >
