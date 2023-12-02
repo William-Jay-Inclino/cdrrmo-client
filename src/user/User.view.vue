@@ -73,14 +73,17 @@
                                                         {{ user.statusObj?.text }} 
                                                     </span> 
                                                 </td>
-                                                <td class="text-center">
-                                                    <button @click="onClickUpdate(user)" class="btn btn-light btn-sm">
-                                                        <i class="fas fa-fw fa-pencil-alt"></i>
-                                                    </button>
-                                                    <button @click="onClickResetPw(user)" class="btn btn-light btn-sm">
-                                                        <i class="fas fa-fw fa-lock text-warning"></i>
-                                                    </button>
-                                                </td>
+                                                <td class="d-flex justify-content-center">
+  <button @click="onClickUpdate(user)" class="btn btn-light btn-sm">
+    <i class="fas fa-fw fa-pencil-alt"></i>
+  </button>
+  <button @click="onClickResetPw(user)" class="btn btn-light btn-sm">
+    <i class="fas fa-fw fa-lock text-warning"></i>
+  </button>
+</td>
+
+
+
                                             </tr>
                                         </tbody>
                                     </table>
