@@ -1,6 +1,6 @@
 <template>
 
-    <nav aria-label="Page navigation example" class="float-end">
+    <nav aria-label="Page navigation example">
         <ul class="pagination">
         <li class="page-item" :class="{ disabled: $user.pagination.currentPage === 1 }">
             <a class="page-link" @click="changePage($user.pagination.currentPage - 1)" href="#">Previous</a>

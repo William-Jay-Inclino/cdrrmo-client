@@ -92,7 +92,7 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col">
-                                <TablePagination />
+                                <TablePagination class="float-right"/>
                             </div>
                         </div>
                     </div>
