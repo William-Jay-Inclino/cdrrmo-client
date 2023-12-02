@@ -34,6 +34,7 @@
                         @set-complete="setComplete"
                         @cancel-service="cancelService"
                         @on-reassign="onReassign"
+                        @edit-remarks="onEditRemarks"
                     />
                 </div>
             </template>
@@ -155,6 +156,33 @@
             toast.error('Reassigned failed!')
         }
         
+    }
+
+    const onEditRemarks = async(payload: {dispatchedTeam: IDispatch, remTextArea: HTMLTextAreaElement}) => {
+        console.log('onEditRemarks()', payload)
+
+        const prevVal = payload.dispatchedTeam.remarks
+        const newVal = payload.remTextArea.value
+
+        payload.dispatchedTeam.remarks = newVal
+
+        const data = {
+            remarks: newVal,
+        }
+
+        console.log('data', data)
+        console.log('prevVal', prevVal)
+
+        const dispatchedTeam = await $dispatch.onUpdate({id: payload.dispatchedTeam.id, data})
+
+        if(dispatchedTeam){
+            toast.success('Remarks updated!')
+
+        }else{
+            toast.error('Failed to update remarks!')
+
+            payload.dispatchedTeam.remarks = prevVal
+        }
     }
 
 

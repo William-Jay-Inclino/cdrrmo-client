@@ -183,8 +183,30 @@
                             </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Remarks</th>
-                            <td> {{ dispatchedTeam.remarks }} </td>
+                            <th class="align-middle">Remarks</th>
+                            <td>
+                                <textarea 
+                                    :id="'editRem_' + dispatchedTeam.id" 
+                                    :value="dispatchedTeam.remarks" 
+                                    class="form-control" 
+                                    rows="5"
+                                    :disabled="!dispatchedTeam.isEditRemarks"
+                                >
+                                </textarea>
+                                <button v-if="dispatchedTeam.isEditRemarks" @click="onCancelEditRemarks(dispatchedTeam)" class="btn btn-light float-left">
+                                    <i class="fas fa-times-circle text-secondary"></i>
+                                </button>
+                                <button v-if="dispatchedTeam.isEditRemarks" @click="onSaveRemarks(dispatchedTeam)" class="btn btn-light float-right">
+                                    <i class="fas fa-check-circle text-success"></i>
+                                </button>
+                                <button v-if="!dispatchedTeam.isEditRemarks" @click="onClickEditRemarks(dispatchedTeam)" type="button" class="btn btn-light btn-sm float-right">
+                                    <i class="fas fa-fw fa-edit text-info"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
                         </tr>
                     </thead>
                 </table>
@@ -240,7 +262,7 @@ defineProps<{
     dispatchedTeam: IDispatch
 }>()
 
-const emit = defineEmits(['set-time', 'set-complete', 'cancel-service', 'on-reassign'])
+const emit = defineEmits(['set-time', 'set-complete', 'cancel-service', 'on-reassign', 'edit-remarks'])
 
 const $dispatch = dispatchStore()
 
@@ -319,6 +341,33 @@ const cancelService = (dispatchedTeam: IDispatch) => {
             emit('cancel-service', {dispatchedTeam})
         }
     });
+}
+
+const onSaveRemarks = async(dispatchedTeam: IDispatch) => {
+    console.log('onSaveRemarks()')
+    dispatchedTeam.isEditRemarks = false
+
+    const remTextArea = document.getElementById('editRem_' + dispatchedTeam.id) as HTMLTextAreaElement
+
+    if(remTextArea){
+        emit('edit-remarks', {dispatchedTeam, remTextArea})
+    }
+}
+
+const onCancelEditRemarks = (dispatchedTeam: IDispatch) => {
+    console.log('onCancelEditRemarks()')
+    dispatchedTeam.isEditRemarks = false
+
+    const remTextArea = document.getElementById('editRem_' + dispatchedTeam.id) as HTMLTextAreaElement
+
+    if(remTextArea){
+        remTextArea.value = dispatchedTeam.remarks
+    }
+}
+
+const onClickEditRemarks = (dispatchedTeam: IDispatch) => {
+    console.log('onClickEditRemarks()', dispatchedTeam)
+    dispatchedTeam.isEditRemarks = true
 }
 
 const reassignDispatcher = (dispatchedTeam: IDispatch) => {
