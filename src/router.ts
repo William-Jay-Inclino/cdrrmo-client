@@ -2,13 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { routeNames } from './common/constants'
 import { authService } from './auth';
 import { useToast } from "vue-toastification";
+import NotFound from './common/components/NotFound.vue'
 
 const routes = [
 
     {
         path: '/',
         name: routeNames.login,
-        component: () => import('./Login.vue')
+        component: () => import('./auth/Login.vue')
     },
 
     // ================ dashboard route ================ 
@@ -150,6 +151,12 @@ const routes = [
         meta: { requiresAuth: true },
         component: () => import('./training_skill/TrainingSkillForm.view.vue')
     },
+
+    {
+        path: '/:catchAll(.*)',
+        name: routeNames.notFound,
+        component: NotFound,
+    },
 ]
 
 
@@ -165,8 +172,8 @@ router.beforeEach((to, from, next) => {
     console.log('to', to)
 
     if(to.name === routeNames.login){
+        authService.logout() // remove localstorage auth
         next()
-        
     }else if (to.meta.requiresAuth && !authService.isAuthenticated()) {
         // Redirect to the login page if not authenticated
         toast.error('Unauthorized page!')

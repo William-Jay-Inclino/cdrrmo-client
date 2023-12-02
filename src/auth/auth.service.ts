@@ -40,6 +40,11 @@ class AuthService{
         return authString ? JSON.parse(authString) : null;
     }
 
+    logout() {
+        console.log(this.service + 'logout()')
+        localStorage.removeItem('auth')
+    }
+
 }
 
 export const authService = new AuthService()

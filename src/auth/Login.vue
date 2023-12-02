@@ -45,8 +45,8 @@
   
   <script setup lang="ts">
     import { ref } from 'vue';
-    import { authStore } from './auth'; 
-    import { routeNames } from './common/constants'
+    import { authStore } from '.'; 
+    import { routeNames } from '../common/constants'
     import { useRouter } from 'vue-router';
     import Swal from 'sweetalert2'
 

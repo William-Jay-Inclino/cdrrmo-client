@@ -54,17 +54,10 @@ export const authStore = defineStore('auth', () => {
         return false
     }
 
-    const logout = () => {
-        console.log(_store + 'logout()')
-        localStorage.removeItem('auth')
-    }
-
     return {
       authUser,
 
       login,
-      logout,
-      
     }
 })
 

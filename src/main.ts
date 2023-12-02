@@ -11,11 +11,11 @@ import "vue-select/dist/vue-select.css";
 
 
 import { createPinia } from 'pinia'
-import App from './App.vue'
+import EntryPoint from './EntryPoint.vue'
 import router from './router'
 
 const pinia = createPinia()
-const app = createApp(App)
+const app = createApp(EntryPoint)
 
 const toastOptions: PluginOptions = {
     // You can set your default options here

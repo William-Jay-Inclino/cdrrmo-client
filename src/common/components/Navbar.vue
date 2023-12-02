@@ -102,15 +102,12 @@
 <script setup lang="ts">
 
     import { config } from '../../config';
-    import { authStore } from '../../auth';
     import { useRouter } from 'vue-router';
     import { routeNames } from '..';
 
-    const $auth = authStore()
     const router = useRouter()
 
     const onClickLogout = () => {
-        $auth.logout()
         router.push({name: routeNames.login})
     }
 
