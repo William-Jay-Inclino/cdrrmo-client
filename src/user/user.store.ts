@@ -184,16 +184,16 @@ export const userStore = defineStore('user', () => {
 
             // Create a copy of the object without the password_hash field
             // @ts-ignore
-            const { password_hash, ...userWithoutPassword } = i;
+            // const { password_hash, ...userWithoutPassword } = i;
 
             // Add additional properties or modify existing ones
-            userWithoutPassword.age = getAge(new Date(i.birth_date!));
-            userWithoutPassword.genderObj = CONST_Gender[i.gender];
-            userWithoutPassword.userLevelObj = CONST_UserLevel[i.user_level];
-            userWithoutPassword.userTypeObj = CONST_UserTypes[i.type];
-            userWithoutPassword.userSubTypeObj = CONST_SubTypes[i.type];
-            userWithoutPassword.statusObj = CONST_UserStatus[i.status];
-            return userWithoutPassword
+            i.age = getAge(new Date(i.birth_date!));
+            i.genderObj = CONST_Gender[i.gender];
+            i.userLevelObj = CONST_UserLevel[i.user_level];
+            i.userTypeObj = CONST_UserTypes[i.type];
+            i.userSubTypeObj = CONST_SubTypes[i.type];
+            i.statusObj = CONST_UserStatus[i.status];
+            return i
         })
     })
 

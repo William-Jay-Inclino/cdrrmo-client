@@ -1,7 +1,7 @@
 <template>
 
     <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-bg-primary">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-primary text-white">
             <h6 class="m-0 font-weight-bold"> Members </h6>
         </div>
 
@@ -10,11 +10,11 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th> Name </th>
-                            <th class="pl-4"> Skills </th>
-                            <th v-if="canManage" class="text-center">
+                            <td class="font-weight-bold"> Name </td>
+                            <td class="pl-4 font-weight-bold"> Skills </td>
+                            <td v-if="canManage" class="text-center">
                                 <i class="fas fa-fw fa-cogs"></i>
-                            </th>
+                            </td>
                         </tr>
                     </thead>
                     <tbody>

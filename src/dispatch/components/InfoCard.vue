@@ -25,7 +25,7 @@
                 <table class="table">
                     <thead>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Team">
-                            <th>Team dispatched</th>
+                            <td class="font-weight-bold">Team dispatched</td>
                             <td>
                                 {{ dispatchedTeam.team.name }}
                                 <button @click="$dispatch.setTeamInfo(dispatchedTeam.team)" type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#teamInfoModal">
@@ -34,43 +34,43 @@
                             </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Dispatcher">
-                            <th>Dispatcher</th>
+                            <td class="font-weight-bold">Dispatcher</td>
                             <td> {{ dispatchedTeam.dispatcher.last_name + ', ' + dispatchedTeam.dispatcher.first_name }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Location">
-                            <th>Location</th>
+                            <td class="font-weight-bold">Location</td>
                             <td> {{ dispatchedTeam.location }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Emergency">
-                            <th>Emergency type</th>
+                            <td class="font-weight-bold">Emergency type</td>
                             <td> {{ dispatchedTeam.emergency.name }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Description">
-                            <th>Description</th>
+                            <td class="font-weight-bold">Description</td>
                             <td> {{ dispatchedTeam.description }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Hazard</th>
+                            <td class="font-weight-bold">Hazard</td>
                             <td> {{ dispatchedTeam.hazard }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Number of people involved</th>
+                            <td class="font-weight-bold">Number of people involved</td>
                             <td> {{ dispatchedTeam.num_people_involved }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.CallerName">
-                            <th>Caller name</th>
+                            <td class="font-weight-bold">Caller name</td>
                             <td> {{ dispatchedTeam.caller_name }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.CallerNumber">
-                            <th>Caller number</th>
+                            <td class="font-weight-bold">Caller number</td>
                             <td> +639{{ dispatchedTeam.caller_number }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Time of Call</th>
+                            <td class="font-weight-bold">Time of Call</td>
                             <td> {{ formatDate(new Date(dispatchedTeam.time_of_call)) }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Time proceeding to scene</th>
+                            <td class="font-weight-bold">Time proceeding to scene</td>
                             <td>
                                 <template v-if="dispatchedTeam.time_proceeding_scene"> 
                                     {{ formatDate(new Date(dispatchedTeam.time_proceeding_scene)) }} 
@@ -90,7 +90,7 @@
                             </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Time arrival at scene</th>
+                            <td class="font-weight-bold">Time arrival at scene</td>
                             <td>
                                 <template v-if="dispatchedTeam.time_arrival_scene"> 
                                     {{ formatDate(new Date(dispatchedTeam.time_arrival_scene)) }} 
@@ -110,7 +110,7 @@
                             </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Time proceeding to hospital</th>
+                            <td class="font-weight-bold">Time proceeding to hospital</td>
                             <td>
                                 <template v-if="dispatchedTeam.time_proceeding_hospital"> 
                                     {{ formatDate(new Date(dispatchedTeam.time_proceeding_hospital)) }} 
@@ -130,7 +130,7 @@
                             </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Time arrival at hospital</th>
+                            <td class="font-weight-bold">Time arrival at hospital</td>
                             <td>
                                 <template v-if="dispatchedTeam.time_arrival_hospital"> 
                                     {{ formatDate(new Date(dispatchedTeam.time_arrival_hospital)) }} 
@@ -149,7 +149,7 @@
                             </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Time proceeding to base</th>
+                            <td class="font-weight-bold">Time proceeding to base</td>
                             <td>
                                 <template v-if="dispatchedTeam.time_proceeding_base">
                                     {{ formatDate(new Date(dispatchedTeam.time_proceeding_base)) }}
@@ -166,7 +166,7 @@
                             </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Time arrival at base</th>
+                            <td class="font-weight-bold">Time arrival at base</td>
                             <td>
                                 <template v-if="dispatchedTeam.time_arrival_base">
                                     {{ formatDate(new Date(dispatchedTeam.time_arrival_base)) }}
@@ -183,7 +183,7 @@
                             </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th class="align-middle">Remarks</th>
+                            <td class="align-middle font-weight-bold">Remarks</td>
                             <td>
                                 <textarea 
                                     :id="'editRem_' + dispatchedTeam.id" 
