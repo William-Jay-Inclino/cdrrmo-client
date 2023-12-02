@@ -33,7 +33,7 @@
                   </div>
   
                   <!-- Submit button -->
-                  <button type="submit" class="btn btn-primary w-25 float-end">Login</button>
+                  <button type="submit" class="btn btn-primary w-25 float-right">Login</button>
                 </form>
               </div>
             </div>

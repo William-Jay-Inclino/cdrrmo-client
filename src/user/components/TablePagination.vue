@@ -25,7 +25,7 @@
 
     const changePage = async(page: number) => {
         console.log('changePage', page)
-        const {currentPage, totalPages, totalUsers, users} = await userService.findAll(page, 10) 
+        const {currentPage, totalPages, totalUsers, users} = await userService.findAll({page, pageSize: $user.pagination.perPage}) 
         $user.setPagination(currentPage, totalPages, totalUsers)
         $user.setUsers(users)
     }

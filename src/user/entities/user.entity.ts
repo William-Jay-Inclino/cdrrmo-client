@@ -9,6 +9,7 @@ import { ITeam, ITeamMember } from "../../team"
 
 export interface IUser {
     id: string
+    user_id: number
     user_name: string 
     user_level: UserLevelEnum
     password: string

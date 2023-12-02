@@ -110,7 +110,7 @@ export const userStore = defineStore('user', () => {
 
     const init = async() => {
         console.log(_store + 'init()')
-        const {currentPage, totalPages, totalUsers, users} = await userService.findAll() 
+        const {currentPage, totalPages, totalUsers, users} = await userService.findAll({page: 1, pageSize: pagination.value.perPage}) 
         setPagination(currentPage, totalPages, totalUsers)
         setUsers(users)
     }

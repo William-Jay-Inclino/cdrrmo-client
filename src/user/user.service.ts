@@ -1,4 +1,4 @@
-import { IUser } from "."
+import { IUser, SearchFieldEnum } from "."
 import { config } from "../config"
 
 
@@ -7,7 +7,7 @@ class UserService{
     private endpoint = '/user/'
     private service = 'UserService: '
 
-    async findAll(page?: number, pageSize?: number): 
+    async findAll(payload: {page: number, pageSize: number, searchField?: SearchFieldEnum, searchValue?: string}): 
         Promise<{
             currentPage: number,
             totalPages: number,
@@ -21,8 +21,10 @@ class UserService{
 		try {
 
             let newEndpoint = this.endpoint
-            if(page && pageSize){
-                newEndpoint += '?page='+page+'&pageSize='+pageSize
+            newEndpoint += '?page='+payload.page+'&pageSize='+payload.pageSize
+
+            if(payload.searchValue && payload.searchField){
+                newEndpoint += '&searchField='+payload.searchField+'&searchValue='+payload.searchValue
             }
 
 			const response = await config.api.get(newEndpoint);
