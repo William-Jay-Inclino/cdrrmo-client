@@ -22,9 +22,10 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th width="10%">Name</th>
+                                        <th>Name</th>
                                         <th>Team Leader</th>
                                         <th class="text-center">Status</th>
+                                        <th class="text-center">Activate / Deactivate</th>
                                         <th class="text-center">
                                             <i class="fas fa-fw fa-cogs"></i>
                                         </th>
@@ -33,17 +34,27 @@
                                 <tbody>
                                     <tr v-for="item of $module.teams">
                                         <td> {{ item.name }} </td>
-                                        <td> {{ item.team_leader.first_name + ' ' + item.team_leader.last_name}} </td>
+                                        <td> {{ item.team_leader.last_name + ', ' + item.team_leader.first_name}} </td>
                                         <td class="text-center"> 
-                                            <span :class="{[`text-bg-${CONST_TeamStatus[item.status].color}`]: true}" class="badge rounded-pill text-white"> 
+                                            <span :class="{[`badge-${CONST_TeamStatus[item.status].color}`]: true}" class="badge badge-pill text-white"> 
                                                 {{ CONST_TeamStatus[item.status].text }} 
                                             </span> 
+                                        </td>
+                                        <td class="text-center">
+                                            <div v-if="item.status !== TeamStatusEnum.Dispatched" class="custom-control custom-switch">
+                                                <input v-model="item.isActivated" @click="onStatusChange(item)" type="checkbox" class="custom-control-input" :id="'customSwitch_' + item.id">
+                                                <label class="custom-control-label" :for="'customSwitch_' + item.id"></label>
+                                            </div>
+
+                                            <!-- <div v-if="item.status !== TeamStatusEnum.Dispatched" class="form-check form-switch ml-4">
+                                                <input @click="onStatusChange(item)" style="cursor: pointer;" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="item.isActivated">
+                                            </div> -->
                                         </td>
                                         <td class="text-center">
                                             <button @click="onClickUpdateIcon(item)" class="btn btn-light btn-sm">
                                                 <i class="fas fa-fw fa-pencil-alt"></i>
                                             </button>
-                                            <button @click="onDelete(item)" class="btn btn-light btn-sm">
+                                            <button :disabled="item.status !== TeamStatusEnum.Inactive" @click="onDelete(item)" class="btn btn-light btn-sm">
                                                 <i class="fas fa-fw fa-trash text-danger"></i>
                                             </button>
                                             <button @click="onClickManageTeam(item.id)" class="btn btn-light btn-sm">
@@ -67,7 +78,7 @@
 <script setup lang="ts">
 
 import { useToast } from "vue-toastification";
-import { ITeam, teamStore } from '.'
+import { ITeam, teamStore, TeamStatusEnum } from '.'
 import { routeNames, CONST_TeamStatus } from '../common/constants'
 import { useRouter } from 'vue-router';
 
@@ -106,7 +117,6 @@ const onDelete = async(team: ITeam) => {
 
 }
 
-
 const onClickUpdateIcon = (data: ITeam) => {
     router.push({name: routeNames.teamsForm, query: {id: data.id}})
 }
@@ -114,6 +124,44 @@ const onClickUpdateIcon = (data: ITeam) => {
 const onClickManageTeam = (id: string) => {
     console.log('onClickManageTeam()', id)
     router.push({name: routeNames.teamManage, query: {id: id}})
+}
+
+const onStatusChange = async(team: ITeam) => {
+    console.log('onStatusChange()', team)
+    if(team.status === TeamStatusEnum.Active){
+        team.status = TeamStatusEnum.Inactive
+        team.isActivated = false
+
+        const data = {
+            status: TeamStatusEnum.Inactive
+        }
+        const isUpdated = await $module.onUpdate({id: team.id, data})
+
+        if(isUpdated){
+            toast.success('Status Deactivated!')
+        }else{
+            toast.error('Failed to deactivate status')
+            team.status = TeamStatusEnum.Active
+            team.isActivated = true
+        }
+
+    }else if(team.status === TeamStatusEnum.Inactive){
+        team.status = TeamStatusEnum.Active
+        team.isActivated = true
+
+        const data = {
+            status: TeamStatusEnum.Active
+        }
+        const isUpdated = await $module.onUpdate({id: team.id, data})
+
+        if(isUpdated){
+            toast.success('Status Activated!')
+        }else{
+            toast.error('Failed to activate status')
+            team.status = TeamStatusEnum.Inactive
+            team.isActivated = false
+        }
+    }
 }
 
 </script>

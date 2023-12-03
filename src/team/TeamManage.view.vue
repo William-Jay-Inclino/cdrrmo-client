@@ -17,7 +17,7 @@
                 <!-- <button type="button" data-toggle="modal" :data-target="`#${addMemberModalId}`" class="btn btn-primary float-end">
                     Add Member
                 </button> -->
-                <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#addMemberModalId">
+                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#addMemberModalId">
                     Add Member
                 </button>
             </div>
@@ -105,7 +105,7 @@
 
         if(!team.value) return 
 
-        const fullName = member.member.first_name + ' ' + member.member.last_name
+        const fullName = member.member.last_name + ', ' + member.member.first_name
 
         Swal.fire({
             title: "Are you sure?",

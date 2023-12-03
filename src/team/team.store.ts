@@ -5,6 +5,7 @@ import { computed, ref } from 'vue';
 import { teamService } from '.';
 import { ICreateTeamDto } from './dto/create-team.dto';
 import { IUser, userService } from '../user';
+import { IUpdateTeamDto } from './dto/update-team.dto';
 
 export const teamStore = defineStore('team', () => {
 
@@ -33,7 +34,12 @@ export const teamStore = defineStore('team', () => {
     const _orphanTeamLeaders = ref<IUser[]>([])
 
     // getters 
-    const teams = computed( () => _teams.value)
+    const teams = computed( () => {
+        return _teams.value.map(i => {
+            i.isActivated = (i.status === TeamStatusEnum.Inactive) ? false : true
+            return i
+        })
+    })
 
     const formIsEditMode = computed( (): boolean => {
         if(formData.value.id && formData.value.id.trim() !== ''){
@@ -153,7 +159,7 @@ export const teamStore = defineStore('team', () => {
         return null
     }
 
-    const onUpdate = async(payload: {id: string, data: ICreateTeamDto}): Promise<ITeam | null> => {
+    const onUpdate = async(payload: {id: string, data: IUpdateTeamDto}): Promise<ITeam | null> => {
         console.log(_store + 'onUpdate()', payload)
 
         const updated = await teamService.update(payload)
@@ -204,7 +210,7 @@ export const teamStore = defineStore('team', () => {
     }
 
     const getTeamLeaderLabel = (teamLeader: IUser): string => {
-        return teamLeader.first_name + ' ' + teamLeader.last_name
+        return teamLeader.last_name + ', ' + teamLeader.first_name
     }
 
     const getTeam = async(teamId: string): Promise<ITeam | null> => {
@@ -280,7 +286,8 @@ export const teamStore = defineStore('team', () => {
         getTeamLeaderLabel,
         getTeam,
         onAddMember,
-        onDeleteTeamMember
+        onDeleteTeamMember,
+        onUpdate,
     }
 })
 

@@ -3,7 +3,7 @@
     <div class="container-fluid mb-5">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Personnel Module</h1>
+            <h1 class="h3 mb-0 text-gray-800">Personnel</h1>
         </div>
 
         <div class="row">
@@ -24,8 +24,8 @@
                 <div class="row">
                     <div class="col">
                         <div class="card shadow mb-4">
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-bg-primary">
-                                <h6 class="m-0 font-weight-bold"> {{formHeader}} </h6>
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-primary text-white">
+                                <h6 class="m-0 font-weight-bold">{{ formHeader }}</h6>
                             </div>
         
                             <div class="card-body">
@@ -40,24 +40,29 @@
 
 
                 <div class="row">
-                    <div class="col">
-                        <div class="justify-content-between">
-                            <button v-show="currentStep === 1" @click="onClickCancel" class="btn btn-dark">Cancel</button>
-                            <button v-if="currentStep > 1" @click="onClickBack" class="btn btn-dark">Back</button>
-                            <button v-if="currentStep < 4" @click="onClickNext" class="btn btn-primary float-end">Next</button>
+                    <div class="col d-flex justify-content-between">
+                        <button v-show="currentStep === 1" @click="onClickCancel" class="btn btn-dark">Cancel</button>
+                        <button v-if="currentStep > 1" @click="onClickBack" class="btn btn-dark">Back</button>
 
-                            <div v-if="currentStep === 4" class="float-end">
-                                <div v-if="!$user.formIsEditMode">
-                                    <button @click="onSubmitForm(1)" class="btn btn-success">Submit and Add Again</button>
-                                    <button @click="onSubmitForm(2)" class="btn btn-primary ml-2">Submit and Finish</button>
-                                </div>
-                                <div v-else>
-                                    <button @click="onSubmitForm(2)" class="btn btn-primary ml-2">Update</button>
-                                </div>
+                        <template v-if="currentStep < 4">
+                        <button @click="onClickNext" class="btn btn-primary ml-auto">Next</button>
+                        </template>
+
+                        <template v-if="currentStep === 4">
+                        <div class="ml-auto">
+                            <div v-if="!$user.formIsEditMode">
+                            <button @click="onSubmitForm(1)" class="btn btn-success">Submit and Add Again</button>
+                            <button @click="onSubmitForm(2)" class="btn btn-primary ml-2">Submit and Finish</button>
+                            </div>
+                            <div v-else>
+                            <button @click="onSubmitForm(2)" class="btn btn-primary ml-2">Update</button>
                             </div>
                         </div>
+                        </template>
                     </div>
                 </div>
+
+
             </div>
             
         </div>

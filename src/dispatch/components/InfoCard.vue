@@ -5,8 +5,8 @@
             :class="cardHeaderBg(dispatchedTeam)"
         >
             <h6 class="m-0 font-weight-bold">
-                <span class="mr-1"> <b>Status:</b> </span>  
-                <span :class="{[`text-bg-${CONST_DispatchStatus[dispatchedTeam.status].color}`]: true}" class="badge rounded-pill text-white"> 
+                <span class="mr-1 text-white"> <b>Status:</b> </span>  
+                <span :class="{[`badge-${CONST_DispatchStatus[dispatchedTeam.status].color}`]: true}" class="badge badge-pill text-white"> 
                     {{ CONST_DispatchStatus[dispatchedTeam.status].text }} 
                 </span> 
             </h6>
@@ -25,52 +25,52 @@
                 <table class="table">
                     <thead>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Team">
-                            <th>Team dispatched</th>
+                            <td class="font-weight-bold">Team dispatched</td>
                             <td>
                                 {{ dispatchedTeam.team.name }}
-                                <button @click="$dispatch.setTeamInfo(dispatchedTeam.team)" type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#teamInfoModal">
+                                <button @click="$dispatch.setTeamInfo(dispatchedTeam.team)" type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#teamInfoModal">
                                     <i class="fas fa-fw fa-info-circle text-info"></i>
                                 </button>
                             </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Dispatcher">
-                            <th>Dispatcher</th>
-                            <td> {{ dispatchedTeam.dispatcher.first_name + ' ' + dispatchedTeam.dispatcher.last_name }} </td>
+                            <td class="font-weight-bold">Dispatcher</td>
+                            <td> {{ dispatchedTeam.dispatcher.last_name + ', ' + dispatchedTeam.dispatcher.first_name }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Location">
-                            <th>Location</th>
+                            <td class="font-weight-bold">Location</td>
                             <td> {{ dispatchedTeam.location }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Emergency">
-                            <th>Emergency type</th>
+                            <td class="font-weight-bold">Emergency type</td>
                             <td> {{ dispatchedTeam.emergency.name }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Description">
-                            <th>Description</th>
+                            <td class="font-weight-bold">Description</td>
                             <td> {{ dispatchedTeam.description }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Hazard</th>
+                            <td class="font-weight-bold">Hazard</td>
                             <td> {{ dispatchedTeam.hazard }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Number of people involved</th>
+                            <td class="font-weight-bold">Number of people involved</td>
                             <td> {{ dispatchedTeam.num_people_involved }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.CallerName">
-                            <th>Caller name</th>
+                            <td class="font-weight-bold">Caller name</td>
                             <td> {{ dispatchedTeam.caller_name }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.CallerNumber">
-                            <th>Caller number</th>
-                            <td> {{ dispatchedTeam.caller_number }} </td>
+                            <td class="font-weight-bold">Caller number</td>
+                            <td> +639{{ dispatchedTeam.caller_number }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Time of Call</th>
+                            <td class="font-weight-bold">Time of Call</td>
                             <td> {{ formatDate(new Date(dispatchedTeam.time_of_call)) }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Time proceeding to scene</th>
+                            <td class="font-weight-bold">Time proceeding to scene</td>
                             <td>
                                 <template v-if="dispatchedTeam.time_proceeding_scene"> 
                                     {{ formatDate(new Date(dispatchedTeam.time_proceeding_scene)) }} 
@@ -90,7 +90,7 @@
                             </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Time arrival at scene</th>
+                            <td class="font-weight-bold">Time arrival at scene</td>
                             <td>
                                 <template v-if="dispatchedTeam.time_arrival_scene"> 
                                     {{ formatDate(new Date(dispatchedTeam.time_arrival_scene)) }} 
@@ -110,7 +110,7 @@
                             </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Time proceeding to hospital</th>
+                            <td class="font-weight-bold">Time proceeding to hospital</td>
                             <td>
                                 <template v-if="dispatchedTeam.time_proceeding_hospital"> 
                                     {{ formatDate(new Date(dispatchedTeam.time_proceeding_hospital)) }} 
@@ -130,7 +130,7 @@
                             </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Time arrival at hospital</th>
+                            <td class="font-weight-bold">Time arrival at hospital</td>
                             <td>
                                 <template v-if="dispatchedTeam.time_arrival_hospital"> 
                                     {{ formatDate(new Date(dispatchedTeam.time_arrival_hospital)) }} 
@@ -149,7 +149,7 @@
                             </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Time proceeding to base</th>
+                            <td class="font-weight-bold">Time proceeding to base</td>
                             <td>
                                 <template v-if="dispatchedTeam.time_proceeding_base">
                                     {{ formatDate(new Date(dispatchedTeam.time_proceeding_base)) }}
@@ -166,7 +166,7 @@
                             </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Time arrival at base</th>
+                            <td class="font-weight-bold">Time arrival at base</td>
                             <td>
                                 <template v-if="dispatchedTeam.time_arrival_base">
                                     {{ formatDate(new Date(dispatchedTeam.time_arrival_base)) }}
@@ -183,8 +183,30 @@
                             </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
-                            <th>Remarks</th>
-                            <td> {{ dispatchedTeam.remarks }} </td>
+                            <td class="align-middle font-weight-bold">Remarks</td>
+                            <td>
+                                <textarea 
+                                    :id="'editRem_' + dispatchedTeam.id" 
+                                    :value="dispatchedTeam.remarks" 
+                                    class="form-control" 
+                                    rows="5"
+                                    :disabled="!dispatchedTeam.isEditRemarks"
+                                >
+                                </textarea>
+                                <button v-if="dispatchedTeam.isEditRemarks" @click="onCancelEditRemarks(dispatchedTeam)" class="btn btn-light float-left">
+                                    <i class="fas fa-times-circle text-secondary"></i>
+                                </button>
+                                <button v-if="dispatchedTeam.isEditRemarks" @click="onSaveRemarks(dispatchedTeam)" class="btn btn-light float-right">
+                                    <i class="fas fa-check-circle text-success"></i>
+                                </button>
+                                <button v-if="!dispatchedTeam.isEditRemarks" @click="onClickEditRemarks(dispatchedTeam)" type="button" class="btn btn-light btn-sm float-right">
+                                    <i class="fas fa-fw fa-edit text-info"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
                         </tr>
                     </thead>
                 </table>
@@ -200,7 +222,9 @@
 
             <div v-else-if="!dispatchedTeam.time_arrival_base && (!dispatchedTeam.is_cancelled || dispatchedTeam.is_cancelled && dispatchedTeam.time_proceeding_scene)" class="row">
                 <div class="col text-center">
-                    <button class="btn btn-primary">Reassign Dispatcher</button>
+                    <button @click="reassignDispatcher(dispatchedTeam)" class="btn btn-light text-info" data-toggle="modal" data-target="#reassignModalId">
+                        Reassign Dispatcher
+                    </button>
                 </div>
                 <div 
                     class="col text-center" 
@@ -208,7 +232,7 @@
                         dispatchedTeam.status === DispatchStatusEnum.ProceedingScene &&
                         !dispatchedTeam.is_cancelled
                     ">
-                        <button @click="cancelService(dispatchedTeam)" class="btn btn-danger">Cancel Service</button>
+                        <button @click="cancelService(dispatchedTeam)" class="btn btn-light text-danger">Cancel Service</button>
                 </div>
             </div>
             <div v-else class="row">
@@ -235,9 +259,10 @@ import { ref } from 'vue';
 import Swal from 'sweetalert2'
 
 defineProps<{
-        dispatchedTeam: IDispatch
+    dispatchedTeam: IDispatch
 }>()
-const emit = defineEmits(['set-time', 'set-complete', 'cancel-service'])
+
+const emit = defineEmits(['set-time', 'set-complete', 'cancel-service', 'on-reassign', 'edit-remarks'])
 
 const $dispatch = dispatchStore()
 
@@ -246,14 +271,14 @@ const cancelledLabel = ref('Service Cancelled')
 const cardHeaderBg = (dispatchedTeam: IDispatch) => {
 
     if(dispatchedTeam.status === DispatchStatusEnum.ArrivedBase || dispatchedTeam.is_completed){
-        return {'text-bg-success': true}
+        return {'bg-success': true}
     }
 
     if(dispatchedTeam.status === DispatchStatusEnum.Queue){
-        return {'text-bg-secondary': true}
+        return {'bg-secondary': true}
     }
 
-    return {'text-bg-danger': true}
+    return {'bg-danger': true}
 
 }
 
@@ -316,6 +341,37 @@ const cancelService = (dispatchedTeam: IDispatch) => {
             emit('cancel-service', {dispatchedTeam})
         }
     });
+}
+
+const onSaveRemarks = async(dispatchedTeam: IDispatch) => {
+    console.log('onSaveRemarks()')
+    dispatchedTeam.isEditRemarks = false
+
+    const remTextArea = document.getElementById('editRem_' + dispatchedTeam.id) as HTMLTextAreaElement
+
+    if(remTextArea){
+        emit('edit-remarks', {dispatchedTeam, remTextArea})
+    }
+}
+
+const onCancelEditRemarks = (dispatchedTeam: IDispatch) => {
+    console.log('onCancelEditRemarks()')
+    dispatchedTeam.isEditRemarks = false
+
+    const remTextArea = document.getElementById('editRem_' + dispatchedTeam.id) as HTMLTextAreaElement
+
+    if(remTextArea){
+        remTextArea.value = dispatchedTeam.remarks
+    }
+}
+
+const onClickEditRemarks = (dispatchedTeam: IDispatch) => {
+    console.log('onClickEditRemarks()', dispatchedTeam)
+    dispatchedTeam.isEditRemarks = true
+}
+
+const reassignDispatcher = (dispatchedTeam: IDispatch) => {
+    emit('on-reassign', {dispatchedTeam})
 }
 
 

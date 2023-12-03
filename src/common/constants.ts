@@ -3,6 +3,8 @@ import { TeamStatusEnum } from "../team";
 import { DistinctUserTypeEnum, GenderEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from "../user";
 
 export const routeNames = {
+    notFound: 'notFound.route',
+    login: 'login.route',
     dashboard: 'dashboard.route',
     users: 'users.route',
     userForm: 'userForm.route',

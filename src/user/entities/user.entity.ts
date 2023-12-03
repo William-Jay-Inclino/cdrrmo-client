@@ -1,6 +1,6 @@
 import { ITrainingSkill } from "../../training_skill"
 import { GenderEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from "."
-import { DispatchStatusEnum } from "@/dispatch"
+import { DispatchStatusEnum } from "../../dispatch"
 import { IBART } from "../../bart"
 import { ICSO } from "../../cso"
 import { IPO } from "../../po"
@@ -9,6 +9,7 @@ import { ITeam, ITeamMember } from "../../team"
 
 export interface IUser {
     id: string
+    user_id: number
     user_name: string 
     user_level: UserLevelEnum
     password: string
@@ -43,6 +44,7 @@ export interface IUser {
     // end
 
     // set programmatically 
+    fullName?: string,
     age?: number
     userLevelObj?: {
         id: UserLevelEnum,

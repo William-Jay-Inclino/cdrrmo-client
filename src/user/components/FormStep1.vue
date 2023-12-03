@@ -23,7 +23,7 @@
                     <div class="d-grid gap-2">
                         <button
                             :class="{'btn-primary': $user.formData.gender === GenderEnum.Male, 'btn-outline-primary': $user.formData.gender !== GenderEnum.Male}"
-                            class="btn"
+                            class="btn btn-block"
                             type="button"
                             @click="$user.formData.gender = GenderEnum.Male"
                         >
@@ -35,7 +35,7 @@
                     <div class="d-grid gap-2">
                         <button
                             :class="{'btn-primary': $user.formData.gender === GenderEnum.Female, 'btn-outline-primary': $user.formData.gender !== GenderEnum.Female}"
-                            class="btn"
+                            class="btn btn-block"
                             type="button"
                             @click="$user.formData.gender = GenderEnum.Female"
                         >
@@ -59,8 +59,10 @@
         </div>
         <div class="form-group">
             <label>Contact Number</label>
-            <div class="input-group">
-                <span class="input-group-text" id="basic-addon1">+63</span>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">+63</span>
+                </div>
                 <input
                   v-model="$user.formData.contact_no"
                   type="text"
@@ -69,8 +71,6 @@
                   maxlength="10"
                   @input="() => $user.formData.contact_no = $user.formData.contact_no.replace(/\D/g, '')">
             </div>
-            <small class="form-text text-danger" v-if="$user.formErrors.contact_no"> {{ errorMsg }} </small>
-            <small class="form-text text-danger" v-else-if="$user.formErrors.isInvalidContactNo"> Contact number is invalid </small>
         </div>
         <div class="form-group">
             <label>Blood Type</label>
@@ -89,7 +89,7 @@
                     <div class="d-grid gap-2">
                         <button
                             :class="{'btn-primary': $user.formData.status === UserStatusEnum.Active, 'btn-outline-primary': $user.formData.status !== UserStatusEnum.Active}"
-                            class="btn"
+                            class="btn btn-block"
                             type="button"
                             @click="$user.formData.status = UserStatusEnum.Active"
                         >
@@ -101,7 +101,7 @@
                     <div class="d-grid gap-2">
                         <button
                             :class="{'btn-primary': $user.formData.status === UserStatusEnum.Inactive, 'btn-outline-primary': $user.formData.status !== UserStatusEnum.Inactive}"
-                            class="btn"
+                            class="btn btn-block"
                             type="button"
                             @click="$user.formData.status = UserStatusEnum.Inactive"
                         >
@@ -293,7 +293,7 @@ watch(subType, (val) => {
 
 <style scoped>
     hr {
-        border: 5px solid black; /* Set the border to a solid black line */
+        border: 5px solid; /* Set the border to a solid black line */
         height: 0; /* Set height to zero, as border will create the visible line */
         margin: 25px 0; /* Add margin for spacing */
         box-sizing: content-box; /* Set box-sizing to content-box to avoid extra space inside the hr */

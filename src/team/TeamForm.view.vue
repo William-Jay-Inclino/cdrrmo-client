@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="card shadow mb-4">
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-bg-primary">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-primary text-white">
                                 <h6 class="m-0 font-weight-bold"> {{ action + ' ' + moduleLabel }} </h6>
                             </div>
                 
@@ -38,14 +38,14 @@
                                     </small>
                                     <small class="form-text text-danger" v-if="$team.formErrors.teamLeader"> {{ errorMsg }} </small>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" v-if="!$team.formIsEditMode">
                                     <label>Status</label>
                                     <div class="row">
                                         <div class="col">
                                             <div class="d-grid gap-2">
                                                 <button
                                                     :class="{'btn-primary': $team.formData.status === TeamStatusEnum.Active, 'btn-outline-primary': $team.formData.status !== TeamStatusEnum.Active}"
-                                                    class="btn"
+                                                    class="btn btn-block"
                                                     type="button"
                                                     @click="$team.formData.status = TeamStatusEnum.Active"
                                                 >
@@ -57,7 +57,7 @@
                                             <div class="d-grid gap-2">
                                                 <button
                                                     :class="{'btn-primary': $team.formData.status === TeamStatusEnum.Inactive, 'btn-outline-primary': $team.formData.status !== TeamStatusEnum.Inactive}"
-                                                    class="btn"
+                                                    class="btn btn-block"
                                                     type="button"
                                                     @click="$team.formData.status = TeamStatusEnum.Inactive"
                                                 >
@@ -198,8 +198,3 @@ const onCancel = () => {
 
 </script>
 
-
-
-<style>
-    @import "vue-select/dist/vue-select.css";
-</style>

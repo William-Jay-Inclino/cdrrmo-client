@@ -6,7 +6,8 @@ import { ICreateDispatchDto, IUpdateDispatchDto } from './dto';
 import { IEmergency, emergencyService } from '../emergency';
 import { ITeam, TeamStatusEnum, teamService } from '../team';
 import { isValidPhoneNumber } from '../common';
-import { appStore } from '../app';
+import { authStore } from '../auth';
+import { IUser, userService } from '../user';
 
 export const dispatchStore = defineStore('dispatch', () => {
     
@@ -49,12 +50,13 @@ export const dispatchStore = defineStore('dispatch', () => {
         returned: true,
     }
 
-    const $app = appStore()
+    const $auth = authStore()
 
     // state
     const _dispatchedTeams = ref<IDispatch[]>([])
     const _emergencies = ref<IEmergency[]>([])
     const _activeTeams = ref<ITeam[]>([])
+    const _dispatchers = ref<IUser[]>([])
 
     const formData = ref<ICreateDispatchDto>({..._formDataInitial})
     const formErrors = ref({..._formErrorsInitial})
@@ -68,6 +70,11 @@ export const dispatchStore = defineStore('dispatch', () => {
     const setDispatchTeams = (dispatchedTeams: IDispatch[]) => {
         console.log(_store + 'setDispatchTeams()', dispatchedTeams)
         _dispatchedTeams.value = dispatchedTeams
+    }
+
+    const setDispatchers = (dispatchers: IUser[]) => {
+        console.log(_store + 'setDispatchers()', dispatchers)
+        _dispatchers.value = dispatchers
     }
 
     const setEmergencies = (emergencies: IEmergency[]) => {
@@ -121,7 +128,7 @@ export const dispatchStore = defineStore('dispatch', () => {
             items = items.filter(i => i.team.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
         }
         else if(searchReference.value === SearchRefEnum.Dispatcher){
-            items = items.filter(i => (i.dispatcher.first_name + ' ' + i.dispatcher.last_name).toLowerCase().includes(searchQuery.value.toLowerCase()))
+            items = items.filter(i => (i.dispatcher.last_name + ', ' + i.dispatcher.first_name).toLowerCase().includes(searchQuery.value.toLowerCase()))
         }
         else if(searchReference.value === SearchRefEnum.Emergency){
             items = items.filter(i => i.emergency.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
@@ -153,16 +160,23 @@ export const dispatchStore = defineStore('dispatch', () => {
             return i
         })
     })
+    const dispatchers = computed( () => {
+        return _dispatchers.value.map(i => {
+            i.label = i.first_name + ' ' + i.last_name 
+            return i
+        })
+    })
 
     // methods 
 
     const init = async() => {
         setDispatchTeams(await dispatchService.findAll())
+        setDispatchers(await userService.findDispatchers())
     }
 
     const initForm = async() => {
         console.log('initForm()')
-        setActiveTeams(await teamService.findAllActive(TeamStatusEnum.Active))
+        setActiveTeams(await teamService.findAllActive())
         setEmergencies(await emergencyService.findAll())
     }
 
@@ -238,7 +252,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         for(let i of formTeams.value){
             const x = {...dispatchedTeam}
             x.team_id = i.id
-            x.dispatcher_id = $app.authUser.id
+            x.dispatcher_id = $auth.authUser!.id
             dispatchedTeamArray.push(x)
         }
 
@@ -278,7 +292,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         return null
     }
 
-    const onUpdateTimeField = async(payload: {id: string, field: string}): Promise<IDispatch | null> => {
+    const onUpdateTimeField = async(payload: {id: string, field: string, dispatcher_id: string}): Promise<IDispatch | null> => {
         console.log(_store + 'onUpdateTimeField()', payload)
 
         const updated = await dispatchService.updateTimeField(payload)
@@ -307,7 +321,9 @@ export const dispatchStore = defineStore('dispatch', () => {
     
 
     return {
+        _dispatchedTeams,
         dispatchedTeams,
+        dispatchers,
         formData,
         formErrors,
         formTeams,

@@ -10,11 +10,11 @@ export default defineConfig( ({command, mode}) => {
         base: env.VITE_BASE_URL,
         plugins: [vue()],
         server: {
-        host: true,
-        port: 5173,
-        proxy: {
-            "/api": { target: env.VITE_PROXY, secure: false, changeOrigin: true },
-        },
+            host: true,
+            port: Number(env.VITE_PORT) || 3000,
+            proxy: {
+                "/api": { target: env.VITE_PROXY, secure: false, changeOrigin: true },
+            },
         },
     }
 })

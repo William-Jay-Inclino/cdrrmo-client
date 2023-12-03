@@ -1,4 +1,4 @@
-import { IUser } from "."
+import { IUser, SearchFieldEnum } from "."
 import { config } from "../config"
 
 
@@ -7,11 +7,49 @@ class UserService{
     private endpoint = '/user/'
     private service = 'UserService: '
 
-    async findAll(): Promise<IUser[]>{
+    async findAll(payload: {page: number, pageSize: number, searchField?: SearchFieldEnum, searchValue?: string}): 
+        Promise<{
+            currentPage: number,
+            totalPages: number,
+            totalUsers: number,
+            users: IUser[]
+        }>
+    {
+
         console.log(this.service + 'findAll()')
         
 		try {
-			const response = await config.api.get(this.endpoint);
+
+            let newEndpoint = this.endpoint
+            newEndpoint += '?page='+payload.page+'&pageSize='+payload.pageSize
+
+            if(payload.searchValue && payload.searchField){
+                newEndpoint += '&searchField='+payload.searchField+'&searchValue='+payload.searchValue
+            }
+
+			const response = await config.api.get(newEndpoint);
+			console.log({response})
+            if(response.status === 200){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return {
+            currentPage: 0,
+            totalPages: 0,
+            totalUsers: 0,
+            users: []
+        }
+    }
+
+    async findOrphanTeamLeaders(): Promise<IUser[]>{
+        console.log(this.service + 'findOrphanTeamLeaders()')
+        
+		try {
+			const response = await config.api.get(this.endpoint + 'orphan-team-leaders');
 			console.log({response})
             if(response.status === 200){
                 return response.data
@@ -24,11 +62,11 @@ class UserService{
         return []
     }
 
-    async findOrphanTeamLeaders(): Promise<IUser[]>{
-        console.log(this.service + 'findOrphanTeamLeaders()')
+    async findDispatchers(): Promise<IUser[]>{
+        console.log(this.service + 'findDispatchers()')
         
 		try {
-			const response = await config.api.get(this.endpoint + 'orphan-team-leaders');
+			const response = await config.api.get(this.endpoint + 'dispatchers');
 			console.log({response})
             if(response.status === 200){
                 return response.data

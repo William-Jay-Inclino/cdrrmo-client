@@ -33,12 +33,15 @@
                         @set-time="setTime"
                         @set-complete="setComplete"
                         @cancel-service="cancelService"
+                        @on-reassign="onReassign"
+                        @edit-remarks="onEditRemarks"
                     />
                 </div>
             </template>
         </div>
 
         <TeamInfoModal :team="$dispatch.teamInfo" :can-manage="false"/>
+        <ReassignModal :dispatched-team="dispatchedTeamSelected" @reassign-dispatcher="reassignDispatcher"/>
   </div>
 
 </template>
@@ -52,8 +55,13 @@
     import InfoCard from './components/InfoCard.vue'
     import TeamInfoModal from '../team/components/TeamInfoModal.vue';
     import Switch from './components/Switch.vue'
+    import ReassignModal from "./components/ReassignModal.vue";
+    import { IUser } from "../user";
+    import { ref } from "vue";
 
     const $dispatch = dispatchStore()
+
+    const dispatchedTeamSelected = ref<IDispatch | null>(null)
 
     $dispatch.init()
 
@@ -75,7 +83,7 @@
 
         const field = fields[payload.field]
 
-        const dispatchedTeam = await $dispatch.onUpdateTimeField({id: payload.dispatchedTeam.id,field})
+        const dispatchedTeam = await $dispatch.onUpdateTimeField({id: payload.dispatchedTeam.id,field, dispatcher_id: payload.dispatchedTeam.dispatcher_id})
 
         if(dispatchedTeam){
             toast.success(payload.field + ' successfully recorded!')
@@ -125,6 +133,56 @@
             toast.error('Operation could not be cancelled!')
         }
 
+    }
+
+    const onReassign = async(payload: {dispatchedTeam: IDispatch}) => {
+        console.log('reassignDispatcher()', payload)
+        dispatchedTeamSelected.value = payload.dispatchedTeam
+    }
+
+    const reassignDispatcher = async(payload: {dispatchedTeam: IDispatch, dispatcher: IUser}) => {
+        console.log('reassignDispatcher()', payload)
+
+        const data = {
+            dispatcher_id: payload.dispatcher.id
+        }
+
+        const dispatchedTeam = await $dispatch.onUpdate({id: payload.dispatchedTeam.id, data})
+
+        if(dispatchedTeam){
+            dispatchedTeamSelected.value = null
+            toast.success(`Reassigned successfully to ${payload.dispatcher.last_name + ', ' + payload.dispatcher.first_name}!`)
+        }else{
+            toast.error('Reassigned failed!')
+        }
+        
+    }
+
+    const onEditRemarks = async(payload: {dispatchedTeam: IDispatch, remTextArea: HTMLTextAreaElement}) => {
+        console.log('onEditRemarks()', payload)
+
+        const prevVal = payload.dispatchedTeam.remarks
+        const newVal = payload.remTextArea.value
+
+        payload.dispatchedTeam.remarks = newVal
+
+        const data = {
+            remarks: newVal,
+        }
+
+        console.log('data', data)
+        console.log('prevVal', prevVal)
+
+        const dispatchedTeam = await $dispatch.onUpdate({id: payload.dispatchedTeam.id, data})
+
+        if(dispatchedTeam){
+            toast.success('Remarks updated!')
+
+        }else{
+            toast.error('Failed to update remarks!')
+
+            payload.dispatchedTeam.remarks = prevVal
+        }
     }
 
 

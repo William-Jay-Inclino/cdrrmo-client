@@ -1,6 +1,6 @@
 
 import { defineStore } from 'pinia'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { DistinctUserTypeEnum, GenderEnum, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum, userService } from '.';
 import { CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_UserTypes, CONST_bloodTypes } from '../common/constants';
 import { faker } from '@faker-js/faker';
@@ -65,6 +65,13 @@ export const userStore = defineStore('user', () => {
         isInvalidContactNo: false,
     }
 
+    const _paginationInitial = {
+        currentPage: 0,
+        totalPages: 0,
+        totalUsers: 0,
+        perPage: 10,
+    }
+
     const _NAs = ref<INa[]>([])
     const _CSOs = ref<ICSO[]>([])
     const _POs = ref<IPO[]>([])
@@ -78,6 +85,7 @@ export const userStore = defineStore('user', () => {
     const formErrors = ref({..._formErrorsInitial})
     const formUserType = ref<DistinctUserTypeEnum>(_formUserTypeInitial)
     const formCurrentStep = ref(_formCurrentStepInitial)
+    const pagination = ref({..._paginationInitial})
 
     // ============================== END STATE ============================== 
 
@@ -102,7 +110,9 @@ export const userStore = defineStore('user', () => {
 
     const init = async() => {
         console.log(_store + 'init()')
-        setUsers(await userService.findAll())
+        const {currentPage, totalPages, totalUsers, users} = await userService.findAll({page: 1, pageSize: pagination.value.perPage}) 
+        setPagination(currentPage, totalPages, totalUsers)
+        setUsers(users)
     }
 
     const initForm = async() => {
@@ -112,6 +122,12 @@ export const userStore = defineStore('user', () => {
         setCSOs(await csoService.findAll())
         setNAs(await naService.findAll())
         setPOs(await poService.findAll())
+    }
+
+    const setPagination = (currentPage: number, totalPages: number, totalUsers: number) => {
+        pagination.value.currentPage = currentPage
+        pagination.value.totalPages = totalPages
+        pagination.value.totalUsers = totalUsers
     }
 
     const setUsers = (items: IUser[]) => {
@@ -168,16 +184,16 @@ export const userStore = defineStore('user', () => {
 
             // Create a copy of the object without the password_hash field
             // @ts-ignore
-            const { password_hash, ...userWithoutPassword } = i;
+            // const { password_hash, ...userWithoutPassword } = i;
 
             // Add additional properties or modify existing ones
-            userWithoutPassword.age = getAge(new Date(i.birth_date!));
-            userWithoutPassword.genderObj = CONST_Gender[i.gender];
-            userWithoutPassword.userLevelObj = CONST_UserLevel[i.user_level];
-            userWithoutPassword.userTypeObj = CONST_UserTypes[i.type];
-            userWithoutPassword.userSubTypeObj = CONST_SubTypes[i.type];
-            userWithoutPassword.statusObj = CONST_UserStatus[i.status];
-            return userWithoutPassword
+            i.age = getAge(new Date(i.birth_date!));
+            i.genderObj = CONST_Gender[i.gender];
+            i.userLevelObj = CONST_UserLevel[i.user_level];
+            i.userTypeObj = CONST_UserTypes[i.type];
+            i.userSubTypeObj = CONST_SubTypes[i.type];
+            i.statusObj = CONST_UserStatus[i.status];
+            return i
         })
     })
 
@@ -481,6 +497,7 @@ export const userStore = defineStore('user', () => {
         POs,
         BARTs,
         CSOs,
+        pagination,
 
         init,
         initForm,
@@ -491,6 +508,7 @@ export const userStore = defineStore('user', () => {
         isValidStep3,
         saveUser,
         resetFormData,
+        setPagination,
     }
 })
 
