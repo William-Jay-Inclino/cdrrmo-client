@@ -4,6 +4,7 @@ import { DistinctUserTypeEnum, GenderEnum, UserLevelEnum, UserStatusEnum, UserTy
 
 export const routeNames = {
     notFound: 'notFound.route',
+    unauthorized: 'unauthorized.route',
     login: 'login.route',
     dashboard: 'dashboard.route',
     users: 'users.route',
@@ -27,7 +28,9 @@ export const routeNames = {
     trainingSkillsForm: 'trainingSkillsForm.route',
 }
 
-
+export const dispatcherModules = [routeNames.login, routeNames.dispatch, routeNames.dispatchForm, routeNames.notFound, routeNames.unauthorized]
+export const teamLeadModules = []
+export const fieldOperatorModules = []
 
 export const CONST_bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 

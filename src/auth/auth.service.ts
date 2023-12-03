@@ -1,6 +1,7 @@
 
 import { IAuth } from "."
 import { config } from "../config";
+import { UserLevelEnum } from "../user";
 
 class AuthService{
 
@@ -32,6 +33,26 @@ class AuthService{
     isAuthenticated() {
         // Check if the auth object exists in localStorage
         return !!localStorage.getItem('auth');
+    }
+
+    isAdmin(){
+        const auth = this.getAuth()
+        return auth?.user.user_level === UserLevelEnum.Admin
+    }
+
+    isDispatcher(){
+        const auth = this.getAuth()
+        return auth?.user.user_level === UserLevelEnum.Dispatcher
+    }
+
+    isTeamLeader(){
+        const auth = this.getAuth()
+        return auth?.user.user_level === UserLevelEnum.Team_Leader
+    }
+
+    isFieldOperator(){
+        const auth = this.getAuth()
+        return auth?.user.user_level === UserLevelEnum.Field_Operator
     }
 
     getAuth(): IAuth | null {

@@ -42,6 +42,11 @@ api.interceptors.response.use(
         toast.error('Token expired or invalid. Please login again.');
         router.push({ name: routeNames.login });
       }
+      
+      // else if (error.response?.status === 403) {
+      //   toast.error('Unauthorized page!');
+      //   router.back()
+      // }
   
       return Promise.reject(error);
     }

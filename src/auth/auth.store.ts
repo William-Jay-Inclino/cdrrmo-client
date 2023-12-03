@@ -38,8 +38,6 @@ export const authStore = defineStore('auth', () => {
         _auth.value = auth
     } 
 
-
-
     // methods 
 
     const login = async(payload: {username: string, password: string}): Promise<boolean> => {

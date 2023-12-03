@@ -4,9 +4,9 @@ import { DispatchStatusEnum, IDispatch, SearchRefEnum, dispatchService } from '.
 import { computed, ref } from 'vue';
 import { ICreateDispatchDto, IUpdateDispatchDto } from './dto';
 import { IEmergency, emergencyService } from '../emergency';
-import { ITeam, TeamStatusEnum, teamService } from '../team';
+import { ITeam, teamService } from '../team';
 import { isValidPhoneNumber } from '../common';
-import { authStore } from '../auth';
+import { authService, authStore } from '../auth';
 import { IUser, userService } from '../user';
 
 export const dispatchStore = defineStore('dispatch', () => {
@@ -43,6 +43,7 @@ export const dispatchStore = defineStore('dispatch', () => {
     }
 
     const _flagsInitial = {
+        isInitialized: false,
         expand: true,
         showComplete: false,
         queue: true,
@@ -170,8 +171,21 @@ export const dispatchStore = defineStore('dispatch', () => {
     // methods 
 
     const init = async() => {
+
+        console.log(_store + 'init()')
+
+        if(flags.value.isInitialized){
+            return 
+        }
+
         setDispatchTeams(await dispatchService.findAll())
-        setDispatchers(await userService.findDispatchers())
+
+        if(authService.isAdmin()){
+            setDispatchers(await userService.findDispatchers())
+        }
+
+        flags.value.isInitialized = true 
+
     }
 
     const initForm = async() => {
@@ -319,6 +333,21 @@ export const dispatchStore = defineStore('dispatch', () => {
         teamInfo.value = null
     }
     
+    const resetStore = () => {
+        console.log(_store + 'resetStore()')
+        _dispatchedTeams.value = []
+        _emergencies.value = []
+        _activeTeams.value = []
+        _dispatchers.value = []
+    
+        formData.value = {..._formDataInitial}
+        formErrors.value = {..._formErrorsInitial}
+        formTeams.value = []
+        flags.value = {..._flagsInitial}
+        teamInfo.value = null
+        searchQuery.value = ''
+        searchReference.value = SearchRefEnum.Team
+    }
 
     return {
         _dispatchedTeams,
@@ -340,6 +369,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         onUpdate,
         onUpdateTimeField,
         setTeamInfo,
+        resetStore,
     }
 })
 
