@@ -22,6 +22,13 @@
             </div>
         </div>
 
+        <div class="form-group" v-if="$user.formIsEditMode">
+            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#resetPasswordModalId">
+                Reset Password
+            </button>
+        </div>
+
+        <ResetPasswordModal :username="$user.formData.user_name" :id="$user.formData.id"/>
 
     </form>
 
@@ -32,6 +39,7 @@
 
 import { ref } from 'vue';
 import { userStore } from '..';
+import ResetPasswordModal from './ResetPasswordModal.vue';
 
 const $user = userStore()
 const showPassword = ref(false)

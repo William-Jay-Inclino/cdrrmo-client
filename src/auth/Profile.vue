@@ -14,16 +14,11 @@
                     <div class="row">
                         <div class="col">
                             <div class="card shadow mb-4">
-                                <div class="card-header py-3 d-flex flex-row align-items-center">
+                                <div class="card-header py-3 d-flex flex-row align-items-center card-header-with-bg">
                                     <img :src="config.baseUrl + 'images/avatar2.png'" class="img-thumbnail profile-image">
-
                                     <div class="ml-5">
-                                        <h3 class="m-0 font-weight-bold" style="font-size: 3.5rem;">
-                                            {{ me.first_name }}
-                                        </h3>
-                                        <h3 class="m-0 font-weight-bold ml-5" style="font-size: 3.5rem;">
-                                            {{ me.last_name }}
-                                        </h3>
+                                        <h3 class="m-0 font-weight-bold pop-up-text">{{ me.first_name }}</h3>
+                                        <h3 class="m-0 font-weight-bold ml-5 pop-up-text">{{ me.last_name }}</h3>
                                     </div>
                                 </div>
 
@@ -226,4 +221,33 @@
   max-height: 150px; 
 }
 
+.card-header-with-bg {
+  position: relative;
+}
+
+.card-header-with-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url(/images/ormoc_bg.png) center / cover no-repeat;
+  filter: brightness(0.7);
+}
+
+.card-header-with-bg img {
+  z-index: 1;
+}
+
+.card-header-with-bg div {
+  z-index: 2;
+  position: relative;
+}
+
+.pop-up-text {
+  font-size: 3.5rem;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
 </style>

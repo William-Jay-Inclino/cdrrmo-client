@@ -100,8 +100,6 @@
             </div>
         </div>
 
-        <ResetPasswordModal :id="resetModalId" :user="selectedUser" v-if="selectedUser"/>
-
     </div>
 
 </template>
@@ -109,22 +107,18 @@
 
 <script setup lang="ts">
     
-import { ref } from 'vue';
 import { IUser, userStore } from '.'
 import { routeNames } from '../common/constants'
 import { useRouter } from 'vue-router';
-import ResetPasswordModal from './components/ResetPasswordModal.vue';
 import Search from './components/Search.vue'
 import TablePagination from './components/TablePagination.vue'
 import TablePerPage from './components/TableSelectPerPage.vue'
 
-const resetModalId = ref('resetModalId')
 
 const $user = userStore()
 const router = useRouter()
 
 $user.init()
-const selectedUser = ref<IUser | null>(null)
 
 console.log('$userStore', $user)
 
@@ -133,9 +127,5 @@ const onClickUpdate = (data: IUser) => {
     router.push({name: routeNames.userForm, query: {id: data.id}})
 }
 
-const onClickResetPw = (user: IUser) => {
-    console.log('onClickResetPw()', user)
-    selectedUser.value = user
-}
 
 </script>

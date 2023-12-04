@@ -1,9 +1,9 @@
 <template>
 
-    <div class="modal fade" :id="id" tabindex="-1" role="dialog" :aria-labelledby="id"
+    <div class="modal fade" id="resetPasswordModalId" tabindex="-1" role="dialog" aria-labelledby="resetPasswordModalId"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form class="modal-content" @submit.prevent="onSubmit()">
+            <form class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Reset Password</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -26,7 +26,7 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-warning text-white" data-dismiss="modal">Reset</button>
+                    <button @click="onUpdatePassword()" type="submit" class="btn btn-warning text-white" data-dismiss="modal">Update</button>
                 </div>
             </form>
         </div>
@@ -38,24 +38,35 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { IUser } from '..';
 import { faker } from '@faker-js/faker';
+import { authService } from '../../auth';
+import { useToast } from "vue-toastification";
 
 const props = defineProps<{
-    id: string
-    user: IUser
+    id: string,
+    username: string
 }>()
+
+const toast = useToast();
 
 const showPassword = ref(false)
 
-const password = ref(props.user.user_name + faker.number.int({min: 100, max: 999}))
+const password = ref(props.username + faker.number.int({min: 100, max: 999}))
 
 const togglePassword = () => {
     showPassword.value = !showPassword.value
 }
 
-const onSubmit = () => {
+const onUpdatePassword = async() => {
     console.log('onSubmit()')
+    const passwordUpdated = await authService.updatePassword(props.id, password.value)
+
+    if(passwordUpdated){
+        toast.success("Password updated!")
+    }else{
+        toast.error("Failed to update password!")
+    }
+
 }
 
 </script>

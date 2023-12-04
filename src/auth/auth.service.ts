@@ -30,6 +30,25 @@ class AuthService{
         return null
     }
 
+    async updatePassword(id: string, password: string): Promise<boolean> {
+
+        console.log(this.service + 'updatePassword()', password)
+
+		try {
+			const response = await config.api.patch(this.endpoint + 'update-password/' + id, {password});
+			console.log({response})
+            if(response.status === 200){
+                return true
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return false
+
+    }
+
     isAuthenticated() {
         // Check if the auth object exists in localStorage
         return !!localStorage.getItem('auth');
