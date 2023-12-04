@@ -49,6 +49,29 @@ class AuthService{
 
     }
 
+    async renewPassword(id: string, data: {currentPassword: string, newPassword: string}): Promise<boolean | number> {
+
+        console.log(this.service + 'renewPassword()', data)
+
+		try {
+			const response = await config.api.patch(this.endpoint + 'renew-password/' + id, data);
+			console.log('===response===', response)
+            if(response.status === 200){
+                return true
+            }
+            console.error('Error: ', response)
+            return response.status
+		} catch (error: any) {
+			console.error('Error fetching data:', error);
+            if(error.response && error.response.status){
+                return error.response.status
+            }
+		}
+
+        return false
+
+    }
+
     isAuthenticated() {
         // Check if the auth object exists in localStorage
         return !!localStorage.getItem('auth');
