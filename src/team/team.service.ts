@@ -1,7 +1,7 @@
 import { config } from "../config";
 import { ICreateTeamDto } from "./dto/create-team.dto";
 import { IUpdateTeamDto } from "./dto/update-team.dto";
-import { ITeam, ITeamMember, TeamStatusEnum } from "./entities"
+import { ITeam, ITeamMember } from "./entities"
 
 class TeamService{
 
