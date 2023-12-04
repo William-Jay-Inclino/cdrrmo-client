@@ -9,7 +9,7 @@
       </header>
   
       <!-- Main content with background image and overlay -->
-      <div class="container-fluid main-content" style="background-image: url('images/ormoc_bg.png');">
+      <div class="container-fluid main-content" :style="{ 'background-image': 'url(' + config.baseUrl + 'images/ormoc_bg.png)' }">
         <div class="overlay"></div>
         <div class="row justify-content-center mt-5">
           <div class="col-md-4">
@@ -49,6 +49,7 @@
     import { routeNames } from '../common/constants'
     import { useRouter } from 'vue-router';
     import Swal from 'sweetalert2'
+    import { config } from '../config';
 
     const router = useRouter()
     const $auth = authStore()

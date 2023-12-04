@@ -77,9 +77,9 @@
                                                     <button @click="onClickUpdate(user)" class="btn btn-light btn-sm">
                                                         <i class="fas fa-fw fa-pencil-alt"></i>
                                                     </button>
-                                                    <button @click="onClickResetPw(user)" class="btn btn-light btn-sm">
+                                                    <!-- <button @click="onClickResetPw(user)" class="btn btn-light btn-sm">
                                                         <i class="fas fa-fw fa-lock text-warning"></i>
-                                                    </button>
+                                                    </button> -->
                                                 </td>
 
 

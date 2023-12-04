@@ -3,14 +3,30 @@ import { dispatcherModules, routeNames } from './common/constants'
 import { authService } from './auth';
 import NotFound from './common/components/NotFound.vue'
 import Unauthorized from './common/components/Unauthorized.vue'
-import { UserLevelEnum } from './user';
+import Login from './auth/Login.vue'
+import Profile from './auth/Profile.vue'
+import Settings from './auth/Settings.vue'
 
 const routes = [
+
+    // ================ auth route ================ 
 
     {
         path: '/',
         name: routeNames.login,
-        component: () => import('./auth/Login.vue')
+        component: Login,
+    },
+
+    {
+        path: '/my-profile',
+        name: routeNames.profile,
+        component: Profile,
+    },
+
+    {
+        path: '/my-settings',
+        name: routeNames.settings,
+        component: Settings,
     },
 
     // ================ dashboard route ================ 

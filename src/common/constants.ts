@@ -3,6 +3,8 @@ import { TeamStatusEnum } from "../team";
 import { DistinctUserTypeEnum, GenderEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from "../user";
 
 export const routeNames = {
+    profile: 'profile.route',
+    settings: 'settings.route',
     notFound: 'notFound.route',
     unauthorized: 'unauthorized.route',
     login: 'login.route',
@@ -28,7 +30,16 @@ export const routeNames = {
     trainingSkillsForm: 'trainingSkillsForm.route',
 }
 
-export const dispatcherModules = [routeNames.login, routeNames.dispatch, routeNames.dispatchForm, routeNames.notFound, routeNames.unauthorized]
+export const dispatcherModules = [
+    routeNames.login, 
+    routeNames.dispatch, 
+    routeNames.dispatchForm, 
+    routeNames.notFound, 
+    routeNames.unauthorized, 
+    routeNames.profile,
+    routeNames.settings,
+]
+
 export const teamLeadModules = []
 export const fieldOperatorModules = []
 
