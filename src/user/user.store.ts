@@ -479,6 +479,9 @@ export const userStore = defineStore('user', () => {
         formErrors.value = {..._formErrorsInitial}
         formCurrentStep.value = _formCurrentStepInitial
         formUserType.value = _formUserTypeInitial
+
+        formData.value.emergencyContacts = []
+        formData.value.skills = []
     }
 
 
