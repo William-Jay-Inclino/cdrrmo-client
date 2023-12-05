@@ -1,11 +1,12 @@
 import { config } from "../config";
+import { IncidentReport } from "./entities";
 
 class ReportService{
 
     private endpoint = '/report/'
     private service = 'reportService: '
 
-    async getDispatchesByDate(payload: {startDate: string, endDate: string}){
+    async getDispatchesByDate(payload: {startDate: string, endDate: string}): Promise<IncidentReport[]>{
         console.log(this.service + 'getDispatchesByDate()')
 		try {
 			const response = await config.api.get(this.endpoint + `dispatches/byDate/${payload.startDate}/${payload.endDate}`);

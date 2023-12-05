@@ -1,5 +1,7 @@
+import { IDispatch } from "../../dispatch";
 
 
-export {
-    
+export interface IncidentReport {
+    date: string,
+    data: IDispatch[]
 }

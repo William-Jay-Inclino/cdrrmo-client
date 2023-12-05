@@ -8,48 +8,23 @@
 
         <div class="row justify-content-center">
             <div class="col-8">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3 d-flex flex-row align-items-center">
-                        Select Start and End Date or Filter by: 
-                        <div class="btn-group btn-group-toggle ml-3" data-toggle="buttons">
-                            <label class="btn btn-outline-primary active">
-                                <input @click="onChangeFilter(IncidentReportEnum.CUSTOM)" type="radio" name="options" id="option1" autocomplete="off"> Custom
-                            </label>
-                            <label class="btn btn-outline-primary">
-                                <input @click="onChangeFilter(IncidentReportEnum.LAST_WEEK)" type="radio" name="options" id="option1" autocomplete="off"> Last week
-                            </label>
-                            <label class="btn btn-outline-primary">
-                                <input @click="onChangeFilter(IncidentReportEnum.THIS_WEEK)" type="radio" name="options" id="option2" autocomplete="off"> This week
-                            </label>
-                            <label class="btn btn-outline-primary">
-                                <input @click="onChangeFilter(IncidentReportEnum.LAST_MONTH)" type="radio" name="options" id="option3" autocomplete="off"> Last Month
-                            </label>
-                            <label class="btn btn-outline-primary">
-                                <input @click="onChangeFilter(IncidentReportEnum.THIS_MONTH)" type="radio" name="options" id="option3" autocomplete="off"> This Month
-                            </label>
-                        </div>
-                    </div>
 
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label>Start Date</label>
-                            <input v-model="startDate" type="date" class="form-control" :disabled="filter !== IncidentReportEnum.CUSTOM">
-                        </div>
-                        <div class="form-group">
-                            <label>End Date</label>
-                            <input v-model="endDate" type="date" class="form-control" :disabled="filter !== IncidentReportEnum.CUSTOM">
-                        </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <p class="text-muted"><i>Please note that the default start day of the week is set to Sunday</i></p>
-                    </div>
-
+                <Filter />
+                <div class="float-right">
+                    <button @click="onClickViewReport()" class="btn btn-primary" :disabled="$report.isDisabledReportBtn">View Report</button>
+                    <button @click="onClickExportToCSV()" class="btn btn-success ml-2" :disabled="$report.isDisabledReportBtn">Export Data (CSV)</button>
                 </div>
 
-                <button @click=generateReport() class="btn btn-primary float-right">Generate Report</button>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-5">
+            <div class="col">
+
+                <Table v-for="item in items" :item="item"/>
 
             </div>
+
         </div>
 
 
@@ -61,87 +36,122 @@
 
 <script setup lang="ts">
 
-    import { computed, ref } from 'vue';
-    import { reportService } from '.';
-    import { IncidentReportEnum } from './entities/enums.entity';
-    import moment from 'moment';
+    import { ref } from 'vue';
+    import Filter from './components/Filter.vue';
+    import Table from './components/Table.vue';
 
-    const startDate = ref('')
-    const endDate = ref('')
-    const filter = ref(IncidentReportEnum.CUSTOM)
+    import { reportStore } from './report.store';
+    import { IncidentReport } from './entities';
+    import Papa from 'papaparse';
 
-    const today = ref(new Date());
+    const $report = reportStore()
 
-    const generateReport = async() => {
-        console.log('startDate', startDate.value)
-        console.log('endDate', endDate.value)
-        const res = await reportService.getDispatchesByDate({startDate: startDate.value, endDate: endDate.value})
-        console.log('res', res)
+    const items = ref<IncidentReport[]>([])
+
+    const onClickViewReport = async() => {
+        console.log('onClickViewReport()')
+        const data = {
+            startDate: $report.startDate,
+            endDate: $report.endDate,
+        }
+        items.value = await $report.getDispatchesByDate(data)
+        console.log('items.value', items.value)
     }
 
-    const onChangeFilter = (_filter: IncidentReportEnum) => {
-        console.log('onChangeFilter()', _filter)
-        filter.value = _filter
-
-        if(_filter === IncidentReportEnum.LAST_WEEK){
-            startDate.value = lastWeekStartDate.value
-            endDate.value = lastWeekEndDate.value
-            return 
+    const onClickExportToCSV = async() => {
+        console.log('onClickExportToCSV()')
+        const data = {
+            startDate: $report.startDate,
+            endDate: $report.endDate,
         }
+        const itemsToExport = await $report.getDispatchesByDate(data)
+        console.log('itemsToExport', itemsToExport)
 
-        if(_filter === IncidentReportEnum.THIS_WEEK){
-            startDate.value = thisWeekStartDate.value
-            endDate.value = thisWeekEndDate.value
-            return 
-        }
+        // Convert data to CSV format
+        const csvData = convertToCSV(itemsToExport);
+        const csvString = Papa.unparse(csvData);
 
-        if(_filter === IncidentReportEnum.LAST_MONTH){
-            startDate.value = lastMonthStartDate.value
-            endDate.value = lastMonthEndDate.value
-            return 
-        }
+        console.log(csvString);
 
-        if(_filter === IncidentReportEnum.THIS_MONTH){
-            startDate.value = thisMonthStartDate.value
-            endDate.value = thisMonthEndDate.value
-            return 
-        }
-
+        downloadFile(csvString)
     }
 
-    const lastWeekStartDate = computed(() => {
-        return moment(today.value).subtract(1, 'weeks').startOf('week').format('YYYY-MM-DD');
-    });
 
-    const lastWeekEndDate = computed(() => {
-        return moment(today.value).subtract(1, 'weeks').endOf('week').format('YYYY-MM-DD');
-    });
+    const downloadFile = (csv: string) => {
+        // Create a Blob from the CSV data
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
 
-    const thisWeekStartDate = computed(() => {
-        return moment(today.value).startOf('week').format('YYYY-MM-DD');
-    });
+        // Create a link element to trigger the download
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'incident_report.csv';
+        link.style.display = 'none';
 
-    const thisWeekEndDate = computed(() => {
-        return moment(today.value).endOf('week').format('YYYY-MM-DD');
-    });
+        // Append the link to the document and trigger the click event
+        document.body.appendChild(link);
+        link.click();
 
-    const lastMonthStartDate = computed(() => {
-        return moment(today.value).subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
-    });
+        // Remove the link from the document
+        document.body.removeChild(link);
+    }
 
-    const lastMonthEndDate = computed(() => {
-        return moment(today.value).subtract(1, 'months').endOf('month').format('YYYY-MM-DD');
-    });
+    // Function to convert data to CSV format
+    const convertToCSV = (data: IncidentReport[]) => {
 
-    const thisMonthStartDate = computed(() => {
-        return moment(today.value).startOf('month').format('YYYY-MM-DD');
-    });
+        // Create headers for CSV
+        const headers = [
+            "Date",
+            "Time of Call",
+            "Description",
+            "Emergency Type",
+            "Location",
+            "Team Dispatched",
+            "Dispatcher",
+            "Caller",
+            "Involved Individuals",
+            "Proceeding to scene",
+            "Arrived at scene",
+            "Proceeding to hospital",
+            "Arrived at hospital",
+            "Proceeding to Base",
+            "Arrived at Base",
+            "Status",
+            "Remarks",
+        ];
 
-    const thisMonthEndDate = computed(() => {
-        return moment(today.value).endOf('month').format('YYYY-MM-DD');
-    });
+        // Create rows for CSV
+        const rows = data.flatMap((day) => {
+            if (day.data.length === 0) {
+                // No record for the day
+                return [[$report.formatDate(day.date)]];
+            }
 
+            return day.data.map((entry) => [
+                $report.formatDate(day.date),
+                $report.formatTime(entry.time_of_call),
+                entry.description,
+                entry.emergency.name,
+                entry.location,
+                entry.team.name,
+                entry.dispatcher.last_name + ', ' + entry.dispatcher.first_name,
+                entry.caller_name + ` (+63${entry.caller_number})`,
+                entry.num_people_involved + ' individuals',
+                $report.formatDispatchDate(entry.time_proceeding_scene),
+                $report.formatDispatchDate(entry.time_arrival_scene),
+                $report.formatDispatchDate(entry.time_proceeding_hospital),
+                $report.formatDispatchDate(entry.time_arrival_hospital),
+                $report.formatDispatchDate(entry.time_proceeding_base),
+                $report.formatDispatchDate(entry.time_arrival_base),
+                $report.getStatus(entry),
+                entry.remarks,
+            ]);
+        });
 
+        // Add headers as the first row
+        rows.unshift(headers);
+
+        return rows;
+    };
 
 
 
