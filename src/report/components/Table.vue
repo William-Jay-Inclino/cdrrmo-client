@@ -1,7 +1,7 @@
 <template>
 
     <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex flex-row align-items-center">
+        <div class="card-header py-3 d-flex flex-row align-items-center bg-secondary text-white">
             <b> {{ $report.formatDate(item.date) }} </b>
         </div>
 
@@ -9,26 +9,26 @@
             <div v-if="item.data.length === 0">
                 <span> No record </span>
             </div>
-            <div v-else class="table-responsive">
+            <div v-else class="table-responsive" style="max-height: 600px;">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th> Time of Call </th>
-                            <th> Description </th>
-                            <th> Emergency Type </th>
-                            <th> Location </th>
-                            <th> Team Dispatched </th>
-                            <th> Dispatcher </th>
-                            <th> Caller </th>
-                            <th> Involved Individuals </th>
-                            <th> Proceeding to scene</th>
-                            <th> Arrived at scene </th>
-                            <th> Proceeding to hospital </th>
-                            <th> Arrived at hospital </th>
-                            <th> Proceeding to Base </th>
-                            <th> Arrived at Base </th>
-                            <th> Status </th>
-                            <th> Remarks </th>
+                            <th class="align-middle"> Time of Call </th>
+                            <th class="align-middle"> Description </th>
+                            <th class="align-middle"> Emergency Type </th>
+                            <th class="align-middle"> Location </th>
+                            <th class="align-middle"> Team Dispatched </th>
+                            <th class="align-middle"> Dispatcher </th>
+                            <th class="align-middle"> Caller </th>
+                            <th class="align-middle"> Involved Individuals </th>
+                            <th class="align-middle"> Proceeding to scene</th>
+                            <th class="align-middle"> Arrived at scene </th>
+                            <th class="align-middle"> Proceeding to hospital </th>
+                            <th class="align-middle"> Arrived at hospital </th>
+                            <th class="align-middle"> Proceeding to Base </th>
+                            <th class="align-middle"> Arrived at Base </th>
+                            <th class="align-middle"> Status </th>
+                            <th class="align-middle"> Remarks </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -102,7 +102,8 @@
 </script>
 
 <style scoped>
-th {
+/* th {
     white-space: nowrap;
-}
+} */
+
 </style>
