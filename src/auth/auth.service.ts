@@ -1,6 +1,7 @@
 
 import { IAuth } from "."
 import { config } from "../config";
+import { UserLevelEnum } from "../user";
 
 class AuthService{
 
@@ -29,9 +30,71 @@ class AuthService{
         return null
     }
 
+    async updatePassword(id: string, password: string): Promise<boolean> {
+
+        console.log(this.service + 'updatePassword()', password)
+
+		try {
+			const response = await config.api.patch(this.endpoint + 'update-password/' + id, {password});
+			console.log({response})
+            if(response.status === 200){
+                return true
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return false
+
+    }
+
+    async renewPassword(id: string, data: {currentPassword: string, newPassword: string}): Promise<boolean | number> {
+
+        console.log(this.service + 'renewPassword()', data)
+
+		try {
+			const response = await config.api.patch(this.endpoint + 'renew-password/' + id, data);
+			console.log('===response===', response)
+            if(response.status === 200){
+                return true
+            }
+            console.error('Error: ', response)
+            return response.status
+		} catch (error: any) {
+			console.error('Error fetching data:', error);
+            if(error.response && error.response.status){
+                return error.response.status
+            }
+		}
+
+        return false
+
+    }
+
     isAuthenticated() {
         // Check if the auth object exists in localStorage
         return !!localStorage.getItem('auth');
+    }
+
+    isAdmin(){
+        const auth = this.getAuth()
+        return auth?.user.user_level === UserLevelEnum.Admin
+    }
+
+    isDispatcher(){
+        const auth = this.getAuth()
+        return auth?.user.user_level === UserLevelEnum.Dispatcher
+    }
+
+    isTeamLeader(){
+        const auth = this.getAuth()
+        return auth?.user.user_level === UserLevelEnum.Team_Leader
+    }
+
+    isFieldOperator(){
+        const auth = this.getAuth()
+        return auth?.user.user_level === UserLevelEnum.Field_Operator
     }
 
     getAuth(): IAuth | null {

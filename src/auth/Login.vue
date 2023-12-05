@@ -9,7 +9,7 @@
       </header>
   
       <!-- Main content with background image and overlay -->
-      <div class="container-fluid main-content" style="background-image: url('images/ormoc_bg.png');">
+      <div class="container-fluid main-content" :style="{ 'background-image': 'url(' + config.baseUrl + 'images/ormoc_bg.png)' }">
         <div class="overlay"></div>
         <div class="row justify-content-center mt-5">
           <div class="col-md-4">
@@ -45,10 +45,11 @@
   
   <script setup lang="ts">
     import { ref } from 'vue';
-    import { authStore } from '.'; 
+    import { authService, authStore } from '.'; 
     import { routeNames } from '../common/constants'
     import { useRouter } from 'vue-router';
     import Swal from 'sweetalert2'
+    import { config } from '../config';
 
     const router = useRouter()
     const $auth = authStore()
@@ -60,13 +61,39 @@
       const userloggedIn = await $auth.login({username: username.value, password: password.value})
 
       if(userloggedIn){
+
+        if(authService.isAdmin() || authService.isDispatcher()){
+          Swal.fire({
+              position: "top",
+              title: "Logged in successfully!",
+              text: "Welcome to Ormoc CDRRMO Information Management System!",
+              icon: "success"
+          });
+        }
+
+        if(authService.isAdmin()){
+          router.push({name: routeNames.dashboard})
+        }else if(authService.isDispatcher()){
+          router.push({name: routeNames.dispatch})
+        }else{
+          Swal.fire({
+              position: "top",
+              title: "Unable to log in!",
+              text: "Only admins and dispatchers can log in for now.",
+              icon: "warning"
+          });
+        }
+
+      }else{
         Swal.fire({
-          position: "top",
-          title: "Logged in successfully!",
-          text: "Welcome to Ormoc CDRRMO Information Management System!",
-          icon: "success"
-      });
-        router.push({name: routeNames.dashboard})
+            position: "top",
+            title: "Login Failed!",
+            text: "The username or password you entered is incorrect. Please double-check your credentials and try again",
+            icon: "error",
+            footer: '<a href="#">If you continue to experience issues, contact support for assistance.</a>'
+        });
+
+        authService.logout()
       }
     };
 

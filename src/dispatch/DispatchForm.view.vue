@@ -43,8 +43,11 @@
                                             </div>
                                             <div class="col">
                                                 <label>Contact Number</label>
+
                                                 <div class="input-group">
-                                                    <span class="input-group-text" id="basic-addon1">+63</span>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">+63</span>
+                                                    </div>
                                                     <input
                                                     v-model="$dispatch.formData.caller_number"
                                                     type="text"

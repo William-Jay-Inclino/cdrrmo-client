@@ -1,7 +1,9 @@
 <template>
 
 	<div id="wrapper" >
-		<Sidebar />
+
+		<SidebarAdmin v-if="authService.isAdmin()"/>
+		<SidebarDispatcher v-else-if="authService.isDispatcher()"/>
 
 		<div id="content-wrapper" class="d-flex flex-column">
 			<div class="content">
@@ -26,8 +28,12 @@
 <script setup lang="ts">
 
 	import Navbar from './common/components/Navbar.vue';
-	import Sidebar from './common/components/Sidebar.vue';
+	import SidebarAdmin from './common/components/SidebarAdmin.vue';
+	import SidebarDispatcher from './common/components/SidebarDispatcher.vue';
 	// import Footer from '@/components/Footer.vue'
 	import ScrollToTop from './common/components/ScrollToTop.vue'
+	import { authService } from './auth';
+
+
 
 </script>

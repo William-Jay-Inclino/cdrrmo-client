@@ -3,7 +3,10 @@ import { TeamStatusEnum } from "../team";
 import { DistinctUserTypeEnum, GenderEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from "../user";
 
 export const routeNames = {
+    profile: 'profile.route',
+    settings: 'settings.route',
     notFound: 'notFound.route',
+    unauthorized: 'unauthorized.route',
     login: 'login.route',
     dashboard: 'dashboard.route',
     users: 'users.route',
@@ -12,7 +15,7 @@ export const routeNames = {
     dispatchForm: 'dispatchForm.route',
     teams: 'teams.route',
     teamsForm: 'teamsForm.route',
-    teamManage: 'teamManage.route', // To be remove
+    teamManage: 'teamManage.route',
     barts: 'barts.route',
     bartsForm: 'bartsForm.route',
     csos: 'csos.route',
@@ -25,9 +28,21 @@ export const routeNames = {
     emergenciesForm: 'emergenciesForm.route',
     trainingSkills: 'trainingSkills.route',
     trainingSkillsForm: 'trainingSkillsForm.route',
+    incidentReport: 'report.incident.route',
 }
 
+export const dispatcherModules = [
+    routeNames.login, 
+    routeNames.dispatch, 
+    routeNames.dispatchForm, 
+    routeNames.notFound, 
+    routeNames.unauthorized, 
+    routeNames.profile,
+    routeNames.settings,
+]
 
+export const teamLeadModules = []
+export const fieldOperatorModules = []
 
 export const CONST_bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 

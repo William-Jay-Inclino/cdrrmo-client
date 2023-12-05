@@ -1,15 +1,32 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { routeNames } from './common/constants'
+import { dispatcherModules, routeNames } from './common/constants'
 import { authService } from './auth';
-import { useToast } from "vue-toastification";
 import NotFound from './common/components/NotFound.vue'
+import Unauthorized from './common/components/Unauthorized.vue'
+import Login from './auth/Login.vue'
+import Profile from './auth/Profile.vue'
+import Settings from './auth/Settings.vue'
 
 const routes = [
+
+    // ================ auth route ================ 
 
     {
         path: '/',
         name: routeNames.login,
-        component: () => import('./auth/Login.vue')
+        component: Login,
+    },
+
+    {
+        path: '/my-profile',
+        name: routeNames.profile,
+        component: Profile,
+    },
+
+    {
+        path: '/my-settings',
+        name: routeNames.settings,
+        component: Settings,
     },
 
     // ================ dashboard route ================ 
@@ -152,10 +169,26 @@ const routes = [
         component: () => import('./training_skill/TrainingSkillForm.view.vue')
     },
 
+    // ================ report route ================ 
+
+    {
+        path: '/reports/incident',
+        name: routeNames.incidentReport,
+        meta: { requiresAuth: true },
+        component: () => import('./report/Incident.view.vue')
+    },
+
+    // ================ error route ================ 
     {
         path: '/:catchAll(.*)',
         name: routeNames.notFound,
         component: NotFound,
+    },
+
+    {
+        path: '/unauthorized',
+        name: routeNames.unauthorized,
+        component: Unauthorized,
     },
 ]
 
@@ -165,23 +198,34 @@ const router = createRouter({
   routes
 })
 
-const toast = useToast();
-
 router.beforeEach((to, from, next) => {
     console.log('from', from)
     console.log('to', to)
 
-    if(to.name === routeNames.login){
-        authService.logout() // remove localstorage auth
-        next()
-    }else if (to.meta.requiresAuth && !authService.isAuthenticated()) {
-        // Redirect to the login page if not authenticated
-        toast.error('Unauthorized page!')
+    // check if user is authenticated 
+    if (to.meta.requiresAuth && !authService.isAuthenticated()) {
+        console.error('user is not authenticated')
         next({ name: routeNames.login});
-
-    }else{
-        next();
+        return 
     }
+
+    // only allow dispatcher on dispatch module
+
+    if (authService.isDispatcher() && !dispatcherModules.includes(to.name as string)){
+        console.error('Dispatcher is unauthorized')
+        next({ name: routeNames.unauthorized})
+        return 
+    }
+
+    // temporary. Since only admin and dispatcher can access the app
+    if(authService.isTeamLeader() || authService.isFieldOperator()){
+        console.error('Team Lead or Field Operator is unauthorized')
+        next({ name: routeNames.login})
+        return 
+    }
+
+
+    next();
 
 });
 

@@ -58,8 +58,8 @@
             <small class="form-text text-danger" v-if="$user.formErrors.birth_date"> {{ errorMsg }} </small>
         </div>
         <div class="form-group">
-            <label>Contact Number</label>
-            <div class="input-group mb-3">
+            <label>Mobile</label>
+            <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">+63</span>
                 </div>
@@ -71,6 +71,8 @@
                   maxlength="10"
                   @input="() => $user.formData.contact_no = $user.formData.contact_no.replace(/\D/g, '')">
             </div>
+            <small class="form-text text-danger" v-if="$user.formErrors.contact_no"> {{ errorMsg }} </small>
+            <small class="form-text text-danger" v-if="$user.formErrors.isInvalidContactNo"> Invalid mobile number </small>
         </div>
         <div class="form-group">
             <label>Blood Type</label>
