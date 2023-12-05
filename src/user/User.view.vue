@@ -43,7 +43,7 @@
                                                 <th class="text-center">Gender</th>
                                                 <th>Userlevel</th>
                                                 <th>Type</th>
-                                                <th>Subtype</th>
+                                                <!-- <th>Subtype</th> -->
                                                 <th class="text-center">Status</th>
                                                 <th class="text-center">
                                                     <i class="fas fa-fw fa-cogs"></i>
@@ -65,8 +65,8 @@
                                                 <td> {{ user.userLevelObj?.text }} </td>
                                                 <td> {{ user.userTypeObj?.text }} </td>
         
-                                                <td v-if="user.Na"> {{ user.Na.name }} </td>
-                                                <td v-else> {{ user.userSubTypeObj?.text }} </td>
+                                                <!-- <td v-if="user.Na"> {{ user.Na.name }} </td>
+                                                <td v-else> {{ user.userSubTypeObj?.text }} </td> -->
         
                                                 <td class="text-center"> 
                                                     <span :class="{[`badge-${user.statusObj?.color}`]: true}" class="badge badge-pill"> 
