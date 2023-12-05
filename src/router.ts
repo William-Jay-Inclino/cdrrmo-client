@@ -169,6 +169,16 @@ const routes = [
         component: () => import('./training_skill/TrainingSkillForm.view.vue')
     },
 
+    // ================ report route ================ 
+
+    {
+        path: '/reports/incident',
+        name: routeNames.incidentReport,
+        meta: { requiresAuth: true },
+        component: () => import('./report/Incident.view.vue')
+    },
+
+    // ================ error route ================ 
     {
         path: '/:catchAll(.*)',
         name: routeNames.notFound,

@@ -112,8 +112,20 @@
             </router-link>
         </li>
 
+        <!-- Divider -->
+        <hr class="sidebar-divider">
 
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Reports
+        </div>
 
+        <li class="nav-item" :class="{'active': routeName === routeNames.incidentReport}">
+            <router-link :to="{name: routeNames.incidentReport}" class="nav-link">
+                <i class="fas fa-file-alt"></i>
+                <span>Incident Report</span>
+            </router-link>
+        </li>
 
         <!-- Sidebar Toggler (Sidebar) -->
         <!-- <div class="text-center d-none d-md-inline">

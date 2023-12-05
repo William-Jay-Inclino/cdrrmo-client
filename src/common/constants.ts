@@ -15,7 +15,7 @@ export const routeNames = {
     dispatchForm: 'dispatchForm.route',
     teams: 'teams.route',
     teamsForm: 'teamsForm.route',
-    teamManage: 'teamManage.route', // To be remove
+    teamManage: 'teamManage.route',
     barts: 'barts.route',
     bartsForm: 'bartsForm.route',
     csos: 'csos.route',
@@ -28,6 +28,7 @@ export const routeNames = {
     emergenciesForm: 'emergenciesForm.route',
     trainingSkills: 'trainingSkills.route',
     trainingSkillsForm: 'trainingSkillsForm.route',
+    incidentReport: 'report.incident.route',
 }
 
 export const dispatcherModules = [
