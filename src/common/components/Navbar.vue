@@ -10,7 +10,7 @@
 <ul class="navbar-nav ml-auto">
 
     <!-- Nav Item - Alerts -->
-    <li class="nav-item dropdown no-arrow mx-1">
+    <li v-if="false" class="nav-item dropdown no-arrow mx-1">
         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-bell fa-fw"></i>
@@ -81,10 +81,10 @@
                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                 Settings
             </a>
-            <a class="dropdown-item" href="javascript:void(0)">
+            <!-- <a class="dropdown-item" href="javascript:void(0)">
                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                 Activity Log 
-            </a>
+            </a> -->
             <div class="dropdown-divider"></div>
             <a @click="onClickLogout()" class="dropdown-item" href="#">
                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

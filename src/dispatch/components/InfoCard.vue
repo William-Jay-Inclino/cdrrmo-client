@@ -71,7 +71,7 @@
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
                             <td class="font-weight-bold">Time proceeding to scene</td>
-                            <td>
+                            <td class="align-middle">
                                 <template v-if="dispatchedTeam.time_proceeding_scene"> 
                                     {{ formatDate(new Date(dispatchedTeam.time_proceeding_scene)) }} 
                                 </template>
@@ -91,7 +91,7 @@
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
                             <td class="font-weight-bold">Time arrival at scene</td>
-                            <td>
+                            <td class="align-middle">
                                 <template v-if="dispatchedTeam.time_arrival_scene"> 
                                     {{ formatDate(new Date(dispatchedTeam.time_arrival_scene)) }} 
                                 </template>
@@ -111,7 +111,7 @@
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
                             <td class="font-weight-bold">Time proceeding to hospital</td>
-                            <td>
+                            <td class="align-middle">
                                 <template v-if="dispatchedTeam.time_proceeding_hospital"> 
                                     {{ formatDate(new Date(dispatchedTeam.time_proceeding_hospital)) }} 
                                 </template>
@@ -131,7 +131,7 @@
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
                             <td class="font-weight-bold">Time arrival at hospital</td>
-                            <td>
+                            <td class="align-middle">
                                 <template v-if="dispatchedTeam.time_arrival_hospital"> 
                                     {{ formatDate(new Date(dispatchedTeam.time_arrival_hospital)) }} 
                                 </template>
@@ -150,7 +150,7 @@
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
                             <td class="font-weight-bold">Time proceeding to base</td>
-                            <td>
+                            <td class="align-middle">
                                 <template v-if="dispatchedTeam.time_proceeding_base">
                                     {{ formatDate(new Date(dispatchedTeam.time_proceeding_base)) }}
                                 </template>
@@ -167,7 +167,7 @@
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
                             <td class="font-weight-bold">Time arrival at base</td>
-                            <td>
+                            <td class="align-middle">
                                 <template v-if="dispatchedTeam.time_arrival_base">
                                     {{ formatDate(new Date(dispatchedTeam.time_arrival_base)) }}
                                 </template>
@@ -222,7 +222,7 @@
 
             <div v-else-if="!dispatchedTeam.time_arrival_base && (!dispatchedTeam.is_cancelled || dispatchedTeam.is_cancelled && dispatchedTeam.time_proceeding_scene)" class="row">
                 <div class="col text-center">
-                    <button @click="reassignDispatcher(dispatchedTeam)" class="btn btn-light text-info" data-toggle="modal" data-target="#reassignModalId">
+                    <button v-if="authService.isAdmin()" @click="reassignDispatcher(dispatchedTeam)" class="btn btn-light text-info" data-toggle="modal" data-target="#reassignModalId">
                         Reassign Dispatcher
                     </button>
                 </div>
@@ -251,7 +251,7 @@
 
 
 <script setup lang="ts">
-
+import { authService } from '../../auth';
 import { DispatchStatusEnum, IDispatch, SearchRefEnum } from '..';
 import { CONST_DispatchStatus, formatDate } from '../../common';
 import { dispatchStore } from '..';

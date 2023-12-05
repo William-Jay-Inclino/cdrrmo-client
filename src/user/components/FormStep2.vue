@@ -16,7 +16,7 @@
                         <button
                           @click="onClickSelectSkill(skill)"
                           class="btn btn-sm"
-                          :class="{'btn-info': isSkillExist(skill.id), 'btn-outline-info': !(isSkillExist(skill.id))}">
+                          :class="{'btn-primary': isSkillExist(skill.id), 'btn-outline-primary': !(isSkillExist(skill.id))}">
                           <i
                           class="fas fa-fw fa-check"></i>
                           </button>

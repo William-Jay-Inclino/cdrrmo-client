@@ -72,7 +72,7 @@
         <li class="nav-item" :class="{'active': routeName === routeNames.trainingSkills || routeName === routeNames.trainingSkillsForm}">
             <router-link :to="{name: routeNames.trainingSkills}" class="nav-link">
                 <i class="fas fa-fw fa-medal"></i>
-                <span>Training Skill</span>
+                <span>Trainings</span>
             </router-link>
         </li>
 

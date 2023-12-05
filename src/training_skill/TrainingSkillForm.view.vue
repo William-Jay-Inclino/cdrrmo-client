@@ -3,7 +3,7 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Training Skill</h1>
+            <h1 class="h3 mb-0 text-gray-800">Trainings</h1>
         </div>
 
         <div class="row">
@@ -74,7 +74,7 @@ const toast = useToast();
 const $module = trainingSkillStore()
 const router = useRouter()
 
-const moduleLabel = 'Training Skill'
+const moduleLabel = 'Training'
 const errorMsg = ref('This field is required')
 
 const breadcrumbItems = ref([

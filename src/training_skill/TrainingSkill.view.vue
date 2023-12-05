@@ -3,16 +3,16 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Training Skill</h1>
+            <h1 class="h3 mb-0 text-gray-800">Trainings</h1>
         </div>
 
         <div class="row justify-content-center">
             <div class="col-8">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">List of Training Skills</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">List of Trainings</h6>
                         <router-link :to="{name: routeNames.trainingSkillsForm}">
-                            <button class="btn btn-primary" type="button">Add Training Skill</button>
+                            <button class="btn btn-primary" type="button">Add Training</button>
                         </router-link>
                     </div>
 

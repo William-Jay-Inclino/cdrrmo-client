@@ -56,7 +56,7 @@
                                                 <td> {{ user.user_id }} </td>
                                                 <td> {{ user.address }} </td>
                                                 <td> {{ user.age }} </td>
-                                                <td> {{ user.contact_no }} </td>
+                                                <td> +63{{ user.contact_no }} </td>
                                                 <td class="text-center">
                                                     <i class="fas fa-fw" :class="{[`${user.genderObj?.icon}`]: true}" :style="{color: user.genderObj?.color}">
         
