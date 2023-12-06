@@ -1,55 +1,39 @@
-
 <template>
 
-	<div>
+	<div id="wrapper" >
 
-		<div id="wrapper">
-			<Sidebar />
+		<SidebarAdmin v-if="authService.isAdmin()"/>
+		<SidebarDispatcher v-else-if="authService.isDispatcher()"/>
 
-			<div id="content-wrapper" class="d-flex flex-column">
-				<div class="content">
-					<Navbar />
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div class="content">
+				<Navbar/>
 
-					<!-- Main content -->
-					<router-view/>
-
-				</div>
-
-				<Footer />
+				<!-- Main content -->
+				<router-view/>
 
 			</div>
 
+			<!-- <Footer /> -->
+
 		</div>
 
-
 		<ScrollToTop />
-		<LogoutModal />
 
 	</div>
 
 
-
-
-	<!-- <div class="container mt-5">
-		<router-view/>
-	</div> -->
-
-
 </template>
-
-
 
 <script setup lang="ts">
 
-	import Navbar from './components/Navbar.vue';
-	import Sidebar from './components/Sidebar.vue';
-	import Footer from './components/Footer.vue'
-	import LogoutModal from './components/LogoutModal.vue'
-	import ScrollToTop from './components/ScrollToTop.vue'
+	import Navbar from './common/components/Navbar.vue';
+	import SidebarAdmin from './common/components/SidebarAdmin.vue';
+	import SidebarDispatcher from './common/components/SidebarDispatcher.vue';
+	// import Footer from '@/components/Footer.vue'
+	import ScrollToTop from './common/components/ScrollToTop.vue'
+	import { authService } from './auth';
+
+
 
 </script>
-
-
-<style>
-
-</style>

@@ -1,3 +1,7 @@
 
+import api from './api'
 
-export const useFakeData = true  
+export const config = {
+    api,
+    baseUrl: import.meta.env.VITE_DOMAIN + import.meta.env.BASE_URL,
+};
