@@ -11,10 +11,10 @@
         
 
         <div class="row pt-5">
-            <div class="col-4 d-flex flex-column">
+            <div class="col-lg-4 col-md-6 col-sm-12 d-flex flex-column">
                 <Search/>
             </div>
-            <div class="col-4 d-flex flex-column">
+            <div class="col-lg-4 col-md-6 col-sm-12 d-flex flex-column">
                 <Filter/>
             </div>
         </div>

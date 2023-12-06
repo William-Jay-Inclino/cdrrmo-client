@@ -13,7 +13,7 @@
         </div>
 
         <div class="row justify-content-center mt-2" id="dispatchForm">
-            <div class="col-5">
+            <div class="col-lg-6 col-md-8 col-sm-12">
 
                 <form @submit.prevent="onSubmit">
 
@@ -90,7 +90,7 @@
                                         <label>Time of Call</label>
                                         <input v-model="$dispatch.formData.time_of_call" type="datetime-local" class="form-control" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
                                         <small class="form-text text-danger" v-if="$dispatch.formErrors.timeOfCall">
-                                            Invalid date-time format. Please use the YYYY-MM-DDTHH:mm format
+                                            Invalid date-time format
                                         </small>
                                     </div>
                                 </div>
