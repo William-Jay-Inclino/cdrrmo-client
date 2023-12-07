@@ -80,7 +80,7 @@
                                         {{ cancelledLabel }} 
                                     </span>
                                 </template>
-                                <template v-else>
+                                <template v-else-if="!dispatchedTeam.time_arrival_scene">
                                     <button @click="setTime(dispatchedTeam, 'Time proceeding to scene')" class="btn btn-outline-info btn-sm">
                                         <i class="fas fa-fw fa-clock"></i>
                                         <span> Set Time </span>
@@ -100,7 +100,7 @@
                                         {{ cancelledLabel }} 
                                     </span> 
                                 </template>
-                                <template v-else>
+                                <template v-else-if="!dispatchedTeam.time_proceeding_hospital">
                                     <button v-if="dispatchedTeam.time_proceeding_scene" @click="setTime(dispatchedTeam, 'Time arrival at scene')" class="btn btn-outline-info btn-sm">
                                         <i class="fas fa-fw fa-clock"></i>
                                         <span> Set Time </span>
@@ -120,7 +120,7 @@
                                         {{ cancelledLabel }} 
                                     </span>
                                 </template>
-                                <template v-else>
+                                <template v-else-if="!dispatchedTeam.time_arrival_hospital">
                                     <button v-if="dispatchedTeam.time_arrival_scene && !(dispatchedTeam.time_proceeding_base || dispatchedTeam.time_arrival_base)" @click="setTime(dispatchedTeam, 'Time proceeding to hospital')" class="btn btn-outline-info btn-sm">
                                         <i class="fas fa-fw fa-clock"></i>
                                         <span> Set Time </span>
@@ -140,7 +140,7 @@
                                         {{ cancelledLabel }} 
                                     </span> 
                                 </template>
-                                <template v-else>
+                                <template v-else-if="!dispatchedTeam.time_proceeding_base">
                                     <button v-if="dispatchedTeam.time_proceeding_hospital" @click="setTime(dispatchedTeam, 'Time arrival at hospital')" class="btn btn-outline-info btn-sm">
                                         <i class="fas fa-fw fa-clock"></i>
                                         <span> Set Time </span>
@@ -154,7 +154,13 @@
                                 <template v-if="dispatchedTeam.time_proceeding_base">
                                     {{ formatDate(new Date(dispatchedTeam.time_proceeding_base)) }}
                                 </template>
-                                <template v-else-if="(dispatchedTeam.is_cancelled && dispatchedTeam.time_proceeding_scene) || dispatchedTeam.time_arrival_hospital">
+                                <template v-else-if="
+
+                                    (dispatchedTeam.is_cancelled && dispatchedTeam.time_proceeding_scene) || 
+                                    dispatchedTeam.time_arrival_hospital ||
+                                    dispatchedTeam.time_arrival_scene 
+                                    
+                                ">
                                     <button @click="setTime(dispatchedTeam, 'Time proceeding to base')" class="btn btn-outline-info btn-sm">
                                         <i class="fas fa-fw fa-clock"></i>
                                         <span> Set Time </span>
@@ -204,10 +210,10 @@
                                 </button>
                             </td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <td></td>
                             <td></td>
-                        </tr>
+                        </tr> -->
                     </thead>
                 </table>
             </div>
