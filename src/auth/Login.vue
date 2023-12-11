@@ -72,7 +72,7 @@
         }
 
         if(authService.isAdmin()){
-          router.push({name: routeNames.dashboard})
+          router.push({name: routeNames.dispatch})
         }else if(authService.isDispatcher()){
           router.push({name: routeNames.dispatch})
         }else{

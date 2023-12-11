@@ -169,6 +169,20 @@ const routes = [
         component: () => import('./training_skill/TrainingSkillForm.view.vue')
     },
 
+        // ================ location route ================ 
+        {
+            path: '/locations',
+            name: routeNames.location,
+            meta: { requiresAuth: true },
+            component: () => import('./location/Location.view.vue')
+        },
+        {
+            path: '/locations/form',
+            name: routeNames.locationForm,
+            meta: { requiresAuth: true },
+            component: () => import('./location/LocationForm.view.vue')
+        },
+
     // ================ report route ================ 
 
     {

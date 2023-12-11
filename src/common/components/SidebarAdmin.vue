@@ -14,12 +14,12 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item" :class="{'active': routeName === routeNames.dashboard}">
+        <!-- <li class="nav-item" :class="{'active': routeName === routeNames.dashboard}">
             <router-link :to="{name: routeNames.dashboard}" class="nav-link">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span>
             </router-link>
-        </li>
+        </li> -->
 
         <!-- Divider -->
         <hr class="sidebar-divider">
@@ -73,6 +73,13 @@
             <router-link :to="{name: routeNames.trainingSkills}" class="nav-link">
                 <i class="fas fa-fw fa-medal"></i>
                 <span>Training</span>
+            </router-link>
+        </li>
+
+        <li class="nav-item" :class="{'active': routeName === routeNames.location || routeName === routeNames.locationForm}">
+            <router-link :to="{name: routeNames.location}" class="nav-link">
+                <i class="fas fa-fw fa-map"></i>
+                <span>Location</span>
             </router-link>
         </li>
 
