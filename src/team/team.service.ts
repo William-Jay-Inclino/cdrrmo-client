@@ -1,17 +1,31 @@
 import { config } from "../config";
 import { ICreateTeamDto } from "./dto/create-team.dto";
 import { IUpdateTeamDto } from "./dto/update-team.dto";
-import { ITeam, ITeamMember } from "./entities"
+import { ITeam, ITeamMember, SearchFieldEnum } from "./entities"
 
 class TeamService{
 
     private endpoint = '/team/'
     private service = 'TeamService: '
 
-    async findAll(): Promise<ITeam[]>{
+    async findAll(payload: {page: number, pageSize: number, searchField?: SearchFieldEnum, searchValue?: string}): 
+    Promise<{
+        currentPage: number,
+        totalPages: number,
+        totalItems: number,
+        teams: ITeam[]
+    }>{
         console.log(this.service + 'findAll()')
 		try {
-			const response = await config.api.get(this.endpoint);
+
+            let newEndpoint = this.endpoint
+            newEndpoint += '?page='+payload.page+'&pageSize='+payload.pageSize
+
+            if(payload.searchValue && payload.searchField){
+                newEndpoint += '&searchField='+payload.searchField+'&searchValue='+payload.searchValue
+            }
+
+			const response = await config.api.get(newEndpoint);
 			console.log({response})
             if(response.status === 200){
                 return response.data
@@ -21,7 +35,12 @@ class TeamService{
 			console.error('Error fetching data:', error);
 		}
 
-        return []
+        return {
+            currentPage: 0,
+            totalPages: 0,
+            totalItems: 0,
+            teams: []
+        }
     }
 
     async findAllActive(): Promise<ITeam[]>{
