@@ -1,5 +1,5 @@
 import { config } from "../config";
-import { ILocation } from "./entities"
+import { ILocation, SearchFieldEnum } from "./entities"
 
 class LocationService{
 
@@ -20,6 +20,41 @@ class LocationService{
 		}
 
         return []
+    }
+
+    async findPerPage(payload: {page: number, pageSize: number, searchField?: SearchFieldEnum, searchValue?: string}): 
+    Promise<{
+        currentPage: number,
+        totalPages: number,
+        totalItems: number,
+        locations: ILocation[]
+    }>{
+        console.log(this.service + 'findPerPage()')
+		try {
+
+            let newEndpoint = this.endpoint + 'per-page'
+            newEndpoint += '?page='+payload.page+'&pageSize='+payload.pageSize
+
+            if(payload.searchValue && payload.searchField){
+                newEndpoint += '&searchField='+payload.searchField+'&searchValue='+payload.searchValue
+            }
+
+			const response = await config.api.get(newEndpoint);
+			console.log({response})
+            if(response.status === 200){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return {
+            currentPage: 0,
+            totalPages: 0,
+            totalItems: 0,
+            locations: []
+        }
     }
 
     async findOne(id: string): Promise<ILocation | null>{

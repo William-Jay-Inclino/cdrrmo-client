@@ -15,17 +15,26 @@ export const locationStore = defineStore('location', () => {
     const _formErrorsInitial = {
         name: false,
     }
+
+    const _paginationInitial = {
+        currentPage: 0,
+        totalPages: 0,
+        totalUsers: 0,
+        perPage: 10,
+    }
     
     const formData = ref({..._formDataInitial});
     const formErrors = ref({..._formErrorsInitial})
+    const pagination = ref({..._paginationInitial})
 
     // state
     const _locations = ref<ILocation[]>([])
 
     onMounted( async() => {
         console.log(_store + 'onMounted()')
-        const items = await locationService.findAll()
-        setLocations(items)
+        const {currentPage, totalPages, totalItems, locations} = await locationService.findPerPage({page: 1, pageSize: pagination.value.perPage}) 
+        setPagination(currentPage, totalPages, totalItems)
+        setLocations(locations)
     })
 
     // getters 
@@ -41,6 +50,12 @@ export const locationStore = defineStore('location', () => {
     const setFormData = (payload: {data: ILocation}) => {
         console.log(_store + 'setFormData()', payload)
         formData.value = payload.data
+    }
+
+    const setPagination = (currentPage: number, totalPages: number, totalUsers: number) => {
+        pagination.value.currentPage = currentPage
+        pagination.value.totalPages = totalPages
+        pagination.value.totalUsers = totalUsers
     }
 
     // methods
@@ -145,11 +160,14 @@ export const locationStore = defineStore('location', () => {
         locations,
         formData,
         formErrors,
+        pagination,
+        setLocations,
         onSubmit,
         onDelete,
         resetFormData,
         setFormData,
         initUpdateFormData,
+        setPagination,
     }
 })
 
