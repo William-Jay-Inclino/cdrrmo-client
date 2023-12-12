@@ -127,12 +127,20 @@
             Reports
         </div>
 
+
         <li class="nav-item" :class="{'active': routeName === routeNames.incidentReport}">
             <router-link :to="{name: routeNames.incidentReport}" class="nav-link">
                 <i class="fas fa-file-alt"></i>
                 <span>Incident Report</span>
             </router-link>
         </li>
+
+        <!-- <li class="nav-item" :class="{'active': routeName === routeNames.dispatchReport}">
+            <router-link :to="{name: routeNames.dispatchReport}" class="nav-link">
+                <i class="fas fa-file-alt"></i>
+                <span>Dispatch Report</span>
+            </router-link>
+        </li> -->
 
         <!-- Sidebar Toggler (Sidebar) -->
         <!-- <div class="text-center d-none d-md-inline">

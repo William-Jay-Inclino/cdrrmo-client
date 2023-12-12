@@ -186,6 +186,13 @@ const routes = [
     // ================ report route ================ 
 
     {
+        path: '/reports/dispatch',
+        name: routeNames.dispatchReport,
+        meta: { requiresAuth: true },
+        component: () => import('./report/Dispatch.view.vue')
+    },
+
+    {
         path: '/reports/incident',
         name: routeNames.incidentReport,
         meta: { requiresAuth: true },
