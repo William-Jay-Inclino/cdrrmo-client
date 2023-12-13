@@ -6,7 +6,7 @@
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
             <!-- <div class="sidebar-brand-text mx-3"> CDRRMO </div> -->
             <div class="sidebar-brand-icon">
-                <img :src="config.baseUrl + 'images/system-logo-v3.png'" style="height: 5em">
+                <img :src="config.baseUrl + 'images/cdrrmo-v2/system-logo-header.png'" style="height: 5em">
                 <!-- <i class="fas fa-shield-alt"></i> -->
             </div>
         </a>
@@ -175,7 +175,7 @@
 
 
         <div class="sidebar-card d-none d-lg-flex flex-column align-items-center mt-auto">
-            <img class="sidebar-card-illustration mb-2" :src="config.baseUrl + 'images/cdrrmo-logo.png'" style="height: 8rem;">
+            <img class="sidebar-card-illustration mb-2" :src="config.baseUrl + 'images/cdrrmo-v1/cdrrmo-logo.png'" style="height: 8rem;">
         </div>
 
         <!-- <li class="nav-item" :class="{'active': routeName === routeNames.dispatchReport}">

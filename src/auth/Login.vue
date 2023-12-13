@@ -4,13 +4,13 @@
       <header class="bg-primary text-white text-center py-4">
         <h1 class="display-4">
           ORMOC CDRRMO INFORMATION MANAGEMENT SYSTEM
-          <img :src="config.baseUrl + 'images/system-logo-v5.png'" style="height: 2em">
+          <img :src="config.baseUrl + 'images/cdrrmo-v2/system-logo.png'" style="height: 2em">
         </h1>
       </header>
 
   
       <!-- Main content with background image and overlay -->
-      <div class="main-content" :style="{ 'background-image': 'url(' + config.baseUrl + 'images/login-bg.jpg)' }">
+      <div class="main-content" :style="{ 'background-image': 'url(' + config.baseUrl + 'images/cdrrmo-v2/login-bg.jpg)' }">
         <div class="row mt-5 pt-5">
           <div class="col-lg-1 col-md-1"></div>
           <div class="col-lg-4 col-md-4 col-sm-10">

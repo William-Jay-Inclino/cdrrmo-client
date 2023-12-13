@@ -12,7 +12,7 @@
 		  class="d-flex flex-column"
 		  :style="
 		  	{ 
-				backgroundImage: 'url(' + config.baseUrl + 'images/module-bg.jpg)', 
+				backgroundImage: 'url(' + config.baseUrl + 'images/cdrrmo-v2/module-bg.jpg)', 
 				backgroundRepeat: 'no-repeat', 
 				backgroundAttachment: 'fixed', 
 				backgroundPosition: 'center center',
