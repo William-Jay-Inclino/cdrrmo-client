@@ -1,7 +1,7 @@
 <template>
 
     <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex flex-row align-items-center bg-secondary text-white justify-content-between">
+        <div class="card-header py-3 d-flex flex-row align-items-center bg-dark text-white justify-content-between">
             <h6 class="m-0 font-weight-bold">Summary</h6>
             <button @click="onClickExportToCSV()" type="button" class="btn btn-success"> Export Data(CSV) </button>
         </div>

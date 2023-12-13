@@ -2,15 +2,31 @@
 
 	<div id="wrapper" >
 
-		<SidebarAdmin v-if="authService.isAdmin()"/>
-		<SidebarDispatcher v-else-if="authService.isDispatcher()"/>
+		<div class="fixed-sidebar">
+			<SidebarAdmin v-if="authService.isAdmin()" />
+			<SidebarDispatcher v-else-if="authService.isDispatcher()" />
+		</div>
 
-		<div id="content-wrapper" class="d-flex flex-column">
+		<div
+		  id="content-wrapper"
+		  class="d-flex flex-column"
+		  :style="
+		  	{ 
+				backgroundImage: 'url(' + config.baseUrl + 'images/module-bg.jpg)', 
+				backgroundRepeat: 'no-repeat', 
+				backgroundAttachment: 'fixed', 
+				backgroundPosition: 'center center',
+				backgroundSize: 'cover',
+				minHeight: '100vh'
+			}
+		">
 			<div class="content">
 				<Navbar/>
 
 				<!-- Main content -->
-				<router-view/>
+				<div style="margin-top: 100px;">
+					<router-view/>
+				</div>
 
 			</div>
 
@@ -33,7 +49,23 @@
 	// import Footer from '@/components/Footer.vue'
 	import ScrollToTop from './common/components/ScrollToTop.vue'
 	import { authService } from './auth';
+	import { config } from './config';
 
 
 
 </script>
+
+
+<style>
+.fixed-sidebar {
+  position: fixed;
+  height: 100%;
+  z-index: 90;
+}
+
+.container-fluid{
+	padding-left: 16rem
+}
+
+
+</style>

@@ -281,7 +281,7 @@ const cardHeaderBg = (dispatchedTeam: IDispatch) => {
     }
 
     if(dispatchedTeam.status === DispatchStatusEnum.Queue){
-        return {'bg-secondary': true}
+        return {'bg-dark': true}
     }
 
     return {'bg-danger': true}
