@@ -28,19 +28,10 @@
     import { SearchFieldEnum, locationService, locationStore } from '..';
     
 
-    const searchRefObject = {
-        [SearchFieldEnum.Name]: 'Name',
-    }
-
     const $location = locationStore()
 
     const searchRef = ref<SearchFieldEnum>(SearchFieldEnum.Name)
     const searchVal = ref('')
-
-    const onChangeRef = (ref: SearchFieldEnum) => {
-        searchVal.value = ''
-        searchRef.value = ref
-    }
 
     const placeholder = computed( () => {
         return `Search location...`
