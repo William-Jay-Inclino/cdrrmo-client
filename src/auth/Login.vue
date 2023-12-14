@@ -11,8 +11,7 @@
   
       <!-- Main content with background image and overlay -->
       <div :style="backgroundStyle" class="main-content">
-        <div class="row mt-5 pt-5">
-          <div class="col-lg-1 col-md-1"></div>
+        <div class="row mt-5 pt-5 justify-content-center">
           <div class="col-lg-4 col-md-4 col-sm-10">
             <div class="card shadow">
               <div class="card-body p-5">
