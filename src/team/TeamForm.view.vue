@@ -13,7 +13,7 @@
         </div>
 
         <div class="row justify-content-center mt-5">
-            <div class="col-4">
+            <div class="col-lg-6 col-md-8 col-sm-12">
 
                 <div class="row">
                     <div class="col">

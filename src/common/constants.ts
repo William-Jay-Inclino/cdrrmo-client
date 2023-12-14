@@ -9,6 +9,8 @@ export const routeNames = {
     unauthorized: 'unauthorized.route',
     login: 'login.route',
     dashboard: 'dashboard.route',
+    location: 'location.route',
+    locationForm: 'locationForm.route',
     users: 'users.route',
     userForm: 'userForm.route',
     dispatch: 'dispatch.route',
@@ -29,6 +31,7 @@ export const routeNames = {
     trainingSkills: 'trainingSkills.route',
     trainingSkillsForm: 'trainingSkillsForm.route',
     incidentReport: 'report.incident.route',
+    dispatchReport: 'report.dispatch.route',
 }
 
 export const dispatcherModules = [
@@ -39,6 +42,8 @@ export const dispatcherModules = [
     routeNames.unauthorized, 
     routeNames.profile,
     routeNames.settings,
+    routeNames.location,
+    routeNames.locationForm,
 ]
 
 export const teamLeadModules = []

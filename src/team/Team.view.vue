@@ -9,62 +9,84 @@
         <div class="row justify-content-center">
             <div class="col-8">
                 <div class="card shadow mb-4">
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">List of Teams</h6>
-                        <router-link :to="{name: routeNames.teamsForm}">
-                            <button class="btn btn-primary" type="button">Add Team</button>
-                        </router-link>
+                    <div class="card-header py-3 d-flex flex-row align-items-center">
+                        <div class="row w-100 justify-content-between align-items-center">
+                            <div class="col-6">
+                            <Search />
+                            </div>
+                            <div class="col-6 text-right">
+                            <router-link :to="{name: routeNames.teamsForm}">
+                                <button class="btn btn-primary">Add Team</button>
+                            </router-link>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Card Body -->
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Team Leader</th>
-                                        <th class="text-center">Status</th>
-                                        <th class="text-center">Activate / Deactivate</th>
-                                        <th class="text-center">
-                                            <i class="fas fa-fw fa-cogs"></i>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="item of $module.teams">
-                                        <td> {{ item.name }} </td>
-                                        <td> {{ item.team_leader.last_name + ', ' + item.team_leader.first_name}} </td>
-                                        <td class="text-center"> 
-                                            <span :class="{[`badge-${CONST_TeamStatus[item.status].color}`]: true}" class="badge badge-pill text-white"> 
-                                                {{ CONST_TeamStatus[item.status].text }} 
-                                            </span> 
-                                        </td>
-                                        <td class="text-center">
-                                            <div v-if="item.status !== TeamStatusEnum.Dispatched" class="custom-control custom-switch">
-                                                <input v-model="item.isActivated" @click="onStatusChange(item)" type="checkbox" class="custom-control-input" :id="'customSwitch_' + item.id">
-                                                <label class="custom-control-label" :for="'customSwitch_' + item.id"></label>
-                                            </div>
 
-                                            <!-- <div v-if="item.status !== TeamStatusEnum.Dispatched" class="form-check form-switch ml-4">
-                                                <input @click="onStatusChange(item)" style="cursor: pointer;" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="item.isActivated">
-                                            </div> -->
-                                        </td>
-                                        <td class="text-center">
-                                            <button @click="onClickUpdateIcon(item)" class="btn btn-light btn-sm">
-                                                <i class="fas fa-fw fa-pencil-alt"></i>
-                                            </button>
-                                            <button :disabled="item.status !== TeamStatusEnum.Inactive" @click="onDelete(item)" class="btn btn-light btn-sm">
-                                                <i class="fas fa-fw fa-trash text-danger"></i>
-                                            </button>
-                                            <button @click="onClickManageTeam(item.id)" class="btn btn-light btn-sm">
-                                                <i class="fas fa-fw fa-users text-info"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="row mb-3">
+                            <TablePerPage />
                         </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Team Leader</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center">Activate / Deactivate</th>
+                                                <th class="text-center">
+                                                    <i class="fas fa-fw fa-cogs"></i>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="item of $module.teams">
+                                                <td> {{ item.name }} </td>
+                                                <td> {{ item.team_leader.last_name + ', ' + item.team_leader.first_name}} </td>
+                                                <td class="text-center"> 
+                                                    <span :class="{[`badge-${CONST_TeamStatus[item.status].color}`]: true}" class="badge badge-pill text-white"> 
+                                                        {{ CONST_TeamStatus[item.status].text }} 
+                                                    </span> 
+                                                </td>
+                                                <td class="text-center">
+                                                    <div v-if="item.status !== TeamStatusEnum.Dispatched" class="custom-control custom-switch">
+                                                        <input v-model="item.isActivated" @click="onStatusChange(item)" type="checkbox" class="custom-control-input" :id="'customSwitch_' + item.id">
+                                                        <label class="custom-control-label" :for="'customSwitch_' + item.id"></label>
+                                                    </div>
+        
+                                                    <!-- <div v-if="item.status !== TeamStatusEnum.Dispatched" class="form-check form-switch ml-4">
+                                                        <input @click="onStatusChange(item)" style="cursor: pointer;" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="item.isActivated">
+                                                    </div> -->
+                                                </td>
+                                                <td class="text-center">
+                                                    <button @click="onClickUpdateIcon(item)" class="btn btn-light btn-sm">
+                                                        <i class="fas fa-fw fa-pencil-alt"></i>
+                                                    </button>
+                                                    <button :disabled="item.status !== TeamStatusEnum.Inactive" @click="onDelete(item)" class="btn btn-light btn-sm">
+                                                        <i class="fas fa-fw fa-trash text-danger"></i>
+                                                    </button>
+                                                    <button @click="onClickManageTeam(item.id)" class="btn btn-light btn-sm">
+                                                        <i class="fas fa-fw fa-users text-info"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col">
+                                <TablePagination class="float-right"/>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -81,6 +103,9 @@ import { useToast } from "vue-toastification";
 import { ITeam, teamStore, TeamStatusEnum } from '.'
 import { routeNames, CONST_TeamStatus } from '../common/constants'
 import { useRouter } from 'vue-router';
+import Search from './components/Search.vue'
+import TablePagination from './components/TablePagination.vue'
+import TablePerPage from './components/TableSelectPerPage.vue'
 
 import Swal from 'sweetalert2'
 

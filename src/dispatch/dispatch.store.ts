@@ -8,6 +8,7 @@ import { ITeam, teamService } from '../team';
 import { isValidPhoneNumber } from '../common';
 import { authService, authStore } from '../auth';
 import { IUser, userService } from '../user';
+import { ILocation, locationService } from '../location';
 
 export const dispatchStore = defineStore('dispatch', () => {
     
@@ -58,6 +59,7 @@ export const dispatchStore = defineStore('dispatch', () => {
     const _emergencies = ref<IEmergency[]>([])
     const _activeTeams = ref<ITeam[]>([])
     const _dispatchers = ref<IUser[]>([])
+    const _locations = ref<ILocation[]>()
 
     const formData = ref<ICreateDispatchDto>({..._formDataInitial})
     const formErrors = ref({..._formErrorsInitial})
@@ -81,6 +83,11 @@ export const dispatchStore = defineStore('dispatch', () => {
     const setEmergencies = (emergencies: IEmergency[]) => {
         console.log(_store + 'setEmergencies()', emergencies)
         _emergencies.value = emergencies
+    }
+
+    const setLocations = (locations: ILocation[]) => {
+        console.log(_store + 'setLocations()', locations)
+        _locations.value = locations
     }
 
     const setActiveTeams = (activeTeams: ITeam[]) => {
@@ -155,6 +162,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         return items
     })
     const emergencies = computed( () => _emergencies.value)
+    const locations = computed( () => _locations.value)
     const activeTeams = computed( () => {
         return _activeTeams.value.map(i => {
             i.label = i.name
@@ -192,6 +200,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         console.log('initForm()')
         setActiveTeams(await teamService.findAllActive())
         setEmergencies(await emergencyService.findAll())
+        setLocations(await locationService.findAll())
     }
 
     const onSubmit = async(payload: {data: ICreateDispatchDto}): Promise<IDispatch[] | null> => {
@@ -358,6 +367,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         formTeams,
         flags,
         emergencies,
+        locations,
         activeTeams,
         teamInfo,
         searchQuery,

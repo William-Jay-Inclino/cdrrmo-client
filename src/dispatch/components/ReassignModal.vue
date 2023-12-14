@@ -22,7 +22,7 @@
                     
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button class="btn btn-dark" type="button" data-dismiss="modal">Cancel</button>
+                    <button ref="cancelButton" class="btn btn-dark" type="button" data-dismiss="modal">Cancel</button>
                     <button :disabled="!selectedDispatcher" @click="onClickReassign()" class="btn btn-success" type="button" data-dismiss="modal">Reassign</button>
                 </div>
             </div>
@@ -46,6 +46,8 @@
 
     const $dispatch = dispatchStore()
     const selectedDispatcher = ref<IUser | null>(null)
+
+    const cancelButton = ref<HTMLButtonElement | null>(null)
     
     // don't include in the option the current dispatcher 
     const dispatchers = computed( () => {
@@ -66,6 +68,11 @@
         selectedDispatcher.value = null
 
         emit('reassign-dispatcher', {dispatchedTeam: props.dispatchedTeam, dispatcher})
+
+          // Check if cancelButton and its click method are available
+        if (cancelButton.value && typeof cancelButton.value.click === 'function') {
+            cancelButton.value.click()
+        }
     }
 
 </script>

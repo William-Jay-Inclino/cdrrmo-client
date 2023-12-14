@@ -24,9 +24,17 @@ export const teamStore = defineStore('team', () => {
         name: false,
         status: false,
     }
+
+    const _paginationInitial = {
+        currentPage: 0,
+        totalPages: 0,
+        totalUsers: 0,
+        perPage: 10,
+    }
     
     const formData = ref({..._formDataInitial});
     const formErrors = ref({..._formErrorsInitial})
+    const pagination = ref({..._paginationInitial})
 
     // state
     const _teams = ref<ITeam[]>([])
@@ -83,11 +91,19 @@ export const teamStore = defineStore('team', () => {
         _orphanTeamLeaders.value = users
     }
 
+    const setPagination = (currentPage: number, totalPages: number, totalUsers: number) => {
+        pagination.value.currentPage = currentPage
+        pagination.value.totalPages = totalPages
+        pagination.value.totalUsers = totalUsers
+    }
+
     // methods
 
     const init = async() => {
         console.log(_store + 'init()')
-        setTeams(await teamService.findAll())
+        const {currentPage, totalPages, totalItems, teams} = await teamService.findAll({page: 1, pageSize: pagination.value.perPage}) 
+        setPagination(currentPage, totalPages, totalItems)
+        setTeams(teams)
     }
 
     const initForm = async(id?: string) => {
@@ -274,11 +290,13 @@ export const teamStore = defineStore('team', () => {
         formErrors,
         formIsEditMode,
         usersWithoutTeam,
+        pagination,
         setUsersWithoutTeam,
         onSubmit,
         onDelete,
         resetFormData,
         setFormData,
+        setTeams,
         init,
         initForm,
         initManageTeam,
@@ -288,6 +306,7 @@ export const teamStore = defineStore('team', () => {
         onAddMember,
         onDeleteTeamMember,
         onUpdate,
+        setPagination,
     }
 })
 

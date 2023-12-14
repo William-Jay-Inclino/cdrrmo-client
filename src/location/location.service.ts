@@ -1,24 +1,38 @@
 import { config } from "../config";
-import { ICreateTeamDto } from "./dto/create-team.dto";
-import { IUpdateTeamDto } from "./dto/update-team.dto";
-import { ITeam, ITeamMember, SearchFieldEnum } from "./entities"
+import { ILocation, SearchFieldEnum } from "./entities"
 
-class TeamService{
+class LocationService{
 
-    private endpoint = '/team/'
-    private service = 'TeamService: '
+    private endpoint = '/location/'
+    private service = 'LocationService: '
 
-    async findAll(payload: {page: number, pageSize: number, searchField?: SearchFieldEnum, searchValue?: string}): 
+    async findAll(): Promise<ILocation[]>{
+        console.log(this.service + 'findAll()')
+		try {
+			const response = await config.api.get(this.endpoint);
+			console.log({response})
+            if(response.status === 200){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return []
+    }
+
+    async findPerPage(payload: {page: number, pageSize: number, searchField?: SearchFieldEnum, searchValue?: string}): 
     Promise<{
         currentPage: number,
         totalPages: number,
         totalItems: number,
-        teams: ITeam[]
+        locations: ILocation[]
     }>{
-        console.log(this.service + 'findAll()')
+        console.log(this.service + 'findPerPage()')
 		try {
 
-            let newEndpoint = this.endpoint
+            let newEndpoint = this.endpoint + 'per-page'
             newEndpoint += '?page='+payload.page+'&pageSize='+payload.pageSize
 
             if(payload.searchValue && payload.searchField){
@@ -39,27 +53,11 @@ class TeamService{
             currentPage: 0,
             totalPages: 0,
             totalItems: 0,
-            teams: []
+            locations: []
         }
     }
 
-    async findAllActive(): Promise<ITeam[]>{
-        console.log(this.service + 'findAllActive()')
-		try {
-			const response = await config.api.get(this.endpoint + 'status');
-			console.log({response})
-            if(response.status === 200){
-                return response.data
-            }
-            console.error('Error: ', response)
-		} catch (error) {
-			console.error('Error fetching data:', error);
-		}
-
-        return []
-    }
-
-    async findOne(id: string): Promise<ITeam | null>{
+    async findOne(id: string): Promise<ILocation | null>{
         console.log(this.service + 'findOne()', id)
 		try {
 			const response = await config.api.get(this.endpoint + id);
@@ -75,7 +73,7 @@ class TeamService{
         return null
     }
 
-    async create(payload: {data: ICreateTeamDto}): Promise<ITeam | null>{
+    async create(payload: {data: ILocation}): Promise<ILocation | null>{
         console.log(this.service + 'create()', payload)
 
 		try {
@@ -92,7 +90,7 @@ class TeamService{
         return null 
     }
 
-    async update(payload: {id: string, data: IUpdateTeamDto}): Promise<ITeam | null>{
+    async update(payload: {id: string, data: ILocation}): Promise<ILocation | null>{
         console.log(this.service + 'update()', payload)
 
 		try {
@@ -125,39 +123,6 @@ class TeamService{
 
     }
 
-    async addTeamMember(payload: {data: {team_id: string, member_id: string}}): Promise<ITeamMember | null>{
-        console.log(this.service + 'addTeamMember()', payload)
-
-		try {
-			const response = await config.api.post(this.endpoint + 'member', payload.data);
-			console.log({response})
-            if(response.status === 201){
-                return response.data
-            }
-            console.error('Error: ', response)
-		} catch (error) {
-			console.error('Error fetching data:', error);
-		}
-
-        return null 
-    }
-
-    async removeTeamMember(id: string): Promise<boolean> {
-        console.log(this.service + 'removeTeamMember()', id)
-		try {
-			const response = await config.api.delete(this.endpoint + 'member/' + id);
-			console.log({response})
-            if(response.status === 204){
-                return true
-            }
-            console.error('Error: ', response)
-		} catch (error) {
-			console.error('Error fetching data:', error);
-		}
-        return false
-
-    }
-
 }
 
-export const teamService = new TeamService()
+export const locationService = new LocationService()

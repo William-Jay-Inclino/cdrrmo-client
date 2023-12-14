@@ -13,11 +13,17 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
-        <!-- Nav Item - Charts -->
         <li class="nav-item" :class="{'active': routeName === routeNames.dispatch || routeName === routeNames.dispatchForm}">
             <router-link :to="{name: routeNames.dispatch}" class="nav-link">
                 <i class="fas fa-fw fa-truck"></i>
                 <span>Dispatch</span>
+            </router-link>
+        </li>
+
+        <li class="nav-item" :class="{'active': routeName === routeNames.location || routeName === routeNames.locationForm}">
+            <router-link :to="{name: routeNames.location}" class="nav-link">
+                <i class="fas fa-fw fa-map"></i>
+                <span>Location</span>
             </router-link>
         </li>
     </ul>

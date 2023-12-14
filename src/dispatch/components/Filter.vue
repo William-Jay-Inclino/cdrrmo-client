@@ -4,7 +4,7 @@
         <div class="card-body justify-content-center">
             <div class="row">
                 <div class="col">
-                    <button @click="toggleQueue()" class="btn btn-block" :class="{'btn-outline-secondary': !$dispatch.flags.queue, 'btn-secondary': $dispatch.flags.queue}">
+                    <button @click="toggleQueue()" class="btn btn-block" :class="{'btn-outline-secondary': !$dispatch.flags.queue, 'btn-dark': $dispatch.flags.queue}">
                         Queue
                     </button>
                 </div>

@@ -13,7 +13,7 @@
         </div>
 
         <div class="row justify-content-center mt-2" id="dispatchForm">
-            <div class="col-5">
+            <div class="col-lg-6 col-md-8 col-sm-12">
 
                 <form @submit.prevent="onSubmit">
 
@@ -26,8 +26,22 @@
             
                                 <div class="card-body">
                                     <div class="form-group">
+                                        <label>Time of Call</label>
+                                        <div class="row align-items-center">
+                                            <div class="col-10">
+                                                <input @input="initAwesomplete()" v-model="$dispatch.formData.time_of_call" type="datetime-local" class="form-control" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
+                                            </div>
+                                            <div class="col-2">
+                                                <button type="button" @click="setTime()" class="btn btn-primary btn-sm float-right">Set time</button>
+                                            </div>
+                                        </div>
+                                        <small class="form-text text-danger" v-if="$dispatch.formErrors.timeOfCall">
+                                            Invalid date-time format
+                                        </small>
+                                    </div>
+                                    <div class="form-group">
                                         <label>Nature of Emergency</label>
-                                        <select class="form-control" v-model="$dispatch.formData.emergency_id">
+                                        <select @change="initAwesomplete()" class="form-control" v-model="$dispatch.formData.emergency_id">
                                             <option v-for="emergency in $dispatch.emergencies" :value="emergency.id" :key="emergency.id">
                                                 {{ emergency.name }}
                                             </option>
@@ -63,12 +77,19 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Location</label>
-                                        <textarea v-model="$dispatch.formData.location" class="form-control" rows="3"></textarea>
-                                        <small class="form-text text-danger" v-if="$dispatch.formErrors.location"> {{ errorMsg }} </small>
+                                        <div class="row">
+                                            <div class="col">
+                                                <textarea v-model="$dispatch.formData.location" class="form-control" rows="3" ref="locationInput" list="locationList"></textarea>
+                                                <datalist id="locationList">
+                                                    <option v-for="i in $dispatch.locations" :key="i.id" :value="i.name"> {{ i.name }} </option>
+                                                </datalist>
+                                                <small class="form-text text-danger" v-if="$dispatch.formErrors.location"> {{ errorMsg }} </small>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Description</label>
-                                        <textarea v-model="$dispatch.formData.description" class="form-control" rows="3"></textarea>
+                                        <textarea @input="initAwesomplete()" v-model="$dispatch.formData.description" class="form-control" rows="3"></textarea>
                                         <small class="form-text text-danger" v-if="$dispatch.formErrors.description"> {{ errorMsg }} </small>
                                     </div>
                                     <div class="form-group">
@@ -85,13 +106,6 @@
                                         <label>Team</label>
                                         <v-select multiple :options="$dispatch.activeTeams" v-model="$dispatch.formTeams"></v-select>
                                         <small class="form-text text-danger" v-if="$dispatch.formErrors.team"> {{ errorMsg }} </small>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Time of Call</label>
-                                        <input v-model="$dispatch.formData.time_of_call" type="datetime-local" class="form-control" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
-                                        <small class="form-text text-danger" v-if="$dispatch.formErrors.timeOfCall">
-                                            Invalid date-time format. Please use the YYYY-MM-DDTHH:mm format
-                                        </small>
                                     </div>
                                 </div>
                             </div>
@@ -121,13 +135,17 @@
     import { dispatchStore } from '.';
     import { onBeforeRouteLeave, useRouter } from 'vue-router';
     import { routeNames } from '../common';
-
     import { useToast } from "vue-toastification";
+    import Awesomplete from 'awesomplete';
+    import moment from 'moment';
 
     const toast = useToast();
 
     const router = useRouter()
     const $dispatch = dispatchStore()
+    const locationInput = ref<HTMLTextAreaElement | null>(null)
+    const awesompleteInstance = ref<any>()
+
 
     $dispatch.initForm()
 
@@ -156,7 +174,6 @@
         next()
     })
 
-
     const onSubmit = async() => {
         console.log('onSubmit()')
         const submitted = await $dispatch.onSubmit({data: {...$dispatch.formData}})
@@ -177,4 +194,27 @@
         router.push({name: routeNames.dispatch})
     }
 
+    const setTime = () => {
+        $dispatch.formData.time_of_call = moment().format('YYYY-MM-DDTHH:mm');
+    }
+
+    const initAwesomplete = () => {
+        console.log('initAwesomplete()')
+
+        if(awesompleteInstance.value){
+            return 
+        }
+
+        awesompleteInstance.value = new Awesomplete(locationInput.value!, { list: "#locationList" })
+    }
+
 </script>
+
+
+<style>
+
+    .awesomplete{
+        width: 100%;
+    }
+
+</style>

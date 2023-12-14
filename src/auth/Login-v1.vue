@@ -4,50 +4,47 @@
       <header class="bg-primary text-white text-center py-4">
         <h1 class="display-4">
           ORMOC CDRRMO INFORMATION MANAGEMENT SYSTEM
-          <img :src="config.baseUrl + 'images/cdrrmo-v2/system-logo.png'" style="height: 2em">
+          <i class="fas fa-shield-alt fa-lg"></i>
         </h1>
       </header>
-
   
       <!-- Main content with background image and overlay -->
-      <div :style="backgroundStyle" class="main-content">
-        <div class="row mt-5 pt-5">
-          <div class="col-lg-1 col-md-1"></div>
-          <div class="col-lg-4 col-md-4 col-sm-10">
-            <div class="card shadow">
+      <div class="container-fluid main-content" :style="{ 'background-image': 'url(' + config.baseUrl + 'images/ormoc_bg.png)' }">
+        <div class="overlay"></div>
+        <div class="row justify-content-center mt-5">
+          <div class="col-md-4">
+            <div class="card shadow" style="background-color: rgba(0, 0, 0, 0.5);">
+              <!-- Use the sampled color values with reduced alpha channel (0.5 in this example) -->
               <div class="card-body p-5">
-                <h2 class="card-title text-center mb-4">Login</h2>
+                <h2 class="card-title text-center mb-4 text-white">Login</h2>
   
                 <!-- Form -->
                 <form @submit.prevent="login">
                   <!-- Email input -->
                   <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
+                    <label for="username" class="form-label text-white">Username</label>
                     <input type="text" class="form-control" id="username" v-model="username" required autocomplete="username">
                   </div>
   
                   <!-- Password input -->
                   <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label text-white">Password</label>
                     <input type="password" class="form-control" id="password" v-model="password" required autocomplete="current-password">
                   </div>
   
                   <!-- Submit button -->
-                  <button type="submit" class="btn btn-primary float-right">Login</button>
+                  <button type="submit" class="btn btn-primary w-25 float-right">Login</button>
                 </form>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-
-
     </div>
   </template>
   
   <script setup lang="ts">
-    import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+    import { ref } from 'vue';
     import { authService, authStore } from '.'; 
     import { routeNames } from '../common/constants'
     import { useRouter } from 'vue-router';
@@ -57,21 +54,8 @@
     const router = useRouter()
     const $auth = authStore()
 
-    const isMobile = ref(window.innerWidth <= 768);
     const username = ref('');
     const password = ref('');
-
-    onMounted(() => {
-      // Check the screen size on component mount
-      checkMobile();
-      // Listen for window resize events to update the isMobile flag
-      window.addEventListener('resize', checkMobile);
-    });
-
-    onBeforeUnmount(() => {
-      // Remove the resize event listener to avoid memory leaks
-      window.removeEventListener('resize', checkMobile);
-    });
   
     const login = async() => {
       const userloggedIn = await $auth.login({username: username.value, password: password.value})
@@ -113,18 +97,6 @@
       }
     };
 
-    const checkMobile = () => {
-      isMobile.value = window.innerWidth <= 768; // Adjust the breakpoint as needed
-    };
-
-    const backgroundStyle = computed(() => {
-      return {
-        'background-image': isMobile.value
-          ? 'none'
-          : `url(${config.baseUrl}images/cdrrmo-v3/login-bg.jpg)`,
-      };
-    });
-
 
   </script>
   
@@ -152,18 +124,18 @@
   .main-content {
     position: relative;
     background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
     background-position: center;
     min-height: 100vh; /* Ensure the background covers the entire viewport height */
     overflow: hidden; /* Hide overflow content */
   }
-
-
-  /* Define a class to hide the background image on mobile */
-  .mobile-background {
-    background-image: none;
-  }
   
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Adjust the alpha channel for transparency */
+  }
   </style>
   

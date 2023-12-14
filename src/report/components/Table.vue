@@ -1,7 +1,7 @@
 <template>
 
     <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex flex-row align-items-center bg-secondary text-white">
+        <div class="card-header py-3 d-flex flex-row align-items-center bg-dark text-white">
             <b> {{ $report.formatDate(item.date) }} </b>
         </div>
 
