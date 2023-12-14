@@ -199,6 +199,22 @@ const routes = [
         component: () => import('./report/Incident.view.vue')
     },
 
+        // ================ inventory route ================ 
+
+        {
+            path: '/inventory/item',
+            name: routeNames.inventoryItem,
+            meta: { requiresAuth: true },
+            component: () => import('./inventory/Item.view.vue')
+        },
+    
+        {
+            path: '/inventory/category',
+            name: routeNames.inventoryItemCategory,
+            meta: { requiresAuth: true },
+            component: () => import('./inventory/ItemCategory.view.vue')
+        },
+
     // ================ error route ================ 
     {
         path: '/:catchAll(.*)',

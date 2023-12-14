@@ -32,6 +32,9 @@ export const routeNames = {
     trainingSkillsForm: 'trainingSkillsForm.route',
     incidentReport: 'report.incident.route',
     dispatchReport: 'report.dispatch.route',
+    inventoryItem: 'inventoryItem.route',
+    inventoryItemCategory: 'inventoryItemCategory.route',
+    inventoryItemStockMovement: 'inventoryItemStockMovement.route',
 }
 
 export const dispatcherModules = [
