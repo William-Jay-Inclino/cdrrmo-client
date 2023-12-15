@@ -30,9 +30,17 @@ export const itemStore = defineStore('item', () => {
         date_acquired: false,
         serial_number: false,
     }
+
+    const _paginationInitial = {
+        currentPage: 0,
+        totalPages: 0,
+        totalUsers: 0,
+        perPage: 10,
+    }
     
     const formData = ref({..._formDataInitial});
     const formErrors = ref({..._formErrorsInitial})
+    const pagination = ref({..._paginationInitial})
 
     // state
     const _items = ref<IItem[]>([])
@@ -40,7 +48,8 @@ export const itemStore = defineStore('item', () => {
 
     onMounted( async() => {
         console.log(_store + 'onMounted()')
-        const items = await itemService.findAll()
+        const {currentPage, totalPages, totalItems, items} = await itemService.findAll({page: 1, pageSize: pagination.value.perPage}) 
+        setPagination(currentPage, totalPages, totalItems)
         setItems(items)
     })
 
@@ -63,6 +72,12 @@ export const itemStore = defineStore('item', () => {
     const setFormData = (payload: {data: ICreateItemDto}) => {
         console.log(_store + 'setFormData()', payload)
         formData.value = payload.data
+    }
+
+    const setPagination = (currentPage: number, totalPages: number, totalUsers: number) => {
+        pagination.value.currentPage = currentPage
+        pagination.value.totalPages = totalPages
+        pagination.value.totalUsers = totalUsers
     }
 
     // methods
@@ -222,12 +237,16 @@ export const itemStore = defineStore('item', () => {
         formErrors,
         formCategory,
         formIsEditMode,
+        pagination,
+
         onSubmit,
         onDelete,
         resetFormData,
         setFormData,
         initUpdateFormData,
         updateItem,
+        setPagination,
+        setItems,
     }
 })
 

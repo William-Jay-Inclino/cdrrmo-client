@@ -10,65 +10,87 @@
         <div class="row justify-content-center">
             <div class="col-10">
                 <div class="card shadow mb-4">
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">List of Item</h6>
-                        <router-link :to="{name: routeNames.inventoryItemForm}">
-                            <button class="btn btn-primary" type="button">Add Item</button>
-                        </router-link>
+                    <div class="card-header py-3 d-flex flex-row align-items-center">
+                        <div class="row w-100 justify-content-between align-items-center">
+                            <div class="col-6">
+                            <Search />
+                            </div>
+                            <div class="col-6 text-right">
+                            <router-link :to="{name: routeNames.inventoryItemForm}">
+                                <button class="btn btn-primary">Add Item</button>
+                            </router-link>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Card Body -->
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Serial Number</th>
-                                        <th>Category</th>
-                                        <th>Description</th>
-                                        <th colspan="3" class="text-center">Quantity</th>
-                                        <th>Total Cost</th>
-                                        <th>Date Acquired</th>
-                                        <th class="text-center">
-                                            <i class="fas fa-fw fa-cogs"></i>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="item of $module.items">
-                                        <td> {{ item.name }} </td>
-                                        <td> {{ item.serial_number }} </td>
-                                        <td> {{ item.Category.name }} </td>
-                                        <td> {{ item.description }} </td>
-                                        <td>
-                                            <button @click="onClickStockInOutModal(item, MovementTypeEnum.StockOut)" data-toggle="modal" data-target="#stockInOutModal" class="btn btn-light btn-sm float-right">
-                                                <i class="fas fa-fw fa-minus text-danger"></i>
-                                            </button>
-                                        </td>
-                                        <td class="text-center"> {{ item.quantity }} </td>
-                                        <td>
-                                            <button @click="onClickStockInOutModal(item, MovementTypeEnum.StockIn)" data-toggle="modal" data-target="#stockInOutModal" class="btn btn-light btn-sm">
-                                                <i class="fas fa-fw fa-plus text-success"></i>
-                                            </button>
-                                        </td>
-                                        <td> {{ item.cost }} </td>
-                                        <td> {{ formatDate(item.date_acquired) }} </td>
-                                        <td class="text-center">
-                                            <button @click="onClickItemHistory(item)" class="btn btn-light btn-sm">
-                                                <i class="fas fa-fw fa-calendar-alt text-primary"></i>
-                                            </button>
-                                            <button @click="onClickUpdateIcon(item)" class="btn btn-light btn-sm">
-                                                <i class="fas fa-fw fa-pencil-alt"></i>
-                                            </button>
-                                            <button @click="onDelete(item)" class="btn btn-light btn-sm">
-                                                <i class="fas fa-fw fa-trash text-danger"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+
+                        <div class="row mb-3">
+                            <TablePerPage />
                         </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Serial Number</th>
+                                                <th>Category</th>
+                                                <th>Description</th>
+                                                <th colspan="3" class="text-center">Quantity</th>
+                                                <th>Total Cost</th>
+                                                <th>Date Acquired</th>
+                                                <th class="text-center">
+                                                    <i class="fas fa-fw fa-cogs"></i>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="item of $module.items">
+                                                <td> {{ item.name }} </td>
+                                                <td> {{ item.serial_number }} </td>
+                                                <td> {{ item.Category.name }} </td>
+                                                <td> {{ item.description }} </td>
+                                                <td>
+                                                    <button @click="onClickStockInOutModal(item, MovementTypeEnum.StockOut)" data-toggle="modal" data-target="#stockInOutModal" class="btn btn-light btn-sm float-right">
+                                                        <i class="fas fa-fw fa-minus text-danger"></i>
+                                                    </button>
+                                                </td>
+                                                <td class="text-center"> {{ item.quantity }} </td>
+                                                <td>
+                                                    <button @click="onClickStockInOutModal(item, MovementTypeEnum.StockIn)" data-toggle="modal" data-target="#stockInOutModal" class="btn btn-light btn-sm">
+                                                        <i class="fas fa-fw fa-plus text-success"></i>
+                                                    </button>
+                                                </td>
+                                                <td> {{ item.cost }} </td>
+                                                <td> {{ formatDate(item.date_acquired) }} </td>
+                                                <td class="text-center">
+                                                    <button @click="onClickItemHistory(item)" class="btn btn-light btn-sm">
+                                                        <i class="fas fa-fw fa-calendar-alt text-primary"></i>
+                                                    </button>
+                                                    <button @click="onClickUpdateIcon(item)" class="btn btn-light btn-sm">
+                                                        <i class="fas fa-fw fa-pencil-alt"></i>
+                                                    </button>
+                                                    <button @click="onDelete(item)" class="btn btn-light btn-sm">
+                                                        <i class="fas fa-fw fa-trash text-danger"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col">
+                                <TablePagination class="float-right"/>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -89,6 +111,9 @@ import { routeNames } from '../common'
 import { useRouter } from 'vue-router';
 import moment from "moment";
 import StockInOutModal from "./components/StockInOutModal.vue";
+import Search from './components/Search.vue'
+import TablePagination from './components/TablePagination.vue'
+import TablePerPage from './components/TableSelectPerPage.vue'
 
 import Swal from 'sweetalert2'
 import { ref } from "vue";

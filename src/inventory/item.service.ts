@@ -1,16 +1,30 @@
 import { config } from "../config";
 import { ICreateItemDto, ICreateStockMovementDto } from "./dto";
-import { IItem } from "./entities"
+import { IItem, SearchFieldEnum } from "./entities"
 
 class ItemService{
 
     private endpoint = '/item/'
     private service = 'ItemService: '
 
-    async findAll(): Promise<IItem[]>{
+    async findAll(payload: {page: number, pageSize: number, searchField?: SearchFieldEnum, searchValue?: string}): 
+    Promise<{
+        currentPage: number,
+        totalPages: number,
+        totalItems: number,
+        items: IItem[]
+    }>{
         console.log(this.service + 'findAll()')
 		try {
-			const response = await config.api.get(this.endpoint);
+            let newEndpoint = this.endpoint
+            newEndpoint += '?page='+payload.page+'&pageSize='+payload.pageSize
+
+            if(payload.searchValue && payload.searchField){
+                newEndpoint += '&searchField='+payload.searchField+'&searchValue='+payload.searchValue
+            }
+
+			const response = await config.api.get(newEndpoint);
+
 			console.log({response})
             if(response.status === 200){
                 return response.data
@@ -20,7 +34,12 @@ class ItemService{
 			console.error('Error fetching data:', error);
 		}
 
-        return []
+        return {
+            currentPage: 0,
+            totalPages: 0,
+            totalItems: 0,
+            items: []
+        }
     }
 
     async findOne(id: string): Promise<IItem | null>{
