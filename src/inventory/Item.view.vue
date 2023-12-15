@@ -24,10 +24,10 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Category</th>
                                         <th>Serial Number</th>
+                                        <th>Category</th>
                                         <th>Description</th>
-                                        <th>Quantity</th>
+                                        <th colspan="3" class="text-center">Quantity</th>
                                         <th>Cost</th>
                                         <th>Date Acquired</th>
                                         <th class="text-center">
@@ -38,10 +38,20 @@
                                 <tbody>
                                     <tr v-for="item of $module.items">
                                         <td> {{ item.name }} </td>
-                                        <td> {{ item.Category.name }} </td>
                                         <td> {{ item.serial_number }} </td>
+                                        <td> {{ item.Category.name }} </td>
                                         <td> {{ item.description }} </td>
-                                        <td> {{ item.quantity }} </td>
+                                        <td>
+                                            <button @click="setSelectedItem(item)" data-toggle="modal" data-target="#stockOutModal" class="btn btn-light btn-sm float-right">
+                                                <i class="fas fa-fw fa-minus text-danger"></i>
+                                            </button>
+                                        </td>
+                                        <td class="text-center"> {{ item.quantity }} </td>
+                                        <td>
+                                            <button @click="setSelectedItem(item)" data-toggle="modal" data-target="#stockInModal" class="btn btn-light btn-sm">
+                                                <i class="fas fa-fw fa-plus text-success"></i>
+                                            </button>
+                                        </td>
                                         <td> {{ item.cost }} </td>
                                         <td> {{ formatDate(item.date_acquired) }} </td>
                                         <td class="text-center">
@@ -61,6 +71,8 @@
             </div>
         </div>
 
+        <stock-out-modal :item="selectedItem"/>
+        <stock-in-modal />
 
   </div>
 
@@ -74,12 +86,17 @@ import { IItem, itemStore } from '.'
 import { routeNames } from '../common'
 import { useRouter } from 'vue-router';
 import moment from "moment";
+import StockOutModal from "./components/StockOutModal.vue";
+import StockInModal from "./components/StockInModal.vue";
 
 import Swal from 'sweetalert2'
+import { ref } from "vue";
 
 const toast = useToast();
 const $module = itemStore()
 const router = useRouter()
+
+const selectedItem = ref<IItem | null>(null)
 
 const onDelete = async(item: IItem) => {
 
@@ -110,6 +127,11 @@ const onDelete = async(item: IItem) => {
 
 const onClickUpdateIcon = (data: IItem) => {
     router.push({name: routeNames.inventoryItemForm, query: {id: data.id}})
+}
+
+const setSelectedItem = (item: IItem) => {
+    console.log('setSelectedItem()', item)
+    selectedItem.value = item
 }
 
 const formatDate = (date_acquired: string) => moment(date_acquired).format('YYYY-MM-DD')

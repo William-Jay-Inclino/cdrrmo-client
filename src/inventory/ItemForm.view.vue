@@ -168,7 +168,7 @@ const onSubmit = async(action: number) => {
 
 const onCancel = () => {
     $module.resetFormData()
-    router.push({name: routeNames.barts})
+    router.push({name: routeNames.inventoryItem})
 }
 
 </script>
