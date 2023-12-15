@@ -33,7 +33,9 @@ export const routeNames = {
     incidentReport: 'report.incident.route',
     dispatchReport: 'report.dispatch.route',
     inventoryItem: 'inventoryItem.route',
+    inventoryItemForm: 'inventoryItemForm.route',
     inventoryItemCategory: 'inventoryItemCategory.route',
+    inventoryItemCategoryForm: 'inventoryItemCategoryForm.route',
     inventoryItemStockMovement: 'inventoryItemStockMovement.route',
 }
 

@@ -24,7 +24,7 @@
 				<Navbar/>
 
 				<!-- Main content -->
-				<div style="margin-top: 100px;">
+				<div style="margin-top: 100px; margin-bottom: 100px;">
 					<router-view/>
 				</div>
 

@@ -1,10 +1,11 @@
 
 export interface ICreateItemDto {
-    category_id: String
-    name: String
-    description: String
-    quantity: Number
-    cost: Number
-    date_acquired: Date
-    serial_number: Number
+    id?: string
+    category_id: string //
+    name: string //
+    description: string //
+    quantity: number //
+    cost: number //
+    date_acquired: string //
+    serial_number: string //
 }

@@ -1,14 +1,14 @@
 import { IItemCategory, IStockMovement } from "."
 
 export interface IItem {
-    id: String 
-    category_id: String 
+    id: string 
+    category_id: string 
     Category: IItemCategory
     StockMovement: IStockMovement
-    name: String
-    description: String 
-    quantity: Number 
-    cost: Number 
-    date_acquired: Date 
-    serial_number: String 
+    name: string
+    description: string 
+    quantity: number 
+    cost: number
+    date_acquired: string 
+    serial_number: string 
 }

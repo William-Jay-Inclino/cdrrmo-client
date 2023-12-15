@@ -1,5 +1,7 @@
 
 export interface IItemCategory {
-    id: String 
-    name: String
+    id: string 
+    name: string
+
+    label?: string
 }
