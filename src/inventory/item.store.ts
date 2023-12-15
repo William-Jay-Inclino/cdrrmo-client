@@ -208,6 +208,14 @@ export const itemStore = defineStore('item', () => {
         formCategory.value = null
     }
 
+    const updateItem = (item: IItem) => {
+        const indx = _items.value.findIndex(i => i.id === item.id)
+
+        if(indx !== -1){
+            _items.value[indx] = {...item}
+        }
+    }
+
     return {
         items,
         formData,
@@ -219,6 +227,7 @@ export const itemStore = defineStore('item', () => {
         resetFormData,
         setFormData,
         initUpdateFormData,
+        updateItem,
     }
 })
 

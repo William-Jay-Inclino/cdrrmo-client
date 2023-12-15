@@ -1,4 +1,5 @@
 import { DispatchStatusEnum } from "../dispatch";
+import { MovementTypeEnum } from "../inventory";
 import { TeamStatusEnum } from "../team";
 import { DistinctUserTypeEnum, GenderEnum, UserLevelEnum, UserStatusEnum, UserTypeEnum } from "../user";
 
@@ -80,6 +81,19 @@ export const CONST_UserStatus = {
     [UserStatusEnum.Inactive]: {
         id: UserStatusEnum.Inactive,
         text: 'Inactive',
+        color: 'danger'
+    },
+}
+
+export const CONST_ItemMovementType = {
+    [MovementTypeEnum.StockIn]: {
+        id: MovementTypeEnum.StockIn,
+        text: 'Stock In',
+        color: 'success'
+    },
+    [MovementTypeEnum.StockOut]: {
+        id: MovementTypeEnum.StockOut,
+        text: 'Stock Out',
         color: 'danger'
     },
 }

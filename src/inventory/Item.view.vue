@@ -4,7 +4,7 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800"> Item </h1>
+            <h1 class="h3 mb-0 text-gray-800"> Inventory Item </h1>
         </div>
 
         <div class="row justify-content-center">
@@ -28,7 +28,7 @@
                                         <th>Category</th>
                                         <th>Description</th>
                                         <th colspan="3" class="text-center">Quantity</th>
-                                        <th>Cost</th>
+                                        <th>Total Cost</th>
                                         <th>Date Acquired</th>
                                         <th class="text-center">
                                             <i class="fas fa-fw fa-cogs"></i>
@@ -42,19 +42,22 @@
                                         <td> {{ item.Category.name }} </td>
                                         <td> {{ item.description }} </td>
                                         <td>
-                                            <button @click="setSelectedItem(item)" data-toggle="modal" data-target="#stockOutModal" class="btn btn-light btn-sm float-right">
+                                            <button @click="onClickStockInOutModal(item, MovementTypeEnum.StockOut)" data-toggle="modal" data-target="#stockInOutModal" class="btn btn-light btn-sm float-right">
                                                 <i class="fas fa-fw fa-minus text-danger"></i>
                                             </button>
                                         </td>
                                         <td class="text-center"> {{ item.quantity }} </td>
                                         <td>
-                                            <button @click="setSelectedItem(item)" data-toggle="modal" data-target="#stockInModal" class="btn btn-light btn-sm">
+                                            <button @click="onClickStockInOutModal(item, MovementTypeEnum.StockIn)" data-toggle="modal" data-target="#stockInOutModal" class="btn btn-light btn-sm">
                                                 <i class="fas fa-fw fa-plus text-success"></i>
                                             </button>
                                         </td>
                                         <td> {{ item.cost }} </td>
                                         <td> {{ formatDate(item.date_acquired) }} </td>
                                         <td class="text-center">
+                                            <button @click="onClickItemHistory(item)" class="btn btn-light btn-sm">
+                                                <i class="fas fa-fw fa-calendar-alt text-primary"></i>
+                                            </button>
                                             <button @click="onClickUpdateIcon(item)" class="btn btn-light btn-sm">
                                                 <i class="fas fa-fw fa-pencil-alt"></i>
                                             </button>
@@ -71,8 +74,7 @@
             </div>
         </div>
 
-        <stock-out-modal :item="selectedItem"/>
-        <stock-in-modal />
+        <stock-in-out-modal :item="selectedItem" :mode="movementType"/>
 
   </div>
 
@@ -82,12 +84,11 @@
 <script setup lang="ts">
 
 import { useToast } from "vue-toastification";
-import { IItem, itemStore } from '.'
+import { IItem, MovementTypeEnum, itemStore } from '.'
 import { routeNames } from '../common'
 import { useRouter } from 'vue-router';
 import moment from "moment";
-import StockOutModal from "./components/StockOutModal.vue";
-import StockInModal from "./components/StockInModal.vue";
+import StockInOutModal from "./components/StockInOutModal.vue";
 
 import Swal from 'sweetalert2'
 import { ref } from "vue";
@@ -97,6 +98,7 @@ const $module = itemStore()
 const router = useRouter()
 
 const selectedItem = ref<IItem | null>(null)
+const movementType = ref<MovementTypeEnum>(MovementTypeEnum.StockIn)
 
 const onDelete = async(item: IItem) => {
 
@@ -129,9 +131,14 @@ const onClickUpdateIcon = (data: IItem) => {
     router.push({name: routeNames.inventoryItemForm, query: {id: data.id}})
 }
 
-const setSelectedItem = (item: IItem) => {
-    console.log('setSelectedItem()', item)
+const onClickStockInOutModal = (item: IItem, mode: MovementTypeEnum) => {
+    console.log('onClickStockInOutModal()', item)
     selectedItem.value = item
+    movementType.value = mode
+}
+
+const onClickItemHistory = (item: IItem) => {
+    router.push({name: routeNames.inventoryItemStockMovement, query: {id: item.id}})
 }
 
 const formatDate = (date_acquired: string) => moment(date_acquired).format('YYYY-MM-DD')

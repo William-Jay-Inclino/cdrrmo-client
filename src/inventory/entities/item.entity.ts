@@ -4,7 +4,7 @@ export interface IItem {
     id: string 
     category_id: string 
     Category: IItemCategory
-    StockMovement: IStockMovement
+    StockMovement: IStockMovement[]
     name: string
     description: string 
     quantity: number 

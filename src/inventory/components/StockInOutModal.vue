@@ -1,10 +1,10 @@
 <template>
 
-    <div ref="myModal" class="modal fade" id="stockOutModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div ref="myModal" class="modal fade" id="stockInOutModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="staticBackdropLabel">Stock Out</h5>
+                <div class="modal-header text-white" :class="{'bg-danger': !isStockIn, 'bg-success': isStockIn}">
+                    <h5 class="modal-title" id="staticBackdropLabel"> {{ modalTitle }} </h5>
                     <button @click="resetForm()" type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true" class="">&times;</span>
                     </button>
@@ -49,14 +49,17 @@
 
 
 <script setup lang="ts">
-    import { ref } from 'vue';
-    import { IItem } from '..';
-
+    import { computed, ref } from 'vue';
+    import { IItem, MovementTypeEnum, itemService, itemStore } from '..';
+    import { useToast } from "vue-toastification";
 
     const props = defineProps<{
         item: IItem | null
+        mode: MovementTypeEnum
     }>()
 
+    const $item = itemStore()
+    const toast = useToast();
     const quantity = ref(0)
     const remarks = ref('')
     const errorMsg = ref('This field is required')
@@ -70,7 +73,11 @@
 
     const formErrors = ref({..._formErrorsInitial})
 
-    const onSave = () => {
+    const isStockIn = computed( () => props.mode === MovementTypeEnum.StockIn)
+
+    const modalTitle = computed( () => isStockIn.value ? 'Stock In' : 'Stock Out')
+
+    const onSave = async() => {
 
         if(!props.item) return 
 
@@ -83,7 +90,9 @@
 
         if(!quantity.value){
             formErrors.value.quantity = true 
-        }else if(quantity.value < 0 || !isWholeNumber(quantity.value) || quantity.value > props.item.quantity){
+        }else if(quantity.value < 0 || !isWholeNumber(quantity.value)){
+            formErrors.value.invalidQty = true 
+        }else if(props.mode === MovementTypeEnum.StockOut && quantity.value > props.item.quantity){
             formErrors.value.invalidQty = true 
         }
 
@@ -97,6 +106,26 @@
 
         if(hasError){
             return null 
+        }
+
+        const data = {
+            quantity: quantity.value,
+            remarks: remarks.value
+        }
+
+        let item: IItem | null = null
+
+        if(props.mode === MovementTypeEnum.StockIn){
+            item = await itemService.stockIn({itemId: props.item.id, data})
+        }else{
+            item = await itemService.stockOut({itemId: props.item.id, data})
+        }
+
+        if(item){
+            toast.success('Item Quantity successfully updated')
+            $item.updateItem(item)
+        }else{
+            toast.error('Failed to update Item Quantity')
         }
 
         resetForm()

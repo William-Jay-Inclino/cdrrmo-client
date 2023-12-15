@@ -214,6 +214,13 @@ const routes = [
         meta: { requiresAuth: true },
         component: () => import('./inventory/ItemForm.view.vue')
     },
+
+    {
+        path: '/inventory/item/history',
+        name: routeNames.inventoryItemStockMovement,
+        meta: { requiresAuth: true },
+        component: () => import('./inventory/ItemStockMovement.view.vue')
+    },
     
     {
         path: '/inventory/category',

@@ -1,5 +1,5 @@
 import { config } from "../config";
-import { ICreateItemDto } from "./dto";
+import { ICreateItemDto, ICreateStockMovementDto } from "./dto";
 import { IItem } from "./entities"
 
 class ItemService{
@@ -87,6 +87,40 @@ class ItemService{
 		}
         return false
 
+    }
+
+    async stockIn(payload: {itemId: string, data: ICreateStockMovementDto}): Promise<IItem | null>{
+        console.log(this.service + 'stockIn()', payload)
+
+		try {
+			const response = await config.api.post(this.endpoint + payload.itemId + '/stock-in', payload.data);
+			console.log({response})
+            if(response.status === 201){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return null 
+    }
+
+    async stockOut(payload: {itemId: string, data: ICreateStockMovementDto}): Promise<IItem | null>{
+        console.log(this.service + 'stockOut()', payload)
+
+		try {
+			const response = await config.api.post(this.endpoint + payload.itemId + '/stock-out', payload.data);
+			console.log({response})
+            if(response.status === 201){
+                return response.data
+            }
+            console.error('Error: ', response)
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+
+        return null 
     }
 
 }
