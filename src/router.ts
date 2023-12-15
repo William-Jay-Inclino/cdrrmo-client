@@ -169,19 +169,19 @@ const routes = [
         component: () => import('./training_skill/TrainingSkillForm.view.vue')
     },
 
-        // ================ location route ================ 
-        {
-            path: '/locations',
-            name: routeNames.location,
-            meta: { requiresAuth: true },
-            component: () => import('./location/Location.view.vue')
-        },
-        {
-            path: '/locations/form',
-            name: routeNames.locationForm,
-            meta: { requiresAuth: true },
-            component: () => import('./location/LocationForm.view.vue')
-        },
+    // ================ location route ================ 
+    {
+        path: '/locations',
+        name: routeNames.location,
+        meta: { requiresAuth: true },
+        component: () => import('./location/Location.view.vue')
+    },
+    {
+        path: '/locations/form',
+        name: routeNames.locationForm,
+        meta: { requiresAuth: true },
+        component: () => import('./location/LocationForm.view.vue')
+    },
 
     // ================ report route ================ 
 
@@ -197,6 +197,43 @@ const routes = [
         name: routeNames.incidentReport,
         meta: { requiresAuth: true },
         component: () => import('./report/Incident.view.vue')
+    },
+
+    // ================ inventory route ================ 
+
+    {
+        path: '/inventory/item',
+        name: routeNames.inventoryItem,
+        meta: { requiresAuth: true },
+        component: () => import('./inventory/Item.view.vue')
+    },
+
+    {
+        path: '/inventory/item/form',
+        name: routeNames.inventoryItemForm,
+        meta: { requiresAuth: true },
+        component: () => import('./inventory/ItemForm.view.vue')
+    },
+
+    {
+        path: '/inventory/item/history',
+        name: routeNames.inventoryItemStockMovement,
+        meta: { requiresAuth: true },
+        component: () => import('./inventory/ItemStockMovement.view.vue')
+    },
+    
+    {
+        path: '/inventory/category',
+        name: routeNames.inventoryItemCategory,
+        meta: { requiresAuth: true },
+        component: () => import('./inventory/ItemCategory.view.vue')
+    },
+
+    {
+        path: '/inventory/category/form',
+        name: routeNames.inventoryItemCategoryForm,
+        meta: { requiresAuth: true },
+        component: () => import('./inventory/ItemCategoryForm.view.vue')
     },
 
     // ================ error route ================ 

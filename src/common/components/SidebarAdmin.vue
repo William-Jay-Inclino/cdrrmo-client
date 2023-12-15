@@ -96,18 +96,46 @@
             class="nav-item"
             :class="
                 {
+                    'active': routeName === routeNames.inventoryItem || 
+                    routeName === routeNames.inventoryItemCategory ||
+                    routeName === routeNames.inventoryItemStockMovement
+                }"
+        >
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInventory"
+                aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-box"></i>
+                <span>Inventory</span>
+            </a>
+            <div id="collapseInventory" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <router-link :to="{name: routeNames.inventoryItem}" class="collapse-item" :class="{'text-primary': routeName === routeNames.inventoryItem}">
+                        <i class="fas fa-fw fa-tag"></i>
+                        <span class="ml-2">Item</span>
+                    </router-link>
+                    <router-link :to="{name: routeNames.inventoryItemCategory}" class="collapse-item" :class="{'text-primary': routeName === routeNames.inventoryItemCategory}">
+                        <i class="fas fa-fw fa-list"></i>
+                        <span class="ml-2">Category</span>
+                    </router-link>
+                </div>
+            </div>
+        </li>
+
+        <li
+            class="nav-item"
+            :class="
+                {
                     'active': routeName === routeNames.nationalAgencies || routeName === routeNames.nationalAgenciesForm ||
                     routeName === routeNames.csos || routeName === routeNames.csosForm ||
                     routeName === routeNames.pos || routeName === routeNames.posForm ||
                     routeName === routeNames.barts || routeName === routeNames.bartsForm
                 }"
         >
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOrg"
                 aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-building"></i>
-                <span>Organizations</span>
+                <span>Organization</span>
             </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="collapseOrg" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <router-link :to="{name: routeNames.nationalAgencies}" class="collapse-item" :class="{'text-primary': routeName === routeNames.nationalAgencies || routeName === routeNames.nationalAgenciesForm}">
                         <i class="fas fa-fw fa-building"></i>
