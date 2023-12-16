@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import Breadcrumbs from '../common/components/Breadcrumbs.vue'
 import { useToast } from "vue-toastification";
 import { categoryStore } from '.'
@@ -84,6 +84,17 @@ const breadcrumbItems = ref([
         isActive: true,
     }
 ])
+
+
+onBeforeRouteLeave( (to: any, from: any, next: any) => {
+    console.log('onBeforeRouteLeave()')
+    console.log({to})
+    console.log({from})
+    $module.resetFormData()
+
+    next()
+})
+
 
 onMounted( async() => {
     const query = router.currentRoute.value.query
