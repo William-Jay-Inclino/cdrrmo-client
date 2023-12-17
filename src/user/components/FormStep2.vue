@@ -23,7 +23,7 @@
                     <td class="align-middle"> {{ skill.name }} </td>
                     <td>
                         <div class="input-group" v-show="isSkillExist(skill.id)">
-                            <div class="input-group-prepend" v-show="$user.formIsEditMode">
+                            <div class="input-group-prepend" v-show="canShowCertImage(skill)">
                                 <button @click="onClickShowImage(skill)" class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#imageModal">
                                     <i class="fas fa-fw fa-eye"></i>
                                 </button>
@@ -132,6 +132,19 @@ const getFileName = (skill: ITrainingSkill) => {
 
     if(userSkill.image_url) return userSkill.image_url
     
+}
+
+const canShowCertImage = (skill: ITrainingSkill): boolean => {
+    const userSkill = $user.formData.skills.find(i => i.training_skill_id === skill.id)
+
+    if(!userSkill) return false 
+
+    if(userSkill.image_url && userSkill.image_url.trim() !== ''){
+        return true 
+    }
+
+    return false 
+
 }
 
 </script>
