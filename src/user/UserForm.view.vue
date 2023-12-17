@@ -86,6 +86,7 @@
     import Step4 from './components/FormStep4.vue'
     import { userStore } from '.';
     import { useToast } from "vue-toastification";
+    import { imageService } from '../common/services/image.service';
 
     // ========================== END DEPENDENCIES ========================== 
 
@@ -204,6 +205,25 @@
         console.log('onSubmitForm()', action)
 
         const userData = {...$user.formData}
+
+        for(let skillCert of $user.formSkillCertificates){
+            const skill = userData.skills.find(i => i.training_skill_id === skillCert.training_skill_id)
+
+
+            let previousFilename = undefined 
+            
+            if(skill && skill.image_url){
+                previousFilename = skill.image_url
+            }
+
+            const res = await imageService.uploadImage(skillCert.file, previousFilename)
+
+            if(skill){
+                skill.image_url = res.filename
+            }
+
+            console.log('res', res)
+        }
 
         const savedUser = await $user.saveUser(userData)
 

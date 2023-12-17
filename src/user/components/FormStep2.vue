@@ -6,8 +6,8 @@
             <thead>
                 <tr>
                     <th width="10%">Select</th>
-                    <th>Skill</th>
-                    <th class="text-center">Certificates</th>
+                    <th width="45%">Skill</th>
+                    <th width="45%">Certificate</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,11 +22,13 @@
                           </button>
                     </td>
                     <td class="align-middle"> {{ skill.name }} </td>
-                    <td class="text-center">
-                        <CertificateManager
-                            :skill-id="skill.id"
-                            :show="isSkillExist(skill.id)"
-                        />
+                    <td>
+                        <div class="input-group" v-show="isSkillExist(skill.id)">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" @change="handleFileChange($event, skill)">
+                                <label class="custom-file-label"> {{ getFileName(skill) }} </label>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -40,7 +42,6 @@
 
 <script setup lang="ts">
 // import { ref } from 'vue';
-import CertificateManager from './CertificateManager.vue'
 import { IUserSkill, userStore } from '../';
 import { ITrainingSkill, trainingSkillStore } from '../../training_skill';
 
@@ -59,7 +60,7 @@ const onClickSelectSkill = (skill: ITrainingSkill) => {
         userSkill.id = ''
         userSkill.user_id = ''
         userSkill.training_skill_id = skill.id
-        userSkill.SkillCertificate = []
+        userSkill.image_url = ''
         $user.formData.skills.push(userSkill)
         return 
     }
@@ -67,7 +68,6 @@ const onClickSelectSkill = (skill: ITrainingSkill) => {
     $user.formData.skills.splice(indx, 1)
     
 }
-
 
 const isSkillExist = (id: string): boolean => {
     const indx = $user.formData.skills.findIndex(i => i.training_skill_id === id)
@@ -77,6 +77,38 @@ const isSkillExist = (id: string): boolean => {
     return true
 }
 
+const handleFileChange = (event: Event, skill: ITrainingSkill) => {
 
+    const indx = $user.formSkillCertificates.findIndex(i => i.training_skill_id === skill.id)
+
+    if(indx !== -1){
+        $user.formSkillCertificates.splice(indx, 1)
+    }
+
+    const target = event.target as HTMLInputElement;
+
+    const file = (target.files as FileList)[0];
+
+    $user.formSkillCertificates.push({
+        training_skill_id: skill.id,
+        file
+    })
+
+};
+
+const getFileName = (skill: ITrainingSkill) => {
+
+    const skillCert = $user.formSkillCertificates.find(i => i.training_skill_id === skill.id)
+    if(skillCert){
+        return skillCert.file.name
+    }
+    
+    const userSkill = $user.formData.skills.find(i => i.training_skill_id === skill.id)
+
+    if(!userSkill) return ''
+
+    if(userSkill.image_url) return userSkill.image_url
+    
+}
 
 </script>
