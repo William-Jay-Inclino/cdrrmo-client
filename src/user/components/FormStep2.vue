@@ -17,23 +17,29 @@
                           @click="onClickSelectSkill(skill)"
                           class="btn btn-sm"
                           :class="{'btn-primary': isSkillExist(skill.id), 'btn-outline-primary': !(isSkillExist(skill.id))}">
-                          <i
-                          class="fas fa-fw fa-check"></i>
-                          </button>
+                          <i class="fas fa-fw fa-check"></i>
+                        </button>
                     </td>
                     <td class="align-middle"> {{ skill.name }} </td>
                     <td>
                         <div class="input-group" v-show="isSkillExist(skill.id)">
+                            <div class="input-group-prepend" v-show="$user.formIsEditMode">
+                                <button @click="onClickShowImage(skill)" class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#imageModal">
+                                    <i class="fas fa-fw fa-eye"></i>
+                                </button>
+                            </div>
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" @change="handleFileChange($event, skill)">
                                 <label class="custom-file-label"> {{ getFileName(skill) }} </label>
                             </div>
                         </div>
+
                     </td>
                 </tr>
             </tbody>
         </table>
 
+        <ImageModal :image_url="imageUrl"/>
 
     </div>
 
@@ -42,11 +48,16 @@
 
 <script setup lang="ts">
 // import { ref } from 'vue';
+import { ref } from 'vue';
 import { IUserSkill, userStore } from '../';
 import { ITrainingSkill, trainingSkillStore } from '../../training_skill';
+import ImageModal from './ImageModal.vue'
+// import { imageService } from '../../common/services/image.service';
 
 const $user = userStore()
 const $trainingSkill = trainingSkillStore()
+
+const imageUrl = ref('')
 
 const onClickSelectSkill = (skill: ITrainingSkill) => {
 
@@ -67,6 +78,18 @@ const onClickSelectSkill = (skill: ITrainingSkill) => {
 
     $user.formData.skills.splice(indx, 1)
     
+}
+
+const onClickShowImage = async(skill: ITrainingSkill) => {
+    const userSkill = $user.formData.skills.find(i => i.training_skill_id === skill.id)
+
+    if(userSkill){
+        // imageUrl.value = 'image.png'
+        imageUrl.value = userSkill.image_url
+
+        // const res = await imageService.getImage('image.png')
+        // console.log('res', res)
+    }
 }
 
 const isSkillExist = (id: string): boolean => {

@@ -33,6 +33,23 @@ class ImageService {
 
     return { filename: '' };
   }
+
+  async getImage(fileName: string){
+    console.log(this.service + 'getImage()', fileName)
+    try {
+      const response = await config.api.get(this.endpoint + 'get-image/' + fileName);
+      console.log({response})
+      if(response.status === 200){
+          return response.data
+      }
+      console.error('Error: ', response)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+
+    return null
+  } 
+
 }
 
 export const imageService = new ImageService();
