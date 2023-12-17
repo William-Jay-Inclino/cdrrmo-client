@@ -195,6 +195,7 @@
     }
 
     const setTime = () => {
+        initAwesomplete()
         $dispatch.formData.time_of_call = moment().format('YYYY-MM-DDTHH:mm');
     }
 

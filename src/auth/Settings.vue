@@ -74,6 +74,7 @@
     import { computed, ref, watch } from 'vue';
     import { authService, authStore } from '.';
     import { useToast } from "vue-toastification";
+import { onBeforeRouteLeave } from 'vue-router';
 
     const $auth = authStore()
 
@@ -93,6 +94,15 @@
     const formErrors = ref({..._formErrorsInitial})
 
 
+    onBeforeRouteLeave( (to: any, from: any, next: any) => {
+        console.log('onBeforeRouteLeave()')
+        console.log({to})
+        console.log({from})
+
+        resetForm()
+
+        next()
+    })
 
 
     // computed 

@@ -1,7 +1,7 @@
 
 import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
-import { DistinctUserTypeEnum, GenderEnum, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum, userService } from '.';
+import { DistinctUserTypeEnum, GenderEnum, ISkillCertificate, IUser, UserLevelEnum, UserStatusEnum, UserTypeEnum, userService } from '.';
 import { CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_UserTypes, CONST_bloodTypes } from '../common/constants';
 import { faker } from '@faker-js/faker';
 import { getAge, isValidDate, isValidPhoneNumber } from '../common';
@@ -82,6 +82,7 @@ export const userStore = defineStore('user', () => {
 
     const _users = ref<IUser[]>([])
     const formData = ref<IUser>({..._formDataInitial})
+    const formSkillCertificates = ref<ISkillCertificate[]>([])
     const formErrors = ref({..._formErrorsInitial})
     const formUserType = ref<DistinctUserTypeEnum>(_formUserTypeInitial)
     const formCurrentStep = ref(_formCurrentStepInitial)
@@ -482,6 +483,7 @@ export const userStore = defineStore('user', () => {
 
         formData.value.emergencyContacts = []
         formData.value.skills = []
+        formSkillCertificates.value = []
     }
 
 
@@ -492,6 +494,7 @@ export const userStore = defineStore('user', () => {
     return {
         users,
         formData,
+        formSkillCertificates,
         formErrors,
         formCurrentStep,
         formUserType,

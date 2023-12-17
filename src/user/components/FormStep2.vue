@@ -6,8 +6,8 @@
             <thead>
                 <tr>
                     <th width="10%">Select</th>
-                    <th>Skill</th>
-                    <th class="text-center">Certificates</th>
+                    <th width="45%">Skill</th>
+                    <th width="45%">Certificate</th>
                 </tr>
             </thead>
             <tbody>
@@ -17,21 +17,29 @@
                           @click="onClickSelectSkill(skill)"
                           class="btn btn-sm"
                           :class="{'btn-primary': isSkillExist(skill.id), 'btn-outline-primary': !(isSkillExist(skill.id))}">
-                          <i
-                          class="fas fa-fw fa-check"></i>
-                          </button>
+                          <i class="fas fa-fw fa-check"></i>
+                        </button>
                     </td>
                     <td class="align-middle"> {{ skill.name }} </td>
-                    <td class="text-center">
-                        <CertificateManager
-                            :skill-id="skill.id"
-                            :show="isSkillExist(skill.id)"
-                        />
+                    <td>
+                        <div class="input-group" v-show="isSkillExist(skill.id)">
+                            <div class="input-group-prepend" v-show="canShowCertImage(skill)">
+                                <button @click="onClickShowImage(skill)" class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#imageModal">
+                                    <i class="fas fa-fw fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" @change="handleFileChange($event, skill)">
+                                <label class="custom-file-label"> {{ getFileName(skill) }} </label>
+                            </div>
+                        </div>
+
                     </td>
                 </tr>
             </tbody>
         </table>
 
+        <ImageModal :image_url="imageUrl"/>
 
     </div>
 
@@ -40,12 +48,16 @@
 
 <script setup lang="ts">
 // import { ref } from 'vue';
-import CertificateManager from './CertificateManager.vue'
+import { ref } from 'vue';
 import { IUserSkill, userStore } from '../';
 import { ITrainingSkill, trainingSkillStore } from '../../training_skill';
+import ImageModal from './ImageModal.vue'
+// import { imageService } from '../../common/services/image.service';
 
 const $user = userStore()
 const $trainingSkill = trainingSkillStore()
+
+const imageUrl = ref('')
 
 const onClickSelectSkill = (skill: ITrainingSkill) => {
 
@@ -59,7 +71,7 @@ const onClickSelectSkill = (skill: ITrainingSkill) => {
         userSkill.id = ''
         userSkill.user_id = ''
         userSkill.training_skill_id = skill.id
-        userSkill.SkillCertificate = []
+        userSkill.image_url = ''
         $user.formData.skills.push(userSkill)
         return 
     }
@@ -68,6 +80,17 @@ const onClickSelectSkill = (skill: ITrainingSkill) => {
     
 }
 
+const onClickShowImage = async(skill: ITrainingSkill) => {
+    const userSkill = $user.formData.skills.find(i => i.training_skill_id === skill.id)
+
+    if(userSkill){
+        // imageUrl.value = 'image.png'
+        imageUrl.value = userSkill.image_url
+
+        // const res = await imageService.getImage('image.png')
+        // console.log('res', res)
+    }
+}
 
 const isSkillExist = (id: string): boolean => {
     const indx = $user.formData.skills.findIndex(i => i.training_skill_id === id)
@@ -77,6 +100,51 @@ const isSkillExist = (id: string): boolean => {
     return true
 }
 
+const handleFileChange = (event: Event, skill: ITrainingSkill) => {
 
+    const indx = $user.formSkillCertificates.findIndex(i => i.training_skill_id === skill.id)
+
+    if(indx !== -1){
+        $user.formSkillCertificates.splice(indx, 1)
+    }
+
+    const target = event.target as HTMLInputElement;
+
+    const file = (target.files as FileList)[0];
+
+    $user.formSkillCertificates.push({
+        training_skill_id: skill.id,
+        file
+    })
+
+};
+
+const getFileName = (skill: ITrainingSkill) => {
+
+    const skillCert = $user.formSkillCertificates.find(i => i.training_skill_id === skill.id)
+    if(skillCert){
+        return skillCert.file.name
+    }
+    
+    const userSkill = $user.formData.skills.find(i => i.training_skill_id === skill.id)
+
+    if(!userSkill) return ''
+
+    if(userSkill.image_url) return userSkill.image_url
+    
+}
+
+const canShowCertImage = (skill: ITrainingSkill): boolean => {
+    const userSkill = $user.formData.skills.find(i => i.training_skill_id === skill.id)
+
+    if(!userSkill) return false 
+
+    if(userSkill.image_url && userSkill.image_url.trim() !== ''){
+        return true 
+    }
+
+    return false 
+
+}
 
 </script>

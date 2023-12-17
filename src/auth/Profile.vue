@@ -150,7 +150,8 @@
                                                             <tr v-for="skill in me.skills">
                                                                 <td class="align-middle"> {{ skill.TrainingSkill.name }} </td>
                                                                 <td class="text-center">  
-                                                                    <img :src="config.baseUrl + 'images/certificate.png'" class="img-thumbnail certificate-image">
+                                                                    <img v-if="skill.image_url" :src="config.uploads + skill.image_url" class="img-thumbnail">
+                                                                    <!-- <img :src="config.baseUrl + 'images/certificate.png'" class="img-thumbnail certificate-image"> -->
                                                                 </td>
                                                             </tr>
                                                         </table>

@@ -102,13 +102,20 @@ export interface IUserSkill{
     user_id: string 
     TrainingSkill: ITrainingSkill
     training_skill_id: string 
-    SkillCertificate: ISkillCertificate[]
+    image_url: string
+    // SkillCertificate: ISkillCertificate[]
+
+}
+
+export interface ISkillCertificate {
+    training_skill_id: string 
+    file: File
 }
 
 
-export interface ISkillCertificate{
-    id: string 
-    userSkill: IUserSkill
-    user_skill_id: string 
-    certificateUrl: string 
-}
+// export interface ISkillCertificate{
+//     id: string 
+//     userSkill: IUserSkill
+//     user_skill_id: string 
+//     certificateUrl: string 
+// }
