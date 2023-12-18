@@ -23,6 +23,7 @@ export interface IUser {
     status: UserStatusEnum 
     dispatch_status?: DispatchStatusEnum 
     type: UserTypeEnum
+    image_url: string | null
 
     emergencyContacts?: IEmergencyContact[]
 

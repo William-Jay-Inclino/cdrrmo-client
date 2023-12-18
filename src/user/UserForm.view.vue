@@ -225,6 +225,18 @@
             console.log('res', res)
         }
 
+        if($user.pictureFile){
+
+            let previousFilename = undefined 
+            
+            if($user.formData.image_url){
+                previousFilename = $user.formData.image_url
+            }
+
+            const res = await imageService.uploadImage($user.pictureFile, previousFilename)
+            userData.image_url = res.filename
+        }
+
         const savedUser = await $user.saveUser(userData)
 
         if(savedUser){

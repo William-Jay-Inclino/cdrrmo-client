@@ -31,6 +31,7 @@ export const userStore = defineStore('user', () => {
         blood_type: CONST_bloodTypes[0], // ok
         status: UserStatusEnum.Active, // ok
         type: UserTypeEnum.LGU_Casual,
+        image_url: null,
         
         dispatch_status: undefined,
         bart_id: null,
@@ -82,6 +83,7 @@ export const userStore = defineStore('user', () => {
 
     const _users = ref<IUser[]>([])
     const formData = ref<IUser>({..._formDataInitial})
+    const pictureFile = ref<File | null>(null)
     const formSkillCertificates = ref<ISkillCertificate[]>([])
     const formErrors = ref({..._formErrorsInitial})
     const formUserType = ref<DistinctUserTypeEnum>(_formUserTypeInitial)
@@ -484,6 +486,7 @@ export const userStore = defineStore('user', () => {
         formData.value.emergencyContacts = []
         formData.value.skills = []
         formSkillCertificates.value = []
+        pictureFile.value = null
     }
 
 
@@ -494,6 +497,7 @@ export const userStore = defineStore('user', () => {
     return {
         users,
         formData,
+        pictureFile,
         formSkillCertificates,
         formErrors,
         formCurrentStep,

@@ -5,12 +5,12 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Certificate Image</h5>
+                    <!-- <h5 class="modal-title" id="exampleModalLabel">Certificate Image</h5> -->
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body d-flex justify-content-center align-items-center">
                     <!-- <div v-if="image_url"> -->
                         <!-- {{ image_url }} -->
                         <!-- <img src="http://localhost:5173/api/v1/image/get-image/image.png" class="img-fluid" alt="Responsive image"> -->
@@ -36,7 +36,7 @@
     import { config } from '../../config';
 
     defineProps<{
-        image_url: string
+        image_url: string | null
     }>()
 
 
