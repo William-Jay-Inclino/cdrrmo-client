@@ -15,7 +15,8 @@
                         <div class="col">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center card-header-with-bg">
-                                    <img :src="config.baseUrl + 'images/avatar2.png'" class="img-thumbnail profile-image">
+                                    <img v-if="!me.image_url || me.image_url === ''" :src="config.baseUrl + 'images/avatar2.png'" class="img-thumbnail profile-image">
+                                    <img data-toggle="modal" data-target="#imageModal" style="cursor: pointer;" v-else :src="config.uploads + me.image_url" class="img-thumbnail profile-image" @click="onClickImage(me.image_url)">
                                     <div class="ml-5">
                                         <h3 class="m-0 font-weight-bold pop-up-text">{{ me.first_name }}</h3>
                                         <h3 class="m-0 font-weight-bold ml-5 pop-up-text">{{ me.last_name }}</h3>
@@ -150,7 +151,7 @@
                                                             <tr v-for="skill in me.skills">
                                                                 <td class="align-middle"> {{ skill.TrainingSkill.name }} </td>
                                                                 <td class="text-center">  
-                                                                    <img v-if="skill.image_url" :src="config.uploads + skill.image_url" class="img-thumbnail">
+                                                                    <img style="cursor: pointer;" @click="onClickImage(skill.image_url)" data-toggle="modal" data-target="#imageModal" v-if="skill.image_url" :src="config.uploads + skill.image_url" class="img-thumbnail">
                                                                     <!-- <img :src="config.baseUrl + 'images/certificate.png'" class="img-thumbnail certificate-image"> -->
                                                                 </td>
                                                             </tr>
@@ -174,7 +175,7 @@
             </div>
         </div>
 
-
+        <ImageModal :image_url="imageUrl"/>
 
   </div>
 
@@ -188,10 +189,12 @@
     import { IUser, userService } from '../user';
     import { CONST_Gender, CONST_UserLevel, CONST_UserStatus, CONST_UserTypes, CONST_SubTypes, isUserACDV } from '../common';
     import { config } from '../config';
+    import ImageModal from '../user/components/ImageModal.vue'
 
     const $auth = authStore()
 
     const me = ref<IUser | null>(null)
+    const imageUrl = ref<string | null>(null)
 
     onMounted( async() => {
         if($auth.authUser){
@@ -206,6 +209,10 @@
         const dobFormat = dobArr[2] + ' ' + dobArr[1] + ' ' + dobArr[3];
         return dobFormat
     })
+
+    const onClickImage = (image: string) => {
+        imageUrl.value = image
+    }
 
 </script>
 
