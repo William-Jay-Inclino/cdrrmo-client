@@ -14,6 +14,7 @@ export const routeNames = {
     locationForm: 'locationForm.route',
     users: 'users.route',
     userForm: 'userForm.route',
+    userProfile: 'userProfile.route',
     dispatch: 'dispatch.route',
     dispatchForm: 'dispatchForm.route',
     teams: 'teams.route',

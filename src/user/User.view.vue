@@ -74,6 +74,9 @@
                                                     </span> 
                                                 </td>
                                                 <td class="d-flex justify-content-center">
+                                                    <button @click="onClickProfile(user)" class="btn btn-light btn-sm">
+                                                        <i class="fas fa-fw fa-user text-info"></i>
+                                                    </button>
                                                     <button @click="onClickUpdate(user)" class="btn btn-light btn-sm">
                                                         <i class="fas fa-fw fa-pencil-alt"></i>
                                                     </button>
@@ -125,6 +128,11 @@ console.log('$userStore', $user)
 const onClickUpdate = (data: IUser) => {
     console.log('onClickUpdate()', data)
     router.push({name: routeNames.userForm, query: {id: data.id}})
+}
+
+const onClickProfile = (data: IUser) => {
+    console.log('onClickProfile()', data)
+    router.push({name: routeNames.userProfile, query: {id: data.id}})
 }
 
 
