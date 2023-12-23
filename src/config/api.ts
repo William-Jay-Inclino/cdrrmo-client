@@ -9,7 +9,8 @@ import { authService } from '../auth';
 const toast = useToast();
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL + '/v1',
+  baseURL: 'http://192.168.1.9:3001/api' + '/v1',
+  // baseURL: import.meta.env.VITE_API_URL + '/v1',
   headers: {
     'Content-Type': 'application/json',
   },
