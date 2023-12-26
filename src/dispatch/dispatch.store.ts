@@ -203,7 +203,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         setLocations(await locationService.findAll())
     }
 
-    const onSubmit = async(payload: {data: ICreateDispatchDto}): Promise<IDispatch[] | null> => {
+    const onSubmit = async(payload: {data: ICreateDispatchDto}): Promise<{is_success: boolean, data: IDispatch[], msg: string} | null> => {
         console.log(_store + 'onSubmit()', payload)
 
         formErrors.value.emergency = false 
@@ -283,17 +283,20 @@ export const dispatchStore = defineStore('dispatch', () => {
 
     }
 
-    const onCreate = async(payload: {data: ICreateDispatchDto[]}): Promise<IDispatch[] | null> => {
+    const onCreate = async(payload: {data: ICreateDispatchDto[]}): Promise<{is_success: boolean, data: IDispatch[], msg: string} | null> => {
         console.log(_store + 'onCreate()', payload)
 
-        const createdDispatches = await dispatchService.create(payload)
+        const res = await dispatchService.create(payload)
 
-        if(createdDispatches && createdDispatches.length > 0){
-            _dispatchedTeams.value.unshift(...createdDispatches)
-            return createdDispatches
+        if(!res){
+            return null
         }
 
-        return null
+        if(res.is_success && res.data.length > 0){
+            _dispatchedTeams.value.unshift(...res.data)
+        }
+
+        return res
     }
 
     const onUpdate = async(payload: {id: string, data: IUpdateDispatchDto}): Promise<IDispatch | null> => {
@@ -380,6 +383,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         onUpdateTimeField,
         setTeamInfo,
         resetStore,
+        setActiveTeams,
     }
 })
 

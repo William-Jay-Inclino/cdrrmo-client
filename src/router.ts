@@ -50,6 +50,12 @@ const routes = [
         meta: { requiresAuth: true },
         component: () => import('./user/UserForm.view.vue')
     },
+    {
+        path: '/users/profile',
+        name: routeNames.userProfile,
+        meta: { requiresAuth: true },
+        component: () => import('./user/UserProfile.view.vue')
+    },
 
     // ================ dispatch route ================ 
     {

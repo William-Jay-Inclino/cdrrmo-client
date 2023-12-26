@@ -232,13 +232,17 @@
                         Reassign Dispatcher
                     </button>
                 </div>
-                <div 
+                <!-- <div 
                     class="col text-center" 
                     v-if="dispatchedTeam.status === DispatchStatusEnum.Queue || 
                         dispatchedTeam.status === DispatchStatusEnum.ProceedingScene &&
                         !dispatchedTeam.is_cancelled
-                    ">
+                    "
+                    >
                         <button @click="cancelService(dispatchedTeam)" class="btn btn-light text-danger">Cancel Service</button>
+                </div> -->
+                <div v-if="!dispatchedTeam.is_cancelled" class="col text-center">
+                    <button @click="cancelService(dispatchedTeam)" class="btn btn-light text-danger">Cancel Service</button>
                 </div>
             </div>
             <div v-else class="row">

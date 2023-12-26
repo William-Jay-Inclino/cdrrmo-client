@@ -3,7 +3,13 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800"> My Profile </h1>
+            <h1 class="h3 mb-0 text-gray-800"> Personnel Profile </h1>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <Breadcrumbs :items="breadcrumbItems"/>
+            </div>
         </div>
 
         <div v-if="me" class="row justify-content-center mt-5">
@@ -185,20 +191,37 @@
 <script setup lang="ts">
 
     import { computed, onMounted, ref } from 'vue';
-    import { authStore } from '.';
+    import Breadcrumbs from '../common/components/Breadcrumbs.vue'
+    import { useRouter } from 'vue-router';
     import { IUser, userService } from '../user';
-    import { CONST_Gender, CONST_UserLevel, CONST_UserStatus, CONST_UserTypes, CONST_SubTypes, isUserACDV } from '../common';
+    import { CONST_Gender, CONST_UserLevel, CONST_UserStatus, CONST_UserTypes, CONST_SubTypes, isUserACDV, routeNames } from '../common';
     import { config } from '../config';
-    import ImageModal from '../user/components/ImageModal.vue'
+    import ImageModal from './components/ImageModal.vue'
 
-    const $auth = authStore()
+    const router = useRouter()
 
     const me = ref<IUser | null>(null)
+
     const imageUrl = ref<string | null>(null)
 
+    const breadcrumbItems = ref([
+        {
+            text: 'Personnel List',
+            route: routeNames.users,
+            isActive: false,
+        },
+        {
+            text: 'Personnel Profile',
+            route: routeNames.userProfile,
+            isActive: true,
+        }
+    ])
+
     onMounted( async() => {
-        if($auth.authUser){
-            me.value = await userService.findOne($auth.authUser.id)
+        const query = router.currentRoute.value.query
+
+        if(query.id){
+            me.value = await userService.findOne(query.id as string)
         }
     })
 

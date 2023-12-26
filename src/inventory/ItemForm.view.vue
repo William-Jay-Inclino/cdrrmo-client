@@ -57,11 +57,6 @@
                                         <input v-model="$module.formData.date_acquired" type="date" class="form-control">
                                         <small class="form-text text-danger" v-if="$module.formErrors.date_acquired"> {{ errorMsg }} </small>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Serial Number</label>
-                                        <input v-model="$module.formData.serial_number" type="text" class="form-control">
-                                        <small class="form-text text-danger" v-if="$module.formErrors.serial_number"> {{ errorMsg }} </small>
-                                    </div>
                                 </div>
     
                             </div>

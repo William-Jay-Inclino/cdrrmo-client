@@ -16,7 +16,6 @@ export const itemStore = defineStore('item', () => {
         quantity: 0,
         cost: 0,
         date_acquired: '',
-        serial_number: '',
     }
 
     const _formErrorsInitial = {
@@ -28,7 +27,6 @@ export const itemStore = defineStore('item', () => {
         cost: false,
         invalidCost: false,
         date_acquired: false,
-        serial_number: false,
     }
 
     const _paginationInitial = {
@@ -106,7 +104,6 @@ export const itemStore = defineStore('item', () => {
         formErrors.value.name = false 
         formErrors.value.quantity = false 
         formErrors.value.invalidQuantity = false 
-        formErrors.value.serial_number = false 
 
         if(!formCategory.value){ 
             formErrors.value.category_id = true 
@@ -138,10 +135,6 @@ export const itemStore = defineStore('item', () => {
             }else if(payload.data.quantity < 0){
                 formErrors.value.invalidQuantity = true
             }
-        }
-
-        if(payload.data.serial_number.trim() === ''){
-            formErrors.value.serial_number = true
         }
 
         const hasError = Object.values(formErrors.value).includes(true);

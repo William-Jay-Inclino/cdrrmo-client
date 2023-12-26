@@ -74,12 +74,15 @@
                                                     </span> 
                                                 </td>
                                                 <td class="d-flex justify-content-center">
+                                                    <button @click="onClickProfile(user)" class="btn btn-light btn-sm">
+                                                        <i class="fas fa-fw fa-user text-info"></i>
+                                                    </button>
                                                     <button @click="onClickUpdate(user)" class="btn btn-light btn-sm">
                                                         <i class="fas fa-fw fa-pencil-alt"></i>
                                                     </button>
-                                                    <!-- <button @click="onClickResetPw(user)" class="btn btn-light btn-sm">
-                                                        <i class="fas fa-fw fa-lock text-warning"></i>
-                                                    </button> -->
+                                                    <button @click="onDelete(user)" class="btn btn-light btn-sm">
+                                                        <i class="fas fa-fw fa-trash text-danger"></i>
+                                                    </button>
                                                 </td>
 
 
@@ -113,10 +116,13 @@ import { useRouter } from 'vue-router';
 import Search from './components/Search.vue'
 import TablePagination from './components/TablePagination.vue'
 import TablePerPage from './components/TableSelectPerPage.vue'
+import Swal from 'sweetalert2';
+import { useToast } from "vue-toastification";
 
 
 const $user = userStore()
 const router = useRouter()
+const toast = useToast();
 
 $user.init()
 
@@ -125,6 +131,41 @@ console.log('$userStore', $user)
 const onClickUpdate = (data: IUser) => {
     console.log('onClickUpdate()', data)
     router.push({name: routeNames.userForm, query: {id: data.id}})
+}
+
+const onClickProfile = (data: IUser) => {
+    console.log('onClickProfile()', data)
+    router.push({name: routeNames.userProfile, query: {id: data.id}})
+}
+
+const onDelete = async(data: IUser) => {
+
+    const name = data.last_name + ', ' + data.first_name
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: name + " will be removed!",
+        position: "top",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#e74a3b",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Yes, delete it!",
+        reverseButtons: true,
+        footer: '<i><span class="text-muted">Note: Status must be inactive to delete</span></i>'
+        }).then( async(result) => {
+        if (result.isConfirmed) {
+            const removed = await $user.onDelete(data.id)
+
+            if(removed){
+                toast.success(`Personnel: ${name} successfully removed!`)
+
+            }else{
+                toast.error('Failed to remove personnel')
+            }
+        }
+    });
+
 }
 
 

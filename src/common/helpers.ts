@@ -29,15 +29,15 @@ export function isValidPhoneNumber(phoneNumber: string) {
     console.log('numericPhoneNumber', numericPhoneNumber)
 
     // Check if the numeric phone number starts with the Philippines country code and has the expected length
-    if (numericPhoneNumber.startsWith('63') && numericPhoneNumber.length === 12) {
+    if (numericPhoneNumber.startsWith('639') && numericPhoneNumber.length === 12) {
         // Extract the mobile network code from the remaining characters
-        const mobileNetworkCode = '0' + numericPhoneNumber.substring(2, 5);
-        console.log('mobileNetworkCode', mobileNetworkCode)
+        // const mobileNetworkCode = '0' + numericPhoneNumber.substring(2, 5);
+        // console.log('mobileNetworkCode', mobileNetworkCode)
 
-        if(validNetworkCodes.includes(mobileNetworkCode)){
-            return true
-        }
-
+        // if(validNetworkCodes.includes(mobileNetworkCode)){
+        //     return true
+        // }
+        return true
     }
 
     // If any of the checks fail, the phone number is considered invalid

@@ -17,6 +17,18 @@
             </div>
         </div>
         <div class="form-group">
+            <label>Picture</label>
+            <div class="input-group">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" @change="handleFileChange($event)">
+                    <label class="custom-file-label"> 
+                        <span> {{ getFileName() }} </span>
+                    </label>
+                </div>
+            </div>
+            <small class="form-text text-muted"> Optional </small>
+        </div>
+        <div class="form-group">
             <label>Gender</label>
             <div class="row">
                 <div class="col">
@@ -183,110 +195,131 @@
 
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { UserLevelEnum, UserStatusEnum, userStore } from '../'
-import { DistinctUserTypeEnum, UserTypeEnum, GenderEnum } from '../'
-import { CONST_DistinctUserTypes, CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_bloodTypes } from '../../common';
-import { isUserLGU, isUserACDV } from '../../common';
-import EmergencyContact from './EmergencyContact.vue';
+    import { computed, ref, watch } from 'vue';
+    import { UserLevelEnum, UserStatusEnum, userStore } from '../'
+    import { DistinctUserTypeEnum, UserTypeEnum, GenderEnum } from '../'
+    import { CONST_DistinctUserTypes, CONST_Gender, CONST_SubTypes, CONST_UserLevel, CONST_UserStatus, CONST_bloodTypes } from '../../common';
+    import { isUserLGU, isUserACDV } from '../../common';
+    import EmergencyContact from './EmergencyContact.vue';
 
-const $user = userStore()
+    const $user = userStore()
 
-const errorMsg = ref('This field is required')
+    const errorMsg = ref('This field is required')
 
 
-const userTypes = ref([
-    CONST_DistinctUserTypes[DistinctUserTypeEnum.LGU],
-    CONST_DistinctUserTypes[DistinctUserTypeEnum.ACDV],
-    CONST_DistinctUserTypes[DistinctUserTypeEnum.National_Agency]
-])
+    const userTypes = ref([
+        CONST_DistinctUserTypes[DistinctUserTypeEnum.LGU],
+        CONST_DistinctUserTypes[DistinctUserTypeEnum.ACDV],
+        CONST_DistinctUserTypes[DistinctUserTypeEnum.National_Agency]
+    ])
 
-const userLevels = ref([
-    CONST_UserLevel[UserLevelEnum.Admin],
-    CONST_UserLevel[UserLevelEnum.Dispatcher],
-    CONST_UserLevel[UserLevelEnum.Field_Operator],
-    CONST_UserLevel[UserLevelEnum.Team_Leader],
-])
+    const userLevels = ref([
+        CONST_UserLevel[UserLevelEnum.Admin],
+        CONST_UserLevel[UserLevelEnum.Dispatcher],
+        CONST_UserLevel[UserLevelEnum.Field_Operator],
+        CONST_UserLevel[UserLevelEnum.Team_Leader],
+    ])
 
-const LGUs = computed( (): {id: UserTypeEnum, text: string, color: string}[] => {
-    const arr = []
-    arr.push(CONST_SubTypes[UserTypeEnum.LGU_Casual])
-    arr.push(CONST_SubTypes[UserTypeEnum.LGU_Regular])
-    arr.push(CONST_SubTypes[UserTypeEnum.LGU_Job_Order])
-    return arr
-})
+    const LGUs = computed( (): {id: UserTypeEnum, text: string, color: string}[] => {
+        const arr = []
+        arr.push(CONST_SubTypes[UserTypeEnum.LGU_Casual])
+        arr.push(CONST_SubTypes[UserTypeEnum.LGU_Regular])
+        arr.push(CONST_SubTypes[UserTypeEnum.LGU_Job_Order])
+        return arr
+    })
 
-const ACDVs = computed( (): {id: UserTypeEnum, text: string, color: string}[] => {
-    const arr = []
-    arr.push(CONST_SubTypes[UserTypeEnum.ACDV_BART])
-    arr.push(CONST_SubTypes[UserTypeEnum.ACDV_CSO])
-    arr.push(CONST_SubTypes[UserTypeEnum.ACDV_PO])
-    arr.push(CONST_SubTypes[UserTypeEnum.ACDV_INDIVIDUAL])
-    return arr
-})
-const bloodTypes = computed( (): string[] => CONST_bloodTypes)
+    const ACDVs = computed( (): {id: UserTypeEnum, text: string, color: string}[] => {
+        const arr = []
+        arr.push(CONST_SubTypes[UserTypeEnum.ACDV_BART])
+        arr.push(CONST_SubTypes[UserTypeEnum.ACDV_CSO])
+        arr.push(CONST_SubTypes[UserTypeEnum.ACDV_PO])
+        arr.push(CONST_SubTypes[UserTypeEnum.ACDV_INDIVIDUAL])
+        return arr
+    })
+    const bloodTypes = computed( (): string[] => CONST_bloodTypes)
 
-const subType = computed( () => $user.formData.type)
-const userType = computed( () => $user.formUserType)
+    const subType = computed( () => $user.formData.type)
+    const userType = computed( () => $user.formUserType)
 
-watch(userType, (val) => {
-    console.log('val', val)
-    if(!val) return 
+    watch(userType, (val) => {
+        console.log('val', val)
+        if(!val) return 
 
-    if(val === DistinctUserTypeEnum.LGU && !isUserLGU($user.formData.type)){
-        $user.formData.type = LGUs.value[0].id
-        return 
-    }
-
-    if(val === DistinctUserTypeEnum.ACDV && !isUserACDV($user.formData.type)){
-        $user.formData.type = ACDVs.value[0].id
-    }
-
-    if(val === DistinctUserTypeEnum.National_Agency){
-        $user.formData.type = UserTypeEnum.National_Agency
-        $user.formData.na_id = $user.formData.na_id || null
-        return 
-    }
-
-})
-
-watch(subType, (val) => {
-    if(!val) return 
-
-    if(!isUserACDV(val)){
-        $user.formData.po_id = null
-        $user.formData.cso_id = null
-        $user.formData.bart_id = null
-    }else{
-
-        if(val === UserTypeEnum.ACDV_BART){
-            $user.formData.po_id = null
-            $user.formData.cso_id = null
-        } 
-        else if(val === UserTypeEnum.ACDV_CSO){
-            $user.formData.po_id = null
-            $user.formData.bart_id = null
+        if(val === DistinctUserTypeEnum.LGU && !isUserLGU($user.formData.type)){
+            $user.formData.type = LGUs.value[0].id
+            return 
         }
-        else if(val === UserTypeEnum.ACDV_PO){
-            $user.formData.cso_id = null
-            $user.formData.bart_id = null
+
+        if(val === DistinctUserTypeEnum.ACDV && !isUserACDV($user.formData.type)){
+            $user.formData.type = ACDVs.value[0].id
         }
-        else if(val === UserTypeEnum.ACDV_INDIVIDUAL){
+
+        if(val === DistinctUserTypeEnum.National_Agency){
+            $user.formData.type = UserTypeEnum.National_Agency
+            $user.formData.na_id = $user.formData.na_id || null
+            return 
+        }
+
+    })
+
+    watch(subType, (val) => {
+        if(!val) return 
+
+        if(!isUserACDV(val)){
             $user.formData.po_id = null
             $user.formData.cso_id = null
             $user.formData.bart_id = null
+        }else{
+
+            if(val === UserTypeEnum.ACDV_BART){
+                $user.formData.po_id = null
+                $user.formData.cso_id = null
+            } 
+            else if(val === UserTypeEnum.ACDV_CSO){
+                $user.formData.po_id = null
+                $user.formData.bart_id = null
+            }
+            else if(val === UserTypeEnum.ACDV_PO){
+                $user.formData.cso_id = null
+                $user.formData.bart_id = null
+            }
+            else if(val === UserTypeEnum.ACDV_INDIVIDUAL){
+                $user.formData.po_id = null
+                $user.formData.cso_id = null
+                $user.formData.bart_id = null
+            }
+
+        }
+        
+        if(val !== UserTypeEnum.National_Agency){
+            $user.formData.na_id = null
+            $user.formErrors.na = false 
+        }
+        
+    })
+
+
+    const handleFileChange = (event: Event) => {
+
+        const target = event.target as HTMLInputElement;
+        $user.pictureFile = (target.files as FileList)[0];
+
+    };
+
+
+    const getFileName = () => {
+
+        if($user.pictureFile){
+            return $user.pictureFile.name
         }
 
-    }
-    
-    if(val !== UserTypeEnum.National_Agency){
-        $user.formData.na_id = null
-        $user.formErrors.na = false 
-    }
-    
-})
+        if($user.formData.image_url){
+            return $user.formData.image_url
+        }
 
+        return ''
 
+    }
 
 
 

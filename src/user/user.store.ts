@@ -31,6 +31,7 @@ export const userStore = defineStore('user', () => {
         blood_type: CONST_bloodTypes[0], // ok
         status: UserStatusEnum.Active, // ok
         type: UserTypeEnum.LGU_Casual,
+        image_url: null,
         
         dispatch_status: undefined,
         bart_id: null,
@@ -82,6 +83,7 @@ export const userStore = defineStore('user', () => {
 
     const _users = ref<IUser[]>([])
     const formData = ref<IUser>({..._formDataInitial})
+    const pictureFile = ref<File | null>(null)
     const formSkillCertificates = ref<ISkillCertificate[]>([])
     const formErrors = ref({..._formErrorsInitial})
     const formUserType = ref<DistinctUserTypeEnum>(_formUserTypeInitial)
@@ -484,6 +486,28 @@ export const userStore = defineStore('user', () => {
         formData.value.emergencyContacts = []
         formData.value.skills = []
         formSkillCertificates.value = []
+        pictureFile.value = null
+    }
+
+    const onDelete = async(id: string): Promise<boolean> => {
+        console.log(_store + 'onDelete()', id)
+
+        const indx = _users.value.findIndex(i => i.id === id)
+
+        if(indx === -1){
+            console.error('Item not found')
+            return false 
+        }
+
+        const deleted = await userService.remove(id)
+
+        if(deleted){
+            _users.value.splice(indx, 1)
+            return true
+        }
+
+        return false 
+
     }
 
 
@@ -494,6 +518,7 @@ export const userStore = defineStore('user', () => {
     return {
         users,
         formData,
+        pictureFile,
         formSkillCertificates,
         formErrors,
         formCurrentStep,
@@ -515,6 +540,7 @@ export const userStore = defineStore('user', () => {
         saveUser,
         resetFormData,
         setPagination,
+        onDelete,
     }
 })
 

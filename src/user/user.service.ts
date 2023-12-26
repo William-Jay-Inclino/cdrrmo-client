@@ -151,8 +151,8 @@ class UserService{
 		try {
 			const response = await config.api.delete(this.endpoint + id);
 			console.log({response})
-            if(response.status === 204){
-                return true
+            if(response.status === 200){
+                return response.data.is_deleted
             }
             console.error('Error: ', response)
 		} catch (error) {
