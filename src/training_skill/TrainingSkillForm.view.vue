@@ -34,6 +34,7 @@
                                         <label>Description</label>
                                         <textarea v-model="$module.formData.description" class="form-control" rows="3"></textarea>
                                         <small class="form-text text-danger" v-if="$module.formErrors.description"> {{ errorMsg }} </small>
+                                        <small class="text-muted">optional</small>
                                     </div>
                                 </div>
     
