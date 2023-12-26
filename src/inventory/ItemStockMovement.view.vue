@@ -25,11 +25,6 @@
                     <div class="card-body" v-if="item">
                         <div class="row">
                             <div class="col">
-                                <h6> Serial Number: <b>{{ item.serial_number }}</b> </h6>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
                                 <h6> Item: <b>{{ item.name }}</b> </h6>
                             </div>
                         </div>

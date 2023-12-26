@@ -5,5 +5,4 @@ export interface IUpdateItemDto {
     description: String
     cost: Number
     date_acquired: Date
-    serial_number: Number
 }

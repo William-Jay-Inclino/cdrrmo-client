@@ -489,6 +489,27 @@ export const userStore = defineStore('user', () => {
         pictureFile.value = null
     }
 
+    const onDelete = async(id: string): Promise<boolean> => {
+        console.log(_store + 'onDelete()', id)
+
+        const indx = _users.value.findIndex(i => i.id === id)
+
+        if(indx === -1){
+            console.error('Item not found')
+            return false 
+        }
+
+        const deleted = await userService.remove(id)
+
+        if(deleted){
+            _users.value.splice(indx, 1)
+            return true
+        }
+
+        return false 
+
+    }
+
 
 
     // ============================== END METHODS ============================== 
@@ -519,6 +540,7 @@ export const userStore = defineStore('user', () => {
         saveUser,
         resetFormData,
         setPagination,
+        onDelete,
     }
 })
 

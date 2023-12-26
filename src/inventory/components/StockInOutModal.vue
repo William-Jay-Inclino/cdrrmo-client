@@ -17,11 +17,6 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <span>Serial Number: <b> {{ item.serial_number }} </b></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
                             <span>Current Quantity: <b> {{ item.quantity }} </b></span>
                         </div>
                     </div>

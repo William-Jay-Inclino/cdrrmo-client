@@ -10,5 +10,4 @@ export interface IItem {
     quantity: number 
     cost: number
     date_acquired: string 
-    serial_number: string 
 }

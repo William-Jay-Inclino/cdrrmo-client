@@ -7,5 +7,4 @@ export interface ICreateItemDto {
     quantity: number //
     cost: number //
     date_acquired: string //
-    serial_number: string //
 }

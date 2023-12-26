@@ -37,7 +37,6 @@
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
-                                                <th>Serial Number</th>
                                                 <th>Category</th>
                                                 <th>Description</th>
                                                 <th colspan="3" class="text-center">Quantity</th>
@@ -51,7 +50,6 @@
                                         <tbody>
                                             <tr v-for="item of $module.items">
                                                 <td> {{ item.name }} </td>
-                                                <td> {{ item.serial_number }} </td>
                                                 <td> {{ item.Category.name }} </td>
                                                 <td> {{ item.description }} </td>
                                                 <td>
