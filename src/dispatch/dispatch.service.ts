@@ -39,7 +39,7 @@ class DispatchService{
         return null
     }
 
-    async create(payload: {data: ICreateDispatchDto[]}): Promise<IDispatch[] | null>{
+    async create(payload: {data: ICreateDispatchDto[]}): Promise<{is_success: boolean, data: IDispatch[], msg: string} | null>{
         console.log(this.service + 'create()', payload)
 
 		try {

@@ -138,6 +138,7 @@
     import { useToast } from "vue-toastification";
     import Awesomplete from 'awesomplete';
     import moment from 'moment';
+    import { teamService } from '../team';
 
     const toast = useToast();
 
@@ -176,10 +177,19 @@
 
     const onSubmit = async() => {
         console.log('onSubmit()')
-        const submitted = await $dispatch.onSubmit({data: {...$dispatch.formData}})
+        const res = await $dispatch.onSubmit({data: {...$dispatch.formData}})
 
-        if(!submitted){
+        if(!res){
             toast.error('Failed to initiate dispatch!')
+            return 
+        }
+
+        if(res.is_success === false){
+            toast.error(res.msg)
+
+            $dispatch.formTeams = []
+            $dispatch.setActiveTeams(await teamService.findAllActive())
+
             return 
         }
 
