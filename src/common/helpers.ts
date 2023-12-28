@@ -10,16 +10,6 @@ export function isValidDate(dateString: any): boolean {
     return !isNaN(parsedDate.getTime()) && parsedDate.toString() !== 'Invalid Date';
 }
 
-const validNetworkCodes = [
-    // Globe Telecom
-    '0817', '0905', '0906', '0915', '0916', '0917', '0925', '0926', '0927', '0935', '0936', '0937', '0938', '0994', '0996',
-    
-    // Smart Communications (includes Talk 'N Text, TNT)
-    '0813', '0900', '0907', '0908', '0909', '0910', '0911', '0912', '0913', '0914', '0918', '0919', '0920', '0921', '0928',
-    '0929', '0930', '0931', '0939', '0946', '0947', '0948', '0949', '0950', '0951', '0953', '0954', '0955', '0956', '0961',
-    '0963', '0965', '0966', '0967', '0968', '0969', '0970', '0981', '0989', '0992', '0998', '0999'
-];
-
 export function isValidPhoneNumber(phoneNumber: string) {
     console.log('helper.ts: isValidPhoneNumber()', phoneNumber);
 

@@ -17,7 +17,6 @@
                 </button>
                 <div class="dropdown-menu">
                     <a @click="onChangeRef(SearchFieldEnum.Name)" class="dropdown-item" href="#">Name</a>
-                    <a @click="onChangeRef(SearchFieldEnum.SerialNumber)" class="dropdown-item" href="#">Serial Number</a>
                 </div>
                 </div>
         </div>
@@ -31,7 +30,6 @@
 
     const searchRefObject = {
         [SearchFieldEnum.Name]: 'Name',
-        [SearchFieldEnum.SerialNumber]: 'Serial Number',
     }
 
     const $item = itemStore()
