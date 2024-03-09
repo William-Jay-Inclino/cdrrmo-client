@@ -103,7 +103,7 @@
             "Date",
             "Time of Call",
             "Description",
-            "Emergency Type",
+            "Nature of Incident",
             "Location",
             "Team Dispatched",
             "Dispatcher",

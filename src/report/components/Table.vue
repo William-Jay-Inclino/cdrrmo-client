@@ -15,7 +15,7 @@
                         <tr>
                             <th class="align-middle"> Time of Call </th>
                             <th class="align-middle"> Description </th>
-                            <th class="align-middle"> Nature of Emergency </th>
+                            <th class="align-middle"> Nature of Incident </th>
                             <th class="align-middle"> Location </th>
                             <th class="align-middle"> Team Dispatched </th>
                             <th class="align-middle"> Dispatcher </th>

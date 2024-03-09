@@ -3,16 +3,16 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Emergency</h1>
+            <h1 class="h3 mb-0 text-gray-800">Nature of Incident</h1>
         </div>
 
         <div class="row justify-content-center">
             <div class="col-8">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">List of Emergencies</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">List of Nature of Incidents</h6>
                         <router-link :to="{name: routeNames.emergenciesForm}">
-                            <button class="btn btn-primary" type="button">Add Emegency</button>
+                            <button class="btn btn-primary" type="button">Add Nature of Incident</button>
                         </router-link>
                     </div>
 

@@ -42,7 +42,7 @@
                             <td> {{ dispatchedTeam.location }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Emergency">
-                            <td class="font-weight-bold">Emergency type</td>
+                            <td class="font-weight-bold">Nature of Incident</td>
                             <td> {{ dispatchedTeam.emergency.name }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.Description">

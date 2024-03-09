@@ -66,7 +66,7 @@
         <li class="nav-item" :class="{'active': routeName === routeNames.emergencies || routeName === routeNames.emergenciesForm}">
             <router-link :to="{name: routeNames.emergencies}" class="nav-link">
                 <i class="fas fa-fw fa-exclamation-triangle"></i>
-                <span>Emergency</span>
+                <span>Nature of Incident</span>
             </router-link>
         </li>
 

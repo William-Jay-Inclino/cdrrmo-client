@@ -40,7 +40,7 @@
                                         </small>
                                     </div>
                                     <div class="form-group">
-                                        <label>Nature of Emergency</label>
+                                        <label>Nature of Incident</label>
                                         <select @change="initAwesomplete()" class="form-control" v-model="$dispatch.formData.emergency_id">
                                             <option v-for="emergency in $dispatch.emergencies" :value="emergency.id" :key="emergency.id">
                                                 {{ emergency.name }}

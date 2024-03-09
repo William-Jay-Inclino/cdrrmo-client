@@ -28,7 +28,7 @@
 
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center">
-                        Filter Nature of Emergency
+                        Filter Nature of Incident
                     </div>
 
                     <div class="card-body">
@@ -198,7 +198,7 @@
             "Date",
             "Time of Call",
             "Description",
-            "Emergency Type",
+            "Nature of Incident",
             "Location",
             "Team Dispatched",
             "Dispatcher",

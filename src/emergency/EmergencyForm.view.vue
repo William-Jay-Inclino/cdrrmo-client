@@ -3,7 +3,7 @@
     <div class="container-fluid">
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Emergency</h1>
+            <h1 class="h3 mb-0 text-gray-800">Nature of Incident</h1>
         </div>
 
         <div class="row">
@@ -75,17 +75,17 @@ const toast = useToast();
 const $module = emergencyStore()
 const router = useRouter()
 
-const moduleLabel = 'Emergency'
+const moduleLabel = 'Nature of Incident'
 const errorMsg = ref('This field is required')
 
 const breadcrumbItems = ref([
     {
-        text: 'Emergency List',
+        text: 'Nature of Incident List',
         route: routeNames.emergencies,
         isActive: false,
     },
     {
-        text: 'Emergency Form',
+        text: 'Nature of Incident Form',
         route: routeNames.emergenciesForm,
         isActive: true,
     }

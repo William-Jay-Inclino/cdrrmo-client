@@ -10,7 +10,7 @@
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
-                        <th> Nature of Emergency </th>
+                        <th> Nature of Incident </th>
                         <th class="text-center"> Total Incident </th>
                         <th class="text-center"> Individuals Involved </th>
                     </thead>
@@ -139,7 +139,7 @@
 
         // Create headers for CSV
         const headers = [
-            "Nature of Emergency",
+            "Nature of Incident",
             "Total Incident",
             "Individuals Involved"
         ];
