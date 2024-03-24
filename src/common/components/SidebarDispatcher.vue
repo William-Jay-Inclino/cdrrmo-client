@@ -4,9 +4,10 @@
 
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-            <div class="sidebar-brand-text mx-3"> CDRRMO </div>
+            <!-- <div class="sidebar-brand-text mx-3"> CDRRMO </div> -->
             <div class="sidebar-brand-icon">
-                <i class="fas fa-shield-alt"></i>
+                <img :src="config.baseUrl + 'images/cdrrmo-v2/system-logo-header.png'" style="height: 5em">
+                <!-- <i class="fas fa-shield-alt"></i> -->
             </div>
         </a>
 
@@ -36,6 +37,12 @@
                 <span>Location</span>
             </router-link>
         </li>
+
+        <div class="sidebar-card d-none d-lg-flex flex-column align-items-center mt-auto">
+            <img class="sidebar-card-illustration mb-2" :src="config.baseUrl + 'images/cdrrmo-v1/cdrrmo-logo.png'"
+                style="height: 8rem;">
+        </div>
+
     </ul>
 </template>
 
@@ -44,6 +51,7 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { routeNames } from '../constants'
+import { config } from '../../config'
 
 const route = useRoute();
 const routeName = computed(() => route.name)
