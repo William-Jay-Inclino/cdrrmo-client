@@ -42,15 +42,18 @@ export const routeNames = {
 }
 
 export const dispatcherModules = [
-    routeNames.login, 
-    routeNames.dispatch, 
-    routeNames.dispatchForm, 
-    routeNames.notFound, 
-    routeNames.unauthorized, 
+    routeNames.login,
+    routeNames.dispatch,
+    routeNames.dispatchForm,
+    routeNames.notFound,
+    routeNames.unauthorized,
     routeNames.profile,
     routeNames.settings,
     routeNames.location,
     routeNames.locationForm,
+    routeNames.teams,
+    routeNames.teamsForm,
+    routeNames.teamManage,
 ]
 
 export const teamLeadModules = []
@@ -59,13 +62,13 @@ export const fieldOperatorModules = []
 export const CONST_bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
 export const CONST_Gender = {
-    [GenderEnum.Male]:{
+    [GenderEnum.Male]: {
         id: GenderEnum.Male,
         text: 'Male',
         color: '#0000FF', //blue
         icon: 'fa-mars'
     },
-    [GenderEnum.Female]:{
+    [GenderEnum.Female]: {
         id: GenderEnum.Female,
         text: 'Female',
         color: '#FF00FF', // pink
@@ -121,37 +124,37 @@ export const CONST_DispatchStatus = {
     [DispatchStatusEnum.Queue]: {
         id: DispatchStatusEnum.Queue,
         text: 'Queue',
-        color: 'primary', 
+        color: 'primary',
     },
     [DispatchStatusEnum.ProceedingScene]: {
         id: DispatchStatusEnum.ProceedingScene,
         text: 'Proceeding to scene',
-        color: 'primary', 
+        color: 'primary',
     },
     [DispatchStatusEnum.ArrivedScene]: {
         id: DispatchStatusEnum.ArrivedScene,
         text: 'Arrived at scene',
-        color: 'primary', 
+        color: 'primary',
     },
     [DispatchStatusEnum.ProceedingHospital]: {
         id: DispatchStatusEnum.ProceedingHospital,
         text: 'Proceeding to hospital',
-        color: 'primary', 
+        color: 'primary',
     },
     [DispatchStatusEnum.ArrivedHospital]: {
         id: DispatchStatusEnum.ArrivedHospital,
         text: 'Arrived at hospital',
-        color: 'primary', 
+        color: 'primary',
     },
     [DispatchStatusEnum.ProceedingBase]: {
         id: DispatchStatusEnum.ProceedingBase,
         text: 'Proceeding to Base',
-        color: 'primary', 
+        color: 'primary',
     },
     [DispatchStatusEnum.ArrivedBase]: {
         id: DispatchStatusEnum.ArrivedBase,
         text: 'Arrived at Base',
-        color: 'primary', 
+        color: 'primary',
     },
 }
 
@@ -159,22 +162,22 @@ export const CONST_UserLevel = {
     [UserLevelEnum.Admin]: {
         id: UserLevelEnum.Admin,
         text: 'Admin',
-        color: '', 
+        color: '',
     },
     [UserLevelEnum.Dispatcher]: {
         id: UserLevelEnum.Dispatcher,
         text: 'Dispatcher',
-        color: '', 
+        color: '',
     },
     [UserLevelEnum.Team_Leader]: {
         id: UserLevelEnum.Team_Leader,
         text: 'Team Leader',
-        color: '', 
+        color: '',
     },
     [UserLevelEnum.Field_Operator]: {
         id: UserLevelEnum.Field_Operator,
         text: 'Field Operator',
-        color: '', 
+        color: '',
     },
 }
 
@@ -182,42 +185,42 @@ export const CONST_UserTypes = {
     [UserTypeEnum.LGU_Regular]: {
         id: UserTypeEnum.LGU_Regular,
         text: 'LGU',
-        color: '', 
+        color: '',
     },
     [UserTypeEnum.LGU_Casual]: {
         id: UserTypeEnum.LGU_Casual,
         text: 'LGU',
-        color: '', 
+        color: '',
     },
     [UserTypeEnum.LGU_Job_Order]: {
         id: UserTypeEnum.LGU_Job_Order,
         text: 'LGU',
-        color: '', 
+        color: '',
     },
     [UserTypeEnum.ACDV_BART]: {
         id: UserTypeEnum.ACDV_BART,
         text: 'ACDV',
-        color: '', 
+        color: '',
     },
     [UserTypeEnum.ACDV_CSO]: {
         id: UserTypeEnum.ACDV_CSO,
         text: 'ACDV',
-        color: '', 
+        color: '',
     },
     [UserTypeEnum.ACDV_PO]: {
         id: UserTypeEnum.ACDV_PO,
         text: 'ACDV',
-        color: '', 
+        color: '',
     },
     [UserTypeEnum.ACDV_INDIVIDUAL]: {
         id: UserTypeEnum.ACDV_INDIVIDUAL,
         text: 'ACDV',
-        color: '', 
+        color: '',
     },
     [UserTypeEnum.National_Agency]: {
         id: UserTypeEnum.National_Agency,
         text: 'National Agency',
-        color: '', 
+        color: '',
     },
 }
 
@@ -225,17 +228,17 @@ export const CONST_DistinctUserTypes = {
     [DistinctUserTypeEnum.LGU]: {
         id: DistinctUserTypeEnum.LGU,
         text: 'LGU - Local Government Unit',
-        color: '', 
+        color: '',
     },
     [DistinctUserTypeEnum.ACDV]: {
         id: DistinctUserTypeEnum.ACDV,
         text: 'ACDV - Accredited Community Disaster & Emergency Volunteer',
-        color: '', 
+        color: '',
     },
     [DistinctUserTypeEnum.National_Agency]: {
         id: DistinctUserTypeEnum.National_Agency,
         text: 'National Agency',
-        color: '', 
+        color: '',
     },
 }
 
@@ -243,42 +246,42 @@ export const CONST_SubTypes = {
     [UserTypeEnum.LGU_Regular]: {
         id: UserTypeEnum.LGU_Regular,
         text: 'Regular',
-        color: '', 
+        color: '',
     },
     [UserTypeEnum.LGU_Casual]: {
         id: UserTypeEnum.LGU_Casual,
         text: 'Casual',
-        color: '', 
+        color: '',
     },
     [UserTypeEnum.LGU_Job_Order]: {
         id: UserTypeEnum.LGU_Job_Order,
         text: 'Job Order',
-        color: '', 
+        color: '',
     },
     [UserTypeEnum.ACDV_BART]: {
         id: UserTypeEnum.ACDV_BART,
         text: 'BART - Barangay Auxiliary Response Team',
-        color: '', 
+        color: '',
     },
     [UserTypeEnum.ACDV_CSO]: {
         id: UserTypeEnum.ACDV_CSO,
         text: 'CSO - Civic Social Organization',
-        color: '', 
+        color: '',
     },
     [UserTypeEnum.ACDV_PO]: {
         id: UserTypeEnum.ACDV_PO,
         text: "PO - People's Organization",
-        color: '', 
+        color: '',
     },
     [UserTypeEnum.ACDV_INDIVIDUAL]: {
         id: UserTypeEnum.ACDV_INDIVIDUAL,
         text: 'INDIVIDUAL',
-        color: '', 
+        color: '',
     },
     [UserTypeEnum.National_Agency]: {
         id: UserTypeEnum.National_Agency,
         text: '',
-        color: '', 
+        color: '',
     },
 }
 
@@ -289,8 +292,8 @@ export const relationships = [
     'Husband', 'Wife', 'Domestic Partner', 'Boyfriend', 'Girlfriend',
     'Work Colleague', 'Supervisor', 'Mentor',
     'Friend', 'Neighbor', 'Roommate', 'Pastor/Religious Leader', 'Doctor', 'Legal Representative'
-  ];
-  
+];
+
 
 // =========================== CONSTANTS BELOW ARE USED IN FAKE DATA ONLY  =========================== 
 
