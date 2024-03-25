@@ -11,7 +11,7 @@ import { IUser, userService } from '../user';
 import { ILocation, locationService } from '../location';
 
 export const dispatchStore = defineStore('dispatch', () => {
-    
+
     const _store = 'dispatchStore: '
 
     const _formDataInitial: ICreateDispatchDto = {
@@ -61,10 +61,10 @@ export const dispatchStore = defineStore('dispatch', () => {
     const _dispatchers = ref<IUser[]>([])
     const _locations = ref<ILocation[]>()
 
-    const formData = ref<ICreateDispatchDto>({..._formDataInitial})
-    const formErrors = ref({..._formErrorsInitial})
+    const formData = ref<ICreateDispatchDto>({ ..._formDataInitial })
+    const formErrors = ref({ ..._formErrorsInitial })
     const formTeams = ref<ITeam[]>([])
-    const flags = ref({..._flagsInitial})
+    const flags = ref({ ..._flagsInitial })
     const teamInfo = ref<ITeam | null>(null)
     const searchQuery = ref('')
     const searchReference = ref<SearchRefEnum>(SearchRefEnum.Team)
@@ -100,30 +100,30 @@ export const dispatchStore = defineStore('dispatch', () => {
     }
 
     // getters 
-    
-    const dispatchedTeams = computed( () => {
+
+    const dispatchedTeams = computed(() => {
 
         let items: IDispatch[] = []
 
-        if(flags.value.queue){
+        if (flags.value.queue) {
             items = [...items, ..._dispatchedTeams.value.filter(i => i.status === DispatchStatusEnum.Queue)]
         }
 
-        if(flags.value.ongoing){
+        if (flags.value.ongoing) {
             items = [...items, ..._dispatchedTeams.value.filter(i => {
-                if(
-                    i.status === DispatchStatusEnum.ProceedingScene || 
+                if (
+                    i.status === DispatchStatusEnum.ProceedingScene ||
                     i.status === DispatchStatusEnum.ArrivedScene ||
                     i.status === DispatchStatusEnum.ProceedingHospital ||
                     i.status === DispatchStatusEnum.ArrivedHospital ||
                     i.status === DispatchStatusEnum.ProceedingBase
-                ){
+                ) {
                     return i
                 }
             })]
         }
 
-        if(flags.value.returned){
+        if (flags.value.returned) {
             items = [...items, ..._dispatchedTeams.value.filter(i => i.status === DispatchStatusEnum.ArrivedBase)]
         }
 
@@ -132,138 +132,138 @@ export const dispatchStore = defineStore('dispatch', () => {
             return i
         })
 
-        if(searchReference.value === SearchRefEnum.Team){
+        if (searchReference.value === SearchRefEnum.Team) {
             items = items.filter(i => i.team.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
         }
-        else if(searchReference.value === SearchRefEnum.Dispatcher){
+        else if (searchReference.value === SearchRefEnum.Dispatcher) {
             items = items.filter(i => (i.dispatcher.last_name + ', ' + i.dispatcher.first_name).toLowerCase().includes(searchQuery.value.toLowerCase()))
         }
-        else if(searchReference.value === SearchRefEnum.Emergency){
+        else if (searchReference.value === SearchRefEnum.Emergency) {
             items = items.filter(i => i.emergency.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
         }
 
-        else if(searchReference.value === SearchRefEnum.Location){
+        else if (searchReference.value === SearchRefEnum.Location) {
             items = items.filter(i => i.location.toLowerCase().includes(searchQuery.value.toLowerCase()))
         }
 
-        else if(searchReference.value === SearchRefEnum.CallerName){
+        else if (searchReference.value === SearchRefEnum.CallerName) {
             items = items.filter(i => i.caller_name.toLowerCase().includes(searchQuery.value.toLowerCase()))
         }
 
-        else if(searchReference.value === SearchRefEnum.CallerNumber){
+        else if (searchReference.value === SearchRefEnum.CallerNumber) {
             items = items.filter(i => i.caller_number.toLowerCase().includes(searchQuery.value.toLowerCase()))
         }
 
-        else if(searchReference.value === SearchRefEnum.Description){
+        else if (searchReference.value === SearchRefEnum.Description) {
             items = items.filter(i => i.description.toLowerCase().includes(searchQuery.value.toLowerCase()))
         }
 
 
         return items
     })
-    const emergencies = computed( () => _emergencies.value)
-    const locations = computed( () => _locations.value)
-    const activeTeams = computed( () => {
+    const emergencies = computed(() => _emergencies.value)
+    const locations = computed(() => _locations.value)
+    const activeTeams = computed(() => {
         return _activeTeams.value.map(i => {
             i.label = i.name
             return i
         })
     })
-    const dispatchers = computed( () => {
+    const dispatchers = computed(() => {
         return _dispatchers.value.map(i => {
-            i.label = i.first_name + ' ' + i.last_name 
+            i.label = i.first_name + ' ' + i.last_name
             return i
         })
     })
 
     // methods 
 
-    const init = async() => {
+    const init = async () => {
 
         console.log(_store + 'init()')
 
-        if(flags.value.isInitialized){
-            return 
+        if (flags.value.isInitialized) {
+            return
         }
 
         setDispatchTeams(await dispatchService.findAll())
 
-        if(authService.isAdmin()){
+        if (authService.isAdmin()) {
             setDispatchers(await userService.findDispatchers())
         }
 
-        flags.value.isInitialized = true 
+        flags.value.isInitialized = true
 
     }
 
-    const initForm = async() => {
+    const initForm = async () => {
         console.log('initForm()')
         setActiveTeams(await teamService.findAllActive())
         setEmergencies(await emergencyService.findAll())
         setLocations(await locationService.findAll())
     }
 
-    const onSubmit = async(payload: {data: ICreateDispatchDto}): Promise<{is_success: boolean, data: IDispatch[], msg: string} | null> => {
+    const onSubmit = async (payload: { data: ICreateDispatchDto }): Promise<{ is_success: boolean, data: IDispatch[], msg: string } | null> => {
         console.log(_store + 'onSubmit()', payload)
 
-        formErrors.value.emergency = false 
-        formErrors.value.callerName = false 
-        formErrors.value.callerNumber = false 
-        formErrors.value.location = false 
-        formErrors.value.description = false 
-        formErrors.value.numPeopleInvolved = false 
-        formErrors.value.team = false 
-        formErrors.value.isInvalidContactNo = false 
-        formErrors.value.timeOfCall = false 
-        
+        formErrors.value.emergency = false
+        formErrors.value.callerName = false
+        formErrors.value.callerNumber = false
+        formErrors.value.location = false
+        formErrors.value.description = false
+        formErrors.value.numPeopleInvolved = false
+        formErrors.value.team = false
+        formErrors.value.isInvalidContactNo = false
+        formErrors.value.timeOfCall = false
 
-        if(!payload.data.emergency_id || payload.data.emergency_id.trim() === ''){ 
-            formErrors.value.emergency = true 
+
+        if (!payload.data.emergency_id || payload.data.emergency_id.trim() === '') {
+            formErrors.value.emergency = true
         }
 
-        if(payload.data.caller_name.trim() === ''){
+        if (payload.data.caller_name.trim() === '') {
             formErrors.value.callerName = true
         }
 
-        if(payload.data.caller_number.trim() === ''){
+        if (payload.data.caller_number.trim() === '') {
             formErrors.value.callerNumber = true
-        }else{
+        } else {
             if (!isValidPhoneNumber('63' + formData.value.caller_number)) {
                 formErrors.value.isInvalidContactNo = true;
             }
         }
 
-        if(payload.data.location.trim() === ''){
+        if (payload.data.location.trim() === '') {
             formErrors.value.location = true
         }
 
-        if(payload.data.description.trim() === ''){
+        if (payload.data.description.trim() === '') {
             formErrors.value.description = true
         }
 
-        if(payload.data.num_people_involved < 0){
+        if (payload.data.num_people_involved < 0) {
             formErrors.value.numPeopleInvolved = true
         }
 
-        if(formTeams.value.length === 0){
+        if (formTeams.value.length === 0) {
             formErrors.value.team = true
         }
 
         const pattern = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/;
 
-        if(!pattern.test(payload.data.time_of_call)){
+        if (!pattern.test(payload.data.time_of_call)) {
             formErrors.value.timeOfCall = true
         }
 
         const hasError = Object.values(formErrors.value).includes(true);
 
-        if(hasError){
-            return null 
+        if (hasError) {
+            return null
         }
 
         const dispatchedTeams = setPayload(payload.data)
 
-        return await onCreate({data: dispatchedTeams})
+        return await onCreate({ data: dispatchedTeams })
 
     }
 
@@ -272,8 +272,8 @@ export const dispatchStore = defineStore('dispatch', () => {
 
         const dispatchedTeamArray: ICreateDispatchDto[] = []
 
-        for(let i of formTeams.value){
-            const x = {...dispatchedTeam}
+        for (let i of formTeams.value) {
+            const x = { ...dispatchedTeam }
             x.team_id = i.id
             x.dispatcher_id = $auth.authUser!.id
             dispatchedTeamArray.push(x)
@@ -283,54 +283,54 @@ export const dispatchStore = defineStore('dispatch', () => {
 
     }
 
-    const onCreate = async(payload: {data: ICreateDispatchDto[]}): Promise<{is_success: boolean, data: IDispatch[], msg: string} | null> => {
+    const onCreate = async (payload: { data: ICreateDispatchDto[] }): Promise<{ is_success: boolean, data: IDispatch[], msg: string } | null> => {
         console.log(_store + 'onCreate()', payload)
 
         const res = await dispatchService.create(payload)
 
-        if(!res){
+        if (!res) {
             return null
         }
 
-        if(res.is_success && res.data.length > 0){
+        if (res.is_success && res.data.length > 0) {
             _dispatchedTeams.value.unshift(...res.data)
         }
 
         return res
     }
 
-    const onUpdate = async(payload: {id: string, data: IUpdateDispatchDto}): Promise<IDispatch | null> => {
+    const onUpdate = async (payload: { id: string, data: IUpdateDispatchDto }): Promise<IDispatch | null> => {
         console.log(_store + 'onUpdate()', payload)
 
         const updated = await dispatchService.update(payload)
 
-        if(updated){
+        if (updated) {
 
             const indx = _dispatchedTeams.value.findIndex(i => i.id === updated.id)
 
-            if(indx !== -1){
-                _dispatchedTeams.value[indx] = {...updated}
+            if (indx !== -1) {
+                _dispatchedTeams.value[indx] = { ...updated }
             }
-            
+
             return updated
         }
 
         return null
     }
 
-    const onUpdateTimeField = async(payload: {id: string, field: string, dispatcher_id: string}): Promise<IDispatch | null> => {
+    const onUpdateTimeField = async (payload: { id: string, field: string, dispatcher_id: string }): Promise<IDispatch | null> => {
         console.log(_store + 'onUpdateTimeField()', payload)
 
         const updated = await dispatchService.updateTimeField(payload)
 
-        if(updated){
+        if (updated) {
 
             const indx = _dispatchedTeams.value.findIndex(i => i.id === updated.id)
 
-            if(indx !== -1){
-                _dispatchedTeams.value[indx] = {...updated}
+            if (indx !== -1) {
+                _dispatchedTeams.value[indx] = { ...updated }
             }
-            
+
             return updated
         }
 
@@ -339,23 +339,23 @@ export const dispatchStore = defineStore('dispatch', () => {
 
     const resetFormData = () => {
         console.log(_store + 'resetFormData()')
-        formData.value = {..._formDataInitial}
-        formErrors.value = {..._formErrorsInitial}
+        formData.value = { ..._formDataInitial }
+        formErrors.value = { ..._formErrorsInitial }
         formTeams.value = []
         teamInfo.value = null
     }
-    
+
     const resetStore = () => {
         console.log(_store + 'resetStore()')
         _dispatchedTeams.value = []
         _emergencies.value = []
         _activeTeams.value = []
         _dispatchers.value = []
-    
-        formData.value = {..._formDataInitial}
-        formErrors.value = {..._formErrorsInitial}
+
+        formData.value = { ..._formDataInitial }
+        formErrors.value = { ..._formErrorsInitial }
         formTeams.value = []
-        flags.value = {..._flagsInitial}
+        flags.value = { ..._flagsInitial }
         teamInfo.value = null
         searchQuery.value = ''
         searchReference.value = SearchRefEnum.Team
