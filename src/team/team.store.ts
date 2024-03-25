@@ -31,10 +31,10 @@ export const teamStore = defineStore('team', () => {
         totalUsers: 0,
         perPage: 10,
     }
-    
-    const formData = ref({..._formDataInitial});
-    const formErrors = ref({..._formErrorsInitial})
-    const pagination = ref({..._paginationInitial})
+
+    const formData = ref({ ..._formDataInitial });
+    const formErrors = ref({ ..._formErrorsInitial })
+    const pagination = ref({ ..._paginationInitial })
 
     // state
     const _teams = ref<ITeam[]>([])
@@ -42,21 +42,21 @@ export const teamStore = defineStore('team', () => {
     const _orphanTeamLeaders = ref<IUser[]>([])
 
     // getters 
-    const teams = computed( () => {
+    const teams = computed(() => {
         return _teams.value.map(i => {
             i.isActivated = (i.status === TeamStatusEnum.Inactive) ? false : true
             return i
         })
     })
 
-    const formIsEditMode = computed( (): boolean => {
-        if(formData.value.id && formData.value.id.trim() !== ''){
-            return true 
+    const formIsEditMode = computed((): boolean => {
+        if (formData.value.id && formData.value.id.trim() !== '') {
+            return true
         }
-        return false 
+        return false
     })
 
-    const usersWithoutTeam = computed( (): IUser[] => {
+    const usersWithoutTeam = computed((): IUser[] => {
         return _usersWithoutTeam.value.map(user => {
             user.label = getTeamLeaderLabel(user)
             return user
@@ -69,9 +69,9 @@ export const teamStore = defineStore('team', () => {
         _teams.value = items
     }
 
-    const setFormData = (payload: {data: ITeam}) => {
+    const setFormData = (payload: { data: ITeam }) => {
         console.log(_store + 'setFormData()', payload)
-        const team = {...payload.data} as ITeam
+        const team = { ...payload.data } as ITeam
 
         team.team_leader['label'] = getTeamLeaderLabel(team.team_leader)
         formData.value.id = team.id
@@ -99,74 +99,77 @@ export const teamStore = defineStore('team', () => {
 
     // methods
 
-    const init = async() => {
+    const init = async () => {
         console.log(_store + 'init()')
-        const {currentPage, totalPages, totalItems, teams} = await teamService.findAll({page: 1, pageSize: pagination.value.perPage}) 
+        const { currentPage, totalPages, totalItems, teams } = await teamService.findAll({ page: 1, pageSize: pagination.value.perPage })
         setPagination(currentPage, totalPages, totalItems)
         setTeams(teams)
     }
 
-    const initForm = async(id?: string) => {
+    const initForm = async (id?: string) => {
         setOrphanTeamLeaders(await userService.findOrphanTeamLeaders())
 
-        if(id){
+        if (id) {
             const itemFound = await teamService.findOne(id)
-            if(itemFound){
-                setFormData({data: itemFound})
+            if (itemFound) {
+                setFormData({ data: itemFound })
             }
         }
     }
 
-    const initManageTeam = async() => {
+    const initManageTeam = async () => {
         console.log(_store + 'initManageTeam()')
         const usersWithoutTeam = await userService.findUsersWithoutTeam()
         setUsersWithoutTeam(usersWithoutTeam)
     }
 
-    const onSubmit = async(payload: {data: ICreateTeamDto}): Promise<ITeam | null> => {
+    const onSubmit = async (payload: { data: ICreateTeamDto }): Promise<ITeam | null> => {
         console.log(_store + 'onSubmit()', payload)
 
-        formErrors.value.name = false 
-        formErrors.value.teamLeader = false 
-        formErrors.value.status = false 
+        formErrors.value.name = false
+        formErrors.value.teamLeader = false
+        formErrors.value.status = false
 
 
-        if(payload.data.name.trim() === ''){ 
-            formErrors.value.name = true 
+        if (payload.data.name.trim() === '') {
+            console.log('error name')
+            formErrors.value.name = true
         }
 
-        if(!payload.data.team_leader){ 
-            formErrors.value.teamLeader = true 
+        if (!payload.data.team_leader) {
+            console.log('error team_leader')
+            formErrors.value.teamLeader = true
         }
 
-        if(payload.data.status !== TeamStatusEnum.Active && payload.data.status !== TeamStatusEnum.Inactive){
-            formErrors.value.status = true 
+        if (payload.data.status !== TeamStatusEnum.Active && payload.data.status !== TeamStatusEnum.Inactive) {
+            console.log('error status')
+            formErrors.value.status = true
         }
 
         const hasError = Object.values(formErrors.value).includes(true);
 
         console.log('hasError', hasError)
 
-        if(hasError){
-            return null 
+        if (hasError) {
+            return null
         }
 
-        if(payload.data.id && payload.data.id.trim() !== ''){
-            return await onUpdate({id: payload.data.id, data: payload.data})
+        if (payload.data.id && payload.data.id.trim() !== '') {
+            return await onUpdate({ id: payload.data.id, data: payload.data })
         }
         // create
-        else{
+        else {
             return await onCreate(payload)
         }
 
     }
 
-    const onCreate = async(payload: {data: ICreateTeamDto}): Promise<ITeam | null> => {
+    const onCreate = async (payload: { data: ICreateTeamDto }): Promise<ITeam | null> => {
         console.log(_store + 'onCreate()', payload)
 
         const created = await teamService.create(payload)
 
-        if(created){
+        if (created) {
 
             _teams.value.unshift(created)
             return created
@@ -175,67 +178,67 @@ export const teamStore = defineStore('team', () => {
         return null
     }
 
-    const onUpdate = async(payload: {id: string, data: IUpdateTeamDto}): Promise<ITeam | null> => {
+    const onUpdate = async (payload: { id: string, data: IUpdateTeamDto }): Promise<ITeam | null> => {
         console.log(_store + 'onUpdate()', payload)
 
         const updated = await teamService.update(payload)
 
-        if(updated){
+        if (updated) {
 
             const indx = _teams.value.findIndex(i => i.id === updated.id)
 
-            if(indx !== -1){
-                _teams.value[indx] = {...updated}
+            if (indx !== -1) {
+                _teams.value[indx] = { ...updated }
             }
-            
+
             return updated
         }
 
         return null
     }
 
-    const onDelete = async(id: string): Promise<boolean> => {
+    const onDelete = async (id: string): Promise<boolean> => {
         console.log(_store + 'onDelete()', id)
 
         const indx = _teams.value.findIndex(i => i.id === id)
 
-        if(indx === -1){
+        if (indx === -1) {
             console.error('Item not found')
-            return false 
+            return false
         }
 
         const deleted = await teamService.remove(id)
 
-        if(deleted){
+        if (deleted) {
             _teams.value.splice(indx, 1)
             return true
         }
 
-        return false 
+        return false
 
     }
 
     const userIsTeamLead = (team_leader_id: string): boolean => {
         console.log(_store + 'userIsTeamLead()', team_leader_id)
         const team = _teams.value.find(i => i.team_leader_id === team_leader_id && i.id !== formData.value.id)
-        if(team){
-            return true 
+        if (team) {
+            return true
         }
 
-        return false 
+        return false
     }
 
     const getTeamLeaderLabel = (teamLeader: IUser): string => {
         return teamLeader.last_name + ', ' + teamLeader.first_name
     }
 
-    const getTeam = async(teamId: string): Promise<ITeam | null> => {
+    const getTeam = async (teamId: string): Promise<ITeam | null> => {
 
         console.log(_store + 'getTeam()', teamId)
 
         const team = await teamService.findOne(teamId)
 
-        if(!team){
+        if (!team) {
             console.error('team not found in db')
             return null
         }
@@ -244,16 +247,16 @@ export const teamStore = defineStore('team', () => {
 
     }
 
-    const onAddMember = async(payload: {team_id: string, member_id: string}): Promise<ITeamMember | null> => {
+    const onAddMember = async (payload: { team_id: string, member_id: string }): Promise<ITeamMember | null> => {
         console.log(_store + 'onAddMember()', payload)
 
-        const memberAdded = await teamService.addTeamMember({data: payload})
+        const memberAdded = await teamService.addTeamMember({ data: payload })
 
-        if(memberAdded){
+        if (memberAdded) {
 
             // also remove the member in _usersWithoutTeam since that member is now assigned in a team
             const indx = _usersWithoutTeam.value.findIndex(i => i.id === memberAdded.member_id)
-            if(indx !== -1){
+            if (indx !== -1) {
                 _usersWithoutTeam.value.splice(indx, 1)
             }
 
@@ -264,24 +267,24 @@ export const teamStore = defineStore('team', () => {
 
     }
 
-    const onDeleteTeamMember = async(member: ITeamMember): Promise<boolean> => {
+    const onDeleteTeamMember = async (member: ITeamMember): Promise<boolean> => {
         console.log(_store + 'onDeleteTeamMember()', member)
 
         const deleted = await teamService.removeTeamMember(member.id)
 
-        if(deleted){
+        if (deleted) {
             _usersWithoutTeam.value.push(member.member)
             return true
         }
 
-        return false 
+        return false
 
     }
 
     const resetFormData = () => {
         console.log(_store + 'resetForm()')
-        formData.value = {..._formDataInitial}
-        formErrors.value = {..._formErrorsInitial}
+        formData.value = { ..._formDataInitial }
+        formErrors.value = { ..._formErrorsInitial }
     }
 
     return {

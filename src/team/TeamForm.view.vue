@@ -8,7 +8,7 @@
 
         <div class="row">
             <div class="col">
-                <Breadcrumbs :items="breadcrumbItems"/>
+                <Breadcrumbs :items="breadcrumbItems" />
             </div>
         </div>
 
@@ -18,25 +18,33 @@
                 <div class="row">
                     <div class="col">
                         <div class="card shadow mb-4">
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-primary text-white">
+                            <div
+                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-primary text-white">
                                 <h6 class="m-0 font-weight-bold"> {{ action + ' ' + moduleLabel }} </h6>
                             </div>
-                
+
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Name</label>
                                     <input v-model="$team.formData.name" type="text" class="form-control">
-                                    <small class="form-text text-danger" v-if="$team.formErrors.name"> {{ errorMsg }} </small>
+                                    <small class="form-text text-danger" v-if="$team.formErrors.name"> {{ errorMsg }}
+                                    </small>
                                 </div>
                                 <div class="form-group">
                                     <label>Team Leader</label>
                                     <v-select :options="users" v-model="$team.formData.team_leader"></v-select>
-                                    <small class="form-text text-muted">   
+                                    <small class="form-text text-muted">
 
-                                       <i> Note: Only team leaders who are not assigned to any team are displayed. </i>
+                                        <i> - Only team leaders who are not assigned to any team are displayed. </i>
 
                                     </small>
-                                    <small class="form-text text-danger" v-if="$team.formErrors.teamLeader"> {{ errorMsg }} </small>
+                                    <small class="form-text text-muted">
+
+                                        <i> - Can only update if status is Active </i>
+
+                                    </small>
+                                    <small class="form-text text-danger" v-if="$team.formErrors.teamLeader"> {{ errorMsg
+                                        }} </small>
                                 </div>
                                 <div class="form-group" v-if="!$team.formIsEditMode">
                                     <label>Status</label>
@@ -44,11 +52,9 @@
                                         <div class="col">
                                             <div class="d-grid gap-2">
                                                 <button
-                                                    :class="{'btn-primary': $team.formData.status === TeamStatusEnum.Active, 'btn-outline-primary': $team.formData.status !== TeamStatusEnum.Active}"
-                                                    class="btn btn-block"
-                                                    type="button"
-                                                    @click="$team.formData.status = TeamStatusEnum.Active"
-                                                >
+                                                    :class="{ 'btn-primary': $team.formData.status === TeamStatusEnum.Active, 'btn-outline-primary': $team.formData.status !== TeamStatusEnum.Active }"
+                                                    class="btn btn-block" type="button"
+                                                    @click="$team.formData.status = TeamStatusEnum.Active">
                                                     {{ CONST_TeamStatus[TeamStatusEnum.Active].text }}
                                                 </button>
                                             </div>
@@ -56,17 +62,16 @@
                                         <div class="col">
                                             <div class="d-grid gap-2">
                                                 <button
-                                                    :class="{'btn-primary': $team.formData.status === TeamStatusEnum.Inactive, 'btn-outline-primary': $team.formData.status !== TeamStatusEnum.Inactive}"
-                                                    class="btn btn-block"
-                                                    type="button"
-                                                    @click="$team.formData.status = TeamStatusEnum.Inactive"
-                                                >
-                                                {{ CONST_TeamStatus[TeamStatusEnum.Inactive].text }}
+                                                    :class="{ 'btn-primary': $team.formData.status === TeamStatusEnum.Inactive, 'btn-outline-primary': $team.formData.status !== TeamStatusEnum.Inactive }"
+                                                    class="btn btn-block" type="button"
+                                                    @click="$team.formData.status = TeamStatusEnum.Inactive">
+                                                    {{ CONST_TeamStatus[TeamStatusEnum.Inactive].text }}
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
-                                    <small class="form-text text-danger" v-if="$team.formErrors.status"> {{ errorMsg }} </small>
+                                    <small class="form-text text-danger" v-if="$team.formErrors.status"> {{ errorMsg }}
+                                    </small>
                                 </div>
                             </div>
 
@@ -79,8 +84,10 @@
                         <div class="d-flex justify-content-between">
                             <button @click="onCancel" type="button" class="btn btn-dark">Cancel</button>
                             <div>
-                                <button @click="onSubmit(1)" type="button" class="btn btn-success">Submit & Finish</button>
-                                <button v-if="!$team.formIsEditMode" @click="onSubmit(2)" type="button" class="btn btn-primary ml-2">Submit & Add Members</button>
+                                <button @click="onSubmit(1)" type="button" class="btn btn-success">Submit &
+                                    Finish</button>
+                                <button v-if="!$team.formIsEditMode" @click="onSubmit(2)" type="button"
+                                    class="btn btn-primary ml-2">Submit & Add Members</button>
                             </div>
                         </div>
                     </div>
@@ -91,7 +98,7 @@
 
 
 
-  </div>
+    </div>
 
 </template>
 
@@ -129,23 +136,23 @@ const breadcrumbItems = ref([
 ])
 
 
-onBeforeRouteLeave( (to: any, from: any, next: any) => {
+onBeforeRouteLeave((to: any, from: any, next: any) => {
     console.log('onBeforeRouteLeave()')
-    console.log({to})
-    console.log({from})
+    console.log({ to })
+    console.log({ from })
     $team.resetFormData()
 
     next()
 })
 
 
-onMounted( async() => {
+onMounted(async () => {
     const query = router.currentRoute.value.query
 
-    if(query.id){
+    if (query.id) {
         // intialize update form / populate form 
         await $team.initForm(query.id as string)
-    }else{
+    } else {
         await $team.initForm()
     }
 
@@ -153,23 +160,23 @@ onMounted( async() => {
 
 })
 
-const action = computed( () => $team.formData.id === '' ? 'Add' : 'Update')
+const action = computed(() => $team.formData.id === '' ? 'Add' : 'Update')
 
-const users = computed( () => {
+const users = computed(() => {
     return _users.value.map(user => {
         user.label = $team.getTeamLeaderLabel(user)
         return user
     })
 })
 
-const selectedUser = computed( (): IUser | null => {
-    if(!$team.formData.team_leader) return null 
+const selectedUser = computed((): IUser | null => {
+    if (!$team.formData.team_leader) return null
     return $team.formData.team_leader
 })
 
 watch(selectedUser, (val) => {
     console.log('watching selectedUser', val)
-    if(!val) return 
+    if (!val) return
 
     $team.formErrors.teamLeader = false
     $team.formData.team_leader_id = val.id
@@ -177,26 +184,26 @@ watch(selectedUser, (val) => {
 
 })
 
-const onSubmit = async(action: number) => {
+const onSubmit = async (action: number) => {
     console.log('onSubmit()')
 
     console.log('submitting...')
 
-    const submitted = await $team.onSubmit({data: {...$team.formData}})
+    const submitted = await $team.onSubmit({ data: { ...$team.formData } })
 
-    if(!submitted){
+    if (!submitted) {
         toast.error('Failed to save ' + moduleLabel)
-        return 
+        return
     }
 
     $team.resetFormData()
 
     toast.success(moduleLabel + ' successfully saved!')
 
-    if(action === 1){
-        router.push({name: routeNames.teams})
-    }else{
-        router.push({name: routeNames.teamManage, query: {id: submitted.id}})
+    if (action === 1) {
+        router.push({ name: routeNames.teams })
+    } else {
+        router.push({ name: routeNames.teamManage, query: { id: submitted.id } })
     }
 
 
@@ -204,8 +211,7 @@ const onSubmit = async(action: number) => {
 
 const onCancel = () => {
     $team.resetFormData()
-    router.push({name: routeNames.teams})
+    router.push({ name: routeNames.teams })
 }
 
 </script>
-
