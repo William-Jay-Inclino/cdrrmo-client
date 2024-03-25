@@ -38,7 +38,7 @@
                                         <i> - Only team leaders who are not assigned to any team are displayed. </i>
 
                                     </small>
-                                    <small class="form-text text-muted">
+                                    <small v-if="$team.formIsEditMode" class="form-text text-muted">
 
                                         <i> - Can only update if status is Active </i>
 
@@ -84,7 +84,8 @@
                         <div class="d-flex justify-content-between">
                             <button @click="onCancel" type="button" class="btn btn-dark">Cancel</button>
                             <div>
-                                <button @click="onSubmit(1)" type="button" class="btn btn-success">Submit &
+                                <button :disabled="isDisableSubmit" @click="onSubmit(1)" type="button"
+                                    class="btn btn-success">Submit &
                                     Finish</button>
                                 <button v-if="!$team.formIsEditMode" @click="onSubmit(2)" type="button"
                                     class="btn btn-primary ml-2">Submit & Add Members</button>
@@ -172,6 +173,16 @@ const users = computed(() => {
 const selectedUser = computed((): IUser | null => {
     if (!$team.formData.team_leader) return null
     return $team.formData.team_leader
+})
+
+const isDisableSubmit = computed(() => {
+
+    if ($team.formIsEditMode && $team.formData.status !== TeamStatusEnum.Active) {
+        return true
+    }
+
+    return false
+
 })
 
 watch(selectedUser, (val) => {
