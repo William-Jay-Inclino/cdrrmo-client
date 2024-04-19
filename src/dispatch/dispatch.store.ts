@@ -20,7 +20,7 @@ export const dispatchStore = defineStore('dispatch', () => {
         team_id: '',
         caller_name: '',
         caller_number: '',
-        location: '',
+        location: null,
         description: '',
         num_people_involved: 0,
         hazard: '',
@@ -227,13 +227,14 @@ export const dispatchStore = defineStore('dispatch', () => {
 
         if (payload.data.caller_number.trim() === '') {
             formErrors.value.callerNumber = true
-        } else {
-            if (!isValidPhoneNumber('63' + formData.value.caller_number)) {
-                formErrors.value.isInvalidContactNo = true;
-            }
-        }
+        } 
+        // else {
+        //     if (!isValidPhoneNumber('63' + formData.value.caller_number)) {
+        //         formErrors.value.isInvalidContactNo = true;
+        //     }
+        // }
 
-        if (payload.data.location.trim() === '') {
+        if (!payload.data.location) {
             formErrors.value.location = true
         }
 
@@ -276,6 +277,8 @@ export const dispatchStore = defineStore('dispatch', () => {
             const x = { ...dispatchedTeam }
             x.team_id = i.id
             x.dispatcher_id = $auth.authUser!.id
+            // @ts-ignore
+            x.location = x.location?.name
             dispatchedTeamArray.push(x)
         }
 

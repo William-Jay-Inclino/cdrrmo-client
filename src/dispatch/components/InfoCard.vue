@@ -75,6 +75,11 @@
                             <!-- <td> {{ formatDate(new Date(dispatchedTeam.time_of_call)) }} </td> -->
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
+                            <td class="font-weight-bold">Time of Dispatch</td>
+                            <td> {{ dispatchedTeam.created_at }} </td>
+                            <!-- <td> {{ formatDate(new Date(dispatchedTeam.time_of_call)) }} </td> -->
+                        </tr>
+                        <tr v-show="dispatchedTeam.isExpanded">
                             <td class="font-weight-bold">Time proceeding to scene</td>
                             <td class="align-middle">
                                 <template v-if="dispatchedTeam.time_proceeding_scene">
@@ -207,7 +212,7 @@
                             <td class="align-middle font-weight-bold">Remarks</td>
                             <td>
                                 <textarea :id="'editRem_' + dispatchedTeam.id" :value="dispatchedTeam.remarks"
-                                    class="form-control" rows="5" :disabled="!dispatchedTeam.isEditRemarks">
+                                    class="form-control" rows="10" :disabled="!dispatchedTeam.isEditRemarks">
         </textarea>
                                 <button v-if="dispatchedTeam.isEditRemarks" @click="onCancelEditRemarks(dispatchedTeam)"
                                     class="btn btn-light float-left">

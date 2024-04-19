@@ -6,8 +6,13 @@
                 <i class="fas fa-sync"></i>
             </button>
         </div>
-        <input @keyup.enter="onClickSearch()" type="text" v-model="searchVal" class="form-control"
-            :placeholder="placeholder" @input="validateInput()">
+        <div v-if="searchRef === SearchFieldEnum.Name">
+            <input @keyup.enter="onClickSearch()" type="text" v-model="searchVal" class="form-control"
+                :placeholder="placeholder" @input="validateInput()">
+        </div>
+        <div v-else>
+            <v-select @option:selected="onChangeCategory()" :options="$category.categories" v-model="selectedCategory" label="name"></v-select>
+        </div>
         <div class="input-group-append">
             <div class="btn-group">
                 <button @click="onClickSearch()" type="button" class="btn btn-primary">
@@ -19,6 +24,7 @@
                 </button>
                 <div class="dropdown-menu">
                     <a @click="onChangeRef(SearchFieldEnum.Name)" class="dropdown-item" href="#">Name</a>
+                    <a @click="onChangeRef(SearchFieldEnum.Category)" class="dropdown-item" href="#">Category</a>
                     <!-- <a @click="onChangeRef(SearchFieldEnum.SerialNumber)" class="dropdown-item" href="#">Serial Number</a> -->
                 </div>
             </div>
@@ -28,18 +34,21 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { SearchFieldEnum, itemService, itemStore } from '..';
+import { SearchFieldEnum, itemService, itemStore, categoryStore, IItemCategory } from '..';
 
 
 const searchRefObject = {
     [SearchFieldEnum.Name]: 'Name',
+    [SearchFieldEnum.Category]: 'Category',
     // [SearchFieldEnum.SerialNumber]: 'Serial Number',
 }
 
 const $item = itemStore()
+const $category = categoryStore()
 
 const searchRef = ref<SearchFieldEnum>(SearchFieldEnum.Name)
 const searchVal = ref('')
+const selectedCategory = ref<IItemCategory | null>(null)
 
 const onChangeRef = (ref: SearchFieldEnum) => {
     searchVal.value = ''
@@ -49,6 +58,16 @@ const onChangeRef = (ref: SearchFieldEnum) => {
 const placeholder = computed(() => {
     return `Search for ${searchRefObject[searchRef.value]}...`
 })
+
+const onChangeCategory = () => {
+
+    console.log('onChangeCategory()');
+
+    if(!selectedCategory.value) return 
+
+    searchVal.value = selectedCategory.value.id
+
+}
 
 const onClickSearch = async () => {
     console.log('onClickSearch()')

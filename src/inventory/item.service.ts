@@ -15,6 +15,8 @@ class ItemService{
         items: IItem[]
     }>{
         console.log(this.service + 'findAll()')
+        console.log('searchField', payload.searchField);
+        console.log('searchValue', payload.searchValue);
 		try {
             let newEndpoint = this.endpoint
             newEndpoint += '?page='+payload.page+'&pageSize='+payload.pageSize

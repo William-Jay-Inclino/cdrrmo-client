@@ -29,7 +29,7 @@
                                         <label>Time of Call</label>
                                         <div class="row align-items-center">
                                             <div class="col-10">
-                                                <input @input="initAwesomplete()" v-model="$dispatch.formData.time_of_call" type="datetime-local" class="form-control" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
+                                                <input v-model="$dispatch.formData.time_of_call" type="datetime-local" class="form-control" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
                                             </div>
                                             <div class="col-2">
                                                 <button type="button" @click="setTime()" class="btn btn-primary btn-sm float-right">Set time</button>
@@ -41,7 +41,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Nature of Incident</label>
-                                        <select @change="initAwesomplete()" class="form-control" v-model="$dispatch.formData.emergency_id">
+                                        <select class="form-control" v-model="$dispatch.formData.emergency_id">
                                             <option v-for="emergency in $dispatch.emergencies" :value="emergency.id" :key="emergency.id">
                                                 {{ emergency.name }}
                                             </option>
@@ -56,9 +56,14 @@
                                                 <small class="form-text text-danger" v-if="$dispatch.formErrors.callerName"> {{ errorMsg }} </small>
                                             </div>
                                             <div class="col">
-                                                <label>Contact Number</label>
+                                                <label>Contact</label>
 
-                                                <div class="input-group">
+                                                <input
+                                                    v-model="$dispatch.formData.caller_number"
+                                                    type="text"
+                                                    class="form-control">
+
+                                                <!-- <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="basic-addon1">+63</span>
                                                     </div>
@@ -69,7 +74,7 @@
                                                     aria-describedby="basic-addon1"
                                                     maxlength="10"
                                                     @input="() => $dispatch.formData.caller_number = $dispatch.formData.caller_number.replace(/\D/g, '')">
-                                                </div>
+                                                </div> -->
                                                 <small class="form-text text-danger" v-if="$dispatch.formErrors.callerNumber"> {{ errorMsg }} </small>
                                                 <small class="form-text text-danger" v-else-if="$dispatch.formErrors.isInvalidContactNo"> Contact number is invalid </small>
                                             </div>
@@ -79,17 +84,18 @@
                                         <label>Location</label>
                                         <div class="row">
                                             <div class="col">
-                                                <textarea v-model="$dispatch.formData.location" class="form-control" rows="3" ref="locationInput" list="locationList"></textarea>
+                                                <v-select :options="$dispatch.locations" v-model="$dispatch.formData.location" label="name"></v-select>
+                                                <!-- <textarea v-model="$dispatch.formData.location" class="form-control" rows="3" ref="locationInput" list="locationList"></textarea>
                                                 <datalist id="locationList">
                                                     <option v-for="i in $dispatch.locations" :key="i.id" :value="i.name"> {{ i.name }} </option>
-                                                </datalist>
+                                                </datalist> -->
                                                 <small class="form-text text-danger" v-if="$dispatch.formErrors.location"> {{ errorMsg }} </small>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Description</label>
-                                        <textarea @input="initAwesomplete()" v-model="$dispatch.formData.description" class="form-control" rows="3"></textarea>
+                                        <textarea v-model="$dispatch.formData.description" class="form-control" rows="3"></textarea>
                                         <small class="form-text text-danger" v-if="$dispatch.formErrors.description"> {{ errorMsg }} </small>
                                     </div>
                                     <div class="form-group">
@@ -136,7 +142,7 @@
     import { onBeforeRouteLeave, useRouter } from 'vue-router';
     import { routeNames } from '../common';
     import { useToast } from "vue-toastification";
-    import Awesomplete from 'awesomplete';
+    // import Awesomplete from 'awesomplete';
     import moment from 'moment';
     import { teamService } from '../team';
 
@@ -144,8 +150,8 @@
 
     const router = useRouter()
     const $dispatch = dispatchStore()
-    const locationInput = ref<HTMLTextAreaElement | null>(null)
-    const awesompleteInstance = ref<any>()
+    // const locationInput = ref<HTMLTextAreaElement | null>(null)
+    // const awesompleteInstance = ref<any>()
 
 
     $dispatch.initForm()
@@ -205,19 +211,19 @@
     }
 
     const setTime = () => {
-        initAwesomplete()
+        // initAwesomplete()
         $dispatch.formData.time_of_call = moment().format('YYYY-MM-DDTHH:mm');
     }
 
-    const initAwesomplete = () => {
-        console.log('initAwesomplete()')
+    // const initAwesomplete = () => {
+    //     console.log('initAwesomplete()')
 
-        if(awesompleteInstance.value){
-            return 
-        }
+    //     if(awesompleteInstance.value){
+    //         return 
+    //     }
 
-        awesompleteInstance.value = new Awesomplete(locationInput.value!, { list: "#locationList" })
-    }
+    //     awesompleteInstance.value = new Awesomplete(locationInput.value!, { list: "#locationList" })
+    // }
 
 </script>
 

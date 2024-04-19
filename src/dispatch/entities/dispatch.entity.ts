@@ -40,4 +40,6 @@ export interface IDispatch{
 
     isExpanded?: boolean
     isEditRemarks?: boolean
+
+    created_at: string
 }

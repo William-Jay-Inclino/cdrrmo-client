@@ -1,4 +1,5 @@
 import { DispatchStatusEnum } from ".."
+import { ILocation } from "../../location"
 
 export interface ICreateDispatchDto{
     dispatcher_id: string 
@@ -6,7 +7,7 @@ export interface ICreateDispatchDto{
     team_id: string | null
     caller_name: string 
     caller_number: string 
-    location: string 
+    location: ILocation | null 
     description: string
     num_people_involved: number 
     hazard: string 
