@@ -5,7 +5,7 @@ import { computed, ref } from 'vue';
 import { ICreateDispatchDto, IUpdateDispatchDto } from './dto';
 import { IEmergency, emergencyService } from '../emergency';
 import { ITeam, teamService } from '../team';
-import { isValidPhoneNumber } from '../common';
+// import { isValidPhoneNumber } from '../common';
 import { authService, authStore } from '../auth';
 import { IUser, userService } from '../user';
 import { ILocation, locationService } from '../location';
@@ -227,7 +227,7 @@ export const dispatchStore = defineStore('dispatch', () => {
 
         if (payload.data.caller_number.trim() === '') {
             formErrors.value.callerNumber = true
-        } 
+        }
         // else {
         //     if (!isValidPhoneNumber('63' + formData.value.caller_number)) {
         //         formErrors.value.isInvalidContactNo = true;
