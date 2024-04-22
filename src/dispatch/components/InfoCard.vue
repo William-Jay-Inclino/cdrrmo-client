@@ -67,7 +67,7 @@
                         <tr
                             v-show="dispatchedTeam.isExpanded || $dispatch.searchReference === SearchRefEnum.CallerNumber">
                             <td class="font-weight-bold">Caller number</td>
-                            <td> +639{{ dispatchedTeam.caller_number }} </td>
+                            <td> {{ dispatchedTeam.caller_number }} </td>
                         </tr>
                         <tr v-show="dispatchedTeam.isExpanded">
                             <td class="font-weight-bold">Time of Call</td>
