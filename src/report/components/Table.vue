@@ -46,32 +46,33 @@
                             <td class="align-middle"> {{ i.num_people_involved }} individuals </td>
                             <td class="align-middle" style="white-space: nowrap;">
                                 <template v-if="i.time_proceeding_scene">
-                                    {{ $report.formatDispatchDate(i.time_proceeding_scene) }}
+                                    {{ i.time_proceeding_scene }}
                                 </template>
                             </td>
                             <td class="align-middle" style="white-space: nowrap;">
                                 <template v-if="i.time_arrival_scene">
-                                    {{ $report.formatDispatchDate(i.time_arrival_scene) }}
+                                    {{ i.time_arrival_scene }}
+                                    <!-- {{ $report.formatDispatchDate(i.time_arrival_scene) }} -->
                                 </template>
                             </td>
                             <td class="align-middle" style="white-space: nowrap;">
                                 <template v-if="i.time_proceeding_hospital">
-                                    {{ $report.formatDispatchDate(i.time_proceeding_hospital) }}
+                                    {{ i.time_proceeding_hospital }}
                                 </template>
                             </td>
                             <td class="align-middle" style="white-space: nowrap;">
                                 <template v-if="i.time_arrival_hospital">
-                                    {{ $report.formatDispatchDate(i.time_arrival_hospital) }}
+                                    {{ i.time_arrival_hospital }}
                                 </template>
                             </td>
                             <td class="align-middle" style="white-space: nowrap;">
                                 <template v-if="i.time_proceeding_base">
-                                    {{ $report.formatDispatchDate(i.time_proceeding_base) }}
+                                    {{ i.time_proceeding_base }}
                                 </template>
                             </td>
                             <td class="align-middle" style="white-space: nowrap;">
                                 <template v-if="i.time_arrival_base">
-                                    {{ $report.formatDispatchDate(i.time_arrival_base) }}
+                                    {{ i.time_arrival_base }}
                                 </template>
                             </td>
                             <td class="align-middle" :class="{'text-success': i.is_completed, 'text-danger': !i.is_completed}"> {{ $report.getStatus(i) }} </td>
