@@ -61,7 +61,8 @@
             </li>
 
             <li class="nav-item dropdown no-arrow">
-                <span class="nav-link text-gray-600 small">Version 1.5.0</span>
+                <!-- version | date -->
+                <span class="nav-link text-gray-600 small"> ver: 1.5.0 | 07.04.24 </span>
             </li>
 
             <div class="topbar-divider d-none d-sm-block"></div>
