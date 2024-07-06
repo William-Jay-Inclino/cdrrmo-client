@@ -15,6 +15,7 @@ export interface IDispatch{
     num_people_involved: number // ok
     hazard: string 
     time_of_call: Date // ok
+    time_of_call2?: Date | null // ok
     time_proceeding_scene: Date | null // ok
     time_arrival_scene: Date | null // ok
     time_proceeding_hospital: Date | null  // ok
