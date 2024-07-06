@@ -33,7 +33,10 @@
                     </thead>
                     <tbody>
                         <tr v-for="i in item.data">
-                            <td class="align-middle" style="white-space: nowrap;"> {{ $report.formatTime(i.time_of_call) }} </td>
+                            <td class="align-middle" style="white-space: nowrap;">
+                                <!-- {{ $report.formatTime(i.time_of_call) }} -->
+                                {{ i.time_of_call2 }}
+                            </td>
                             <td class="align-middle"> {{ i.description }} </td>
                             <td class="align-middle"> {{ i.emergency.name }} </td>
                             <td class="align-middle"> {{ i.location }} </td>
